@@ -1,4 +1,4 @@
-## About iBikri
+# About iBikri
 
 This is a simple Classified Ads application
 
@@ -16,7 +16,7 @@ If you're not in the mood to read, [Laracasts](https://laracasts.com) contains o
 
 If you are having trouble getting this project to run. Follow installation instructions.
 
-# How to Install
+## How to Install
 
 1) git clone https://github.com/shababhsiddique/ibikri-shabab.git (on remote machine)
 
@@ -53,7 +53,9 @@ If you would like to contribute to this project. Fork it and keep me posted with
 
 If you discover a security vulnerability within this ibikri application, please submit an [Issue](https://github.com/shababhsiddique/ibikri-shabab/issues).
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.## License
+If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+
+## License
 
 iBikri platform is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 
