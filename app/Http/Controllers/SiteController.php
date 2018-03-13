@@ -20,7 +20,7 @@ class SiteController extends Controller
         return view('site.ajax.listcategories');
     }
     
-    public function ajaxLocationsModal(){
+    public function ajaxLocationModal(){
         return view('site.ajax.listlocations');
     }
 
