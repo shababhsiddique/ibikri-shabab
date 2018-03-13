@@ -13,7 +13,15 @@ class SiteController extends Controller
      */
     public function index()
     {
-        //
+        return view('site.master');
+    }
+    
+    public function ajaxCategoryModal(){
+        return view('site.ajax.listcategories');
+    }
+    
+    public function ajaxLocationsModal(){
+        return view('site.ajax.listlocations');
     }
 
     /**

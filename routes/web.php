@@ -11,6 +11,14 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+/* Site */
+Route::get('/','SiteController@index');
+Route::get('/category','SiteController@index');
+
+
+/* Site Ajax */
+Route::get('/ajax/categories','SiteController@ajaxCategoryModal');
+Route::get('/ajax/locations','SiteController@ajaxLocationModal');
+
+
+
