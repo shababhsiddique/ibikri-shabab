@@ -2,7 +2,7 @@
 
 This is a simple Classified Ads application
 
-- Users can Register / Signup (in progress).
+- Users can Register / Signup.
 - Guests can View / Search Advertisements (in progress).
 - Users can View / Search / Post Advertisements (in progress).
 - Administrator can moderate posts and ban users (in progress).
@@ -22,25 +22,36 @@ If you are having trouble getting this project to run. Follow installation instr
 
 2) open your project folder in cmd or powershell
 
-3) composer install (this will create 'vendor' folder and download all packages, NOTE: you need composer installed)    
+3) Install Composer
+
+        composer install
+
+   this will create 'vendor' folder and download all packages, NOTE: you need composer installed
 
 4) Create and edit .env file (use .env.example as base)
    for windows users use powershell to 
+
         cp .env.example .env to create a copy
 
-5) php artisan key:generate
-    will create the unique application key for the .env file
+5) Generate Key
+
+        php artisan key:generate
+    
+   will create the unique application key for the .env file
 
 For Database:
 
 6) Create database . eg. db_ibikri
 
 7) run migration
+
         php artisan migrate
 
         or
 
-        php artisan migrate:fresh (if you already have database and want to overwrite)
+        php artisan migrate:fresh 
+
+   if you already have database and want to overwrite)
 
 8) Seed database        
         coming soon
