@@ -22,3 +22,7 @@ Route::get('/ajax/locations','SiteController@ajaxLocationModal');
 
 
 
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

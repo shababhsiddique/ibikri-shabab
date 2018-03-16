@@ -87,7 +87,8 @@ a, .nav li a:hover,
 .workshop-traning .btn.btn-primary:hover,
 .see-more button:hover, .buttons a.btn:hover, .user-account .nav-tabs>li.active>a,
 .resume-content .icons, .profile-info address a:hover   {
-	color:#00a651;
+	/*color:#00a651;*/
+	color:#14a99b;
 }
 
 
@@ -107,7 +108,8 @@ a.verified i,
 .home-banner .contact-form .form-control,
 .download-button a.btn:hover, .post-resume .upload-image:hover,
 .post-resume form .buttons a.btn:hover  {
-	background-color:#00a651;
+	/*background-color:#00a651;*/
+	background-color:#14a99b;
 }
 
 

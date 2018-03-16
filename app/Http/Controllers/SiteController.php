@@ -6,14 +6,27 @@ use Illuminate\Http\Request;
 
 class SiteController extends Controller
 {
+    //Layout holder
+    private $layout;
+
+    //Construct Common Items and Check Auth
+    public function __construct() {
+//        $this->middleware(CheckAdmin::class);
+        $this->layout['siteContent'] = view('site.pages.home');
+//        $this->layout['notification'] = view('common.notification');
+    }
+
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Show dashboard
+     * @return type
      */
-    public function index()
-    {
-        return view('site.master');
+    public function index() {
+
+        //Load Component
+        $this->layout['siteContent'] = view('site.pages.home');
+
+        //return view
+        return view('site.master', $this->layout);
     }
     
     public function ajaxCategoryModal(){

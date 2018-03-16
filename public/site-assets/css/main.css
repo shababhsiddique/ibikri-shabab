@@ -234,7 +234,7 @@ textarea {
 }
 
 .navbar-brand {
-    padding: 12px 15px;
+    padding: 7px 15px;
 }
 
 .navbar {
@@ -244,7 +244,7 @@ textarea {
 .nav li a,
 .navbar-default .navbar-nav>li>a {
     background-color: transparent;
-    font-weight: 500;
+    font-weight: 600;
     font-size: 14px;
     color: #0a0a0a;
     padding: 15px 12px;
@@ -263,7 +263,7 @@ textarea {
 .dropdown-menu>.active>a, 
 .dropdown-menu>.active>a:focus, 
 .dropdown-menu>.active>a:hover {
-    background-color: transparent;
+    background-color: transparent;    
     color: #00a651;
 }
 
@@ -334,12 +334,13 @@ textarea {
     padding-left: 10px;
 }
 
+
 .sign-in li:last-child:before {
     position: absolute;
     left: 0;
     top: 50%;
-    background-image: url(https://demo.themeregion.com/trade/images/1.png);
-    background-repeat: no-repeat;
+    /*background-image: url(https://demo.themeregion.com/trade/images/1.png);*/
+    /*background-repeat: no-repeat;*/
     width: 7px;
     height: 14px;
     content:"";
