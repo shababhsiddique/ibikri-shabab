@@ -29,12 +29,12 @@
                             <input id="password" type="password" placeholder="{{ __('Password') }}" class="form-control" name="password" required>
                         </div>
                         <div class="user-option">
-                            <div class="checkbox pull-left">
-                                <label for="logged" class="{{old('remember') ? 'checked' : ''}}">
+                            <div class="pull-left">
+                                <label>
                                     <input checked="{{old('remember') ? 'true' : 'false'}}" type="checkbox" name="remember" id="logged"/> {{ __('Remember Me') }} 
                                 </label>
                             </div>
-                            <div class="pull-right forgot-password">
+                            <div class="pull-right">
                                 <a href="{{ route('password.request') }}">{{ __('Forgot Your Password?') }}</a>
                             </div>
                         </div><!-- forgot-password -->

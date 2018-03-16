@@ -16,11 +16,11 @@
     </div><!-- user-profile -->
 
     <ul class="user-menu">        
-        <li class="active"><a href="{{url('/dashboard')}}">@lang('site.myads')</a></li>        
+        <li class="{{ Request::is('dashboard') ? 'active' : '' }}"><a href="{{url('/dashboard')}}">@lang('site.myads')</a></li>        
+        <li class="{{ Request::is('account') ? 'active' : '' }}"><a href="{{url('/account')}}">@lang('site.accountsettings')</a></li>
         <li><a href="favourite-ads.html">@lang('site.favouriteads')</a></li>
         <li><a href="archived-ads.html">@lang('site.archivedads')</a></li>
-        <li><a href="pending-ads.html">@lang('site.pendingapproval')</a></li>
-        <li><a href="{{url('/account')}}">@lang('site.accountsettings')</a></li>
+        <li><a href="pending-ads.html">@lang('site.pendingapproval')</a></li>        
     </ul>
 
 </div><!-- ad-profile -->

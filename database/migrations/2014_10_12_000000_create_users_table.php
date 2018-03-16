@@ -24,8 +24,8 @@ class CreateUsersTable extends Migration
             /* Can Give Later */
             $table->text('info')->nullable();
             $table->string('mobile')->nullable();
-            $table->integer('city')->nullable();
-            $table->string('address')->nullable();            
+            $table->integer('city_id')->nullable();
+            $table->integer('user_type')->default(0);
             
             $table->tinyInteger('comment_enabled')->default(0); 
             $table->tinyInteger('newsletter_enabled')->default(1); 

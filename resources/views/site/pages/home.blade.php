@@ -38,7 +38,10 @@
 
                             <!-- language-dropdown -->
                             <div class="dropdown category-dropdown language-dropdown ">						
-                                <a data-toggle="modal" data-target="#popupSelectModal" data-href="{{url('ajax/locations')}}" href="#"><span class="change-text"><i class="fa fa-map-marker"></i> United Kingdom</span> <i class="fa fa-angle-down"></i></a>
+                                <a data-toggle="modal" data-target="#popupSelectModal" data-href="{{url('ajax/locations')}}" href="#">
+                                    <span class="change-text" id="location-selector-text"><i class="fa fa-map-marker"></i> United Kingdom</span> <i class="fa fa-angle-down"></i>
+                                    {!! Form::hidden('city', null, ['id' => 'location-selector-value']) !!}
+                                </a>
                             </div><!-- language-dropdown -->
 
                             <input type="text" class="form-control" placeholder="Type Your key word">

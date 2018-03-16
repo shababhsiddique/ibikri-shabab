@@ -7,12 +7,12 @@
             <div class="single-cta">                                
                 <h4>{{ Auth::user()->name }}</h4>
                 <p>Description</p>
-                <h4>@lang('site.email')</h4>
+                <h4>@lang('site.account.email')</h4>
                 <p>{{ Auth::user()->email }}</p>
-                <h4>@lang('site.phone')</h4>
-                <p>Your Address</p>
-                <h4>@lang('site.address')</h4>
-                <p>Your Address</p>
+                <h4>@lang('site.account.mobile')</h4>
+                <p>{{ Auth::user()->mobile }}</p>
+                <h4>@lang('site.account.info')</h4>
+                <p>{{ Auth::user()->info }}</p>
             </div>
             <!-- single-cta -->
 

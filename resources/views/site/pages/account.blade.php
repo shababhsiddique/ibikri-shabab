@@ -23,42 +23,81 @@
                 <!--profile page--> 
 
                 <div class="col-sm-9">
-                    {!! Form::model($userData,['url' => 'account/update','method' => 'post']) !!}
-                    <div class="user-pro-section">
+                    {!! Form::model($userData,['url' => 'account/update', 'class'=> 'form-horizontal', 'method' => 'post']) !!}
+                    <div >
                         <!-- profile-details -->
                         <div class="profile-details section">
                             <h2>@lang('site.account.details')</h2>
                             <!-- form -->
                             <div class="form-group">
-                                <label>@lang('site.account.name')</label>
-                                {!! Form::text('name', null, ['class' => 'form-control']) !!}
+                                <label class="control-label col-sm-3">@lang('site.account.name')</label>
+                                <div class="col-sm-9">
+                                    {!! Form::text('name', null, ['class' => 'form-control']) !!}
+                                    @if ($errors->has('name'))
+                                    <span class="text-danger">
+                                        <strong>{{ $errors->first('name') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>                                
                             </div>
 
                             <div class="form-group">
-                                <label>@lang('site.account.email')</label>
-                                {!! Form::email('email', null, ['class' => 'form-control', 'disabled'=> 'true']) !!}
+                                <label class="control-label col-sm-3">@lang('site.account.email')</label>
+                                <div class="col-sm-9">
+                                    {!! Form::email('email', null, ['class' => 'form-control', 'disabled'=> 'true']) !!}    
+                                </div>                                
                             </div>
 
                             <div class="form-group">
-                                <label for="name-three">@lang('site.account.mobile')</label>
-                                {!! Form::text('mobile', null, ['class' => 'form-control']) !!}
+                                <label class="control-label col-sm-3">@lang('site.account.mobile')</label>
+                                <div class="col-sm-9">
+                                    {!! Form::text('mobile', null, ['class' => 'form-control']) !!}
+                                    @if ($errors->has('mobile'))
+                                    <span class="text-danger">
+                                        <strong>{{ $errors->first('mobile') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>                                
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="control-label col-sm-3">@lang('site.account.info')</label>
+                                <div class="col-sm-9">
+                                    {!! Form::textarea('info', null, ['class' => 'form-control']) !!}
+                                    @if ($errors->has('info'))
+                                    <span class="text-danger">
+                                        <strong>{{ $errors->first('info') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>                                
                             </div>
 
                             <div class="form-group">
-                                <label>@lang('site.account.yourcity')</label>
-                                <a class="btn btn-select" data-toggle="modal" data-target="#popupSelectModal" data-href="{{url('ajax/locations')}}" href="#">
-                                    <span class="change-text">United Kingdom</span>
-                                    <i class="fa fa-angle-down pull-right"></i>
-                                </a>                                                              
-                            </div>	
-                            @include('site.common.categorymodal')
+                                <label class="control-label col-sm-3">@lang('site.account.yourcity')</label>
+                                <div class="col-sm-9">
+                                    <a class="btn btn-select" data-toggle="modal" data-target="#popupSelectModal" data-href="{{url('ajax/locations')}}" href="#">
+                                        <span id='location-selector-text' class="change-text">{{$userData->city_id}}</span> 
+                                        <i class="fa fa-angle-down pull-right"></i>
+                                    </a>                                       
+                                    {!! Form::hidden('city_id', $userData->city_id, ['id' => 'location-selector-value']) !!}
+                                    @include('site.common.categorymodal')
+                                </div>
+                            </div>	                            
+
 
                             <div class="form-group">
-                                <label>@lang('site.account.yourtype')</label>
-                                <select class="form-control">
-                                    <option value="#">@lang('site.account.dealer')</option>
-                                    <option value="#">@lang('site.account.individual')</option>
-                                </select>
+                                <label class="control-label col-sm-3">@lang('site.account.yourtype')</label>
+                                <div class="col-sm-9">
+                                    <?php
+                                    $selectData = [];
+                                    $selectData[0] = __('site.account.individual');
+                                    $selectData[1] = __('site.account.dealer');
+                                    ?>
+                                    {{ Form::select('user_type', $selectData, $userData->user_type, ['class' => 'form-control']) }}
+
+                                   
+                                </div>
+
                             </div>					
                         </div><!-- profile-details -->
 
@@ -67,35 +106,60 @@
                             <h2>@lang('site.account.changepass')</h2>
                             <!-- form -->
                             <div class="form-group">
-                                <label>@lang('site.account.oldpass')</label>
-                                <input type="password" name="password" class="form-control" >
+                                <label class="control-label col-sm-3">@lang('site.account.oldpass')</label>
+                                <div class="col-sm-9">
+                                    <input type="password" name="password" class="form-control">
+                                    @if ($errors->has('password_incorrect'))
+                                    <span class="text-danger">
+                                        <strong>The Password is Incorrect</strong>
+                                    </span>
+                                    @endif
+                                </div>                                
                             </div>
 
                             <div class="form-group">
-                                <label>@lang('site.account.newpass')</label>
-                                <input type="password" name="password_new" class="form-control">	
+                                <label class="control-label col-sm-3">@lang('site.account.newpass')</label>
+                                <div class="col-sm-9">
+                                    <input type="password" name="password_new" class="form-control">
+                                    @if ($errors->has('password_new'))
+                                    <span class="text-danger">
+                                        <strong>{{ $errors->first('password_new') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>                                
                             </div>
 
                             <div class="form-group">
-                                <label>@lang('site.account.confirmpass')</label>
-                                <input type="password" name="password_new_confirmation" class="form-control">
-                            </div>															
-                        </div><!-- change-password -->
+                                <label class="control-label col-sm-3">@lang('site.account.confirmpass')</label>
+                                <div class="col-sm-9">
+                                    <input type="password" name="password_new_confirmation" class="form-control">                                    
+                                </div>                                
+                            </div>
+
+
+                        </div>
+                        <!-- change-password -->
 
                         <!-- preferences-settings -->
                         <div class="preferences-settings section">
                             <h2>@lang('site.account.preferences')</h2>
-                            <!-- checkbox -->
-                            <div class="form-group">
-                                <label class="container">One
-                                    <input type="checkbox" checked="checked">
-                                    <span class="checkmark"></span>
-                                </label>
-
+                            <!-- checkbox -->   
+                            <div class="form-group">                                
+                                <div class="col-sm-9">
+                                    <label>
+                                        <input type="checkbox" name="comment_enabled" <?php echo ($userData->comment_enabled ? 'checked' : '') ?>>@lang('site.account.commentsenabled')
+                                    </label>
+                                </div>                                
                             </div>
-                            <!--<input type="checkbox" name="comment_enabled" <?php echo ($userData->comment_enabled ? 'checked' : '') ?> > @lang('site.account.commentsenabled')--> 
-                            <!--<br/>-->
-                            <!--<input type="checkbox" name="newsletter_enabled" <?php echo ($userData->newsletter_enabled ? 'checked' : '') ?>> @lang('site.account.newsletterenabled').-->
+                            <div class="form-group">                                
+                                <div class="col-sm-9">
+                                    <label>
+                                        <input type="checkbox" name="newsletter_enabled" checked="<?php echo ($userData->newsletter_enabled ? 'checked' : '') ?>">@lang('site.account.newsletterenabled')
+                                    </label>
+                                </div>                                
+                            </div>
+
+
 
                         </div><!-- preferences-settings -->
 

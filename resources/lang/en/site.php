@@ -42,6 +42,7 @@ return [
     'account.name' => 'Full Name',
     'account.email' => 'Email ID',
     'account.mobile' => 'Mobile Number',
+    'account.info' => 'Additional Info',
     'account.yourcity' => 'Your City',
     'account.yourtype' => 'You are a',
     'account.dealer' => 'Dealer',

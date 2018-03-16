@@ -38,10 +38,10 @@
                             <input id="password-confirm" type="password" placeholder="{{ __('Confirm Password') }}" class="form-control" name="password_confirmation" >
                         </div>
                         
-                        
-                        <div class="checkbox">
-                            <label class="pull-left checked" for="signing"><input type="checkbox" name="signing" id="signing"> By signing up for an account you agree to our Terms and Conditions </label>
-                        </div><!-- checkbox -->	
+                        <div class="form-group">
+                            <label><input type="checkbox" name="signing" id="signing"> By signing up for an account you agree to our Terms and Conditions </label>
+                        </div>
+                       
                         <button type="submit" href="#" class="btn">{{ __('Register') }}</button>	
                     </form>
                     <!-- checkbox -->

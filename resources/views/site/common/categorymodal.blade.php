@@ -19,5 +19,6 @@
         $.get(source, function (data) {
             modal.find('#modal-popup-body').html(data);
         });
-    });
+    });   
+   
 </script>

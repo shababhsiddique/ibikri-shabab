@@ -87,23 +87,39 @@ class HomeController extends Controller {
         }
 
         /* Old Password Entered and matches current */
-        if ($request->filled('password') && (Hash::check($request->password, $userData->password))) {
-            $request->validate([
-                'password_new' => 'required|string|min:6|confirmed',
-            ]);
-            $userData->password = Hash::make($request->password_new);
+        if ($request->filled('password')) {
+            if (Hash::check($request->password, $userData->password)) {
+                $request->validate([
+                    'password_new' => 'required|string|min:6|confirmed',
+                ]);
+                $userData->password = Hash::make($request->password_new);
+            }else{
+                $request->validate([
+                    'password_incorrect' => 'required',
+                ]);
+            }
         }
 
-        echo "<pre>";
-        print_r($request->comment_enabled);
-        echo "</br>";
-        print_r($request->newsletter_enabled);
-        exit();
-        //$userData->comment_enabled = $request->comment_enabled;
-        //$userData->newsletter_enabled = $request->newsletter_enabled;
+        /* Preference Comment */
+        if ($request->has('comment_enabled')) {
+            $userData->comment_enabled = 1;
+        } else {
+            $userData->comment_enabled = 0;
+        }
+
+        /* Preference Newsletter */
+        if ($request->has('newsletter_enabled')) {
+            $userData->newsletter_enabled = 1;
+        } else {
+            $userData->newsletter_enabled = 0;
+        }
+
+        $userData->info = $request->info;
+        $userData->city_id = $request->city_id;
+        $userData->user_type = $request->user_type;
 
         $userData->save();
-        
+
         //Message for Notification Builder
         Session::put('message', array(
             'title' => 'Updated',
