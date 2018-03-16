@@ -31,7 +31,9 @@ If you are having trouble getting this project to run. Follow installation instr
 4) Create and edit .env file (use .env.example as base)
    for windows users use powershell to 
 
-        cp .env.example .env to create a copy
+        cp .env.example .env
+
+   to create a copy
 
 5) Generate Key
 

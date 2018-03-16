@@ -23,6 +23,10 @@ Route::get('/ajax/locations','SiteController@ajaxLocationModal');
 
 
 
-Auth::routes();
 
+Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/dashboard', 'HomeController@dashboard');
+Route::get('/account', 'HomeController@account');
+Route::post('/account/update', 'HomeController@accountUpdate');
+

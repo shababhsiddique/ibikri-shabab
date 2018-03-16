@@ -1,7 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
-    <!-- Mirrored from demo.themeregion.com/trade/index-three.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 09 Mar 2018 14:06:12 GMT -->
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -41,10 +39,15 @@
         <script src="{{asset('site-assets/js/modernizr.min.js')}}"></script>
         <script src="{{asset('site-assets/js/bootstrap.min.js')}}"></script>
 
+        <!-- animate css -->
+        <link rel="stylesheet" href="{{asset('site-assets/css/animate.css')}}">  
 
         <!-- Chosen -->
         <link rel="stylesheet" href="{{asset('site-assets/plugins/chosen/chosen.min.css')}}">  
         <script src="{{asset('site-assets/plugins/chosen/chosen.jquery.min.js')}}"></script>
+
+        <!-- notify -->
+        <script src="{{asset('site-assets/plugins/bootstrap-notify/bootstrap-notify.min.js')}}"></script>
 
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -68,15 +71,15 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="index.html"><img class="img-responsive" src="{{asset('site-assets/logo/35p-with-text.png')}}" alt="Logo"></a>
+                        <a class="navbar-brand" href="{{url('/')}}"><img class="img-responsive" src="{{asset('site-assets/logo/35p-with-text.png')}}" alt="Logo"></a>
                     </div>
                     <!-- /navbar-header -->
 
                     <div class="navbar-left">
                         <div class="collapse navbar-collapse" id="navbar-collapse">
                             <ul class="nav navbar-nav">
-                                <li class="active"><a href="index.html">Home</a></li>
-                                <li><a href="details.html">all ads</a></li>                                
+                                <li class="active"><a href="{{url('/')}}">@lang('site.home')</a></li>
+                                <li><a href="details.html">@lang('site.allads')</a></li>                                
                             </ul>
                         </div>
                     </div>
@@ -106,12 +109,12 @@
                                     {{ Auth::user()->name }} <span class="caret"></span>
                                 </a>
                                 <ul class="dropdown-menu language-change">
-                                    <li>
-                                        <a href="{{ route('logout') }}"
+                                    <li><a href="{{ url('/dashboard') }}"><i class="fa fa-dashboard"></i>{{ __('Dashboard') }}</a></li>
+                                    <li><a href="{{ route('logout') }}"
                                            onclick="event.preventDefault();
-                                               document.getElementById('logout-form').submit();">
-                                            {{ __('Logout') }}
-                                        </a>
+                                               document.getElementById('logout-form').submit();"><i class="fa fa-power-off"></i> {{ __('Logout') }}</a>
+                                    </li>
+                                    <li>                                        
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                             @csrf
                                         </form>
@@ -129,6 +132,11 @@
             </nav><!-- navbar -->
         </header><!-- header -->
 
+
+        <!-- notification -->
+        @yield('notification')
+        <!-- notification -->
+
         <!--site content--> 
         @yield('siteContent')
         <!--site content--> 
@@ -136,8 +144,11 @@
 
         @include('site.common.footer')
 
-        <!--        <script src="http://maps.google.com/maps/api/js?sensor=true"></script>
-                <script src="{{asset('site-assets/js/gmaps.min.js')}}"></script>-->
+        <!--
+        <script src="http://maps.google.com/maps/api/js?sensor=true"></script>
+        <script src="{{asset('site-assets/js/gmaps.min.js')}}"></script>
+        -->
+
         <script src="{{asset('site-assets/js/owl.carousel.min.js')}}"></script>
         <script src="{{asset('site-assets/js/smoothscroll.min.js')}}"></script>
         <script src="{{asset('site-assets/js/scrollup.min.js')}}"></script>
@@ -146,17 +157,10 @@
         <script src="{{asset('site-assets/js/custom.js')}}"></script>
 
         <script type="text/javascript">
-
-
-                                               $("document").ready(function ()
-                                               {    
-                                                   $(".chosen-select").chosen();
-                                               });                                               
-
-
-
+            $("document").ready(function ()
+            {
+                $(".chosen-select").chosen();
+            });
         </script>
     </body>
-
-    <!-- Mirrored from demo.themeregion.com/trade/index-three.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 09 Mar 2018 14:06:12 GMT -->
 </html>
