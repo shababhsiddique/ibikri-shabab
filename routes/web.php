@@ -29,10 +29,22 @@ Route::group(
     Auth::routes();
     Route::get('/home', 'HomeController@index')->name('home');
     Route::get('/dashboard', 'HomeController@dashboard');
-    Route::get('/account', 'HomeController@account');
-    Route::post('/account/update', 'HomeController@accountUpdate');
+    Route::get('/account', 'HomeController@account');    
 });
 
+/* Form Submits */
+Route::post('/account/update', 'HomeController@accountUpdate');
+
+
+/* Admin Panel routes */
+Route::get('/administrator', 'AdminLoginController@index');
+Route::post('/admin/authenticate', 'AdminLoginController@verifyUser');
+Route::get('/admin/logout', 'AdminController@logout');
+Route::get('/admin', 'AdminController@index');
+
+
+Route::get('/admin/sample/table', 'AdminController@table');
+Route::get('/admin/sample/form', 'AdminController@form');
 
 
 

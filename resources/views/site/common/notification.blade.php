@@ -7,9 +7,9 @@ if (isset($msg)) {
     ?>
     <script type="text/javascript">
         $(document).ready(function () {
-            var title = "{{ $msg['title'] }}";
-            var msg = "{{ $msg['body'] }}";
-            var type = "{{ $msg['type'] }}";
+            var title = "{{ $msg['title']?? '' }}";
+            var msg = "{{ $msg['body']?? '' }}";
+            var type = "{{ $msg['type']?? '' }}";
             makeNotification(type,title,msg);
             console.log("woo hoo");
         });
