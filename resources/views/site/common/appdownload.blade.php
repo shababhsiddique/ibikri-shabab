@@ -1,4 +1,3 @@
-
 <!-- download -->
 <section id="download" class="clearfix parallax-section">
     <div class="container">

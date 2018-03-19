@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class SiteController extends Controller
-{
+class SiteController extends Controller {
+
     //Layout holder
     private $layout;
 
@@ -13,7 +13,7 @@ class SiteController extends Controller
     public function __construct() {
 //        $this->middleware(CheckAdmin::class);
         $this->layout['siteContent'] = view('site.pages.home');
-//        $this->layout['notification'] = view('common.notification');
+        $this->layout['notification'] = view('site.common.notification');
     }
 
     /**
@@ -28,12 +28,12 @@ class SiteController extends Controller
         //return view
         return view('site.master', $this->layout);
     }
-    
-    public function ajaxCategoryModal(){
+
+    public function ajaxCategoryModal() {
         return view('site.ajax.listcategories');
     }
-    
-    public function ajaxLocationModal(){
+
+    public function ajaxLocationModal() {
         return view('site.ajax.listlocations');
     }
 
@@ -42,9 +42,13 @@ class SiteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
+    public function allAds() {
+        
+        //Load Component
+        $this->layout['siteContent'] = view('site.pages.listads');
+
+        //return view
+        return view('site.master', $this->layout);
     }
 
     /**
@@ -53,8 +57,7 @@ class SiteController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         //
     }
 
@@ -64,8 +67,7 @@ class SiteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+    public function show($id) {
         //
     }
 
@@ -75,8 +77,7 @@ class SiteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
+    public function edit($id) {
         //
     }
 
@@ -87,8 +88,7 @@ class SiteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request, $id) {
         //
     }
 
@@ -98,8 +98,8 @@ class SiteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
+    public function destroy($id) {
         //
     }
+
 }

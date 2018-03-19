@@ -25,8 +25,8 @@
         }
         #division-border-new{
             fill:none;
-            stroke:#000000;
-            stroke-width:7px;
+            stroke: #00000088;
+            stroke-width: 8px;
             stroke-linecap:butt;
             stroke-linejoin:miter;
             stroke-opacity:1;
