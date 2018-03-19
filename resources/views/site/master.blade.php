@@ -7,7 +7,7 @@
         <meta name="author" content="Theme Region">
         <meta name="description" content="">
 
-        <title>Trade | World's Largest Classifieds Portal</title>
+        <title>iBikri | Bangladesh's Best Classifieds Portal</title>
 
         <!-- CSS -->
         <link rel="stylesheet" href="{{asset('site-assets/css/bootstrap.min.css')}}" >
