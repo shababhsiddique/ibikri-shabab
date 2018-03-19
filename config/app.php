@@ -79,6 +79,7 @@ return [
     */
 
     'locale' => 'en',
+    //'locales' => ['en', 'bn'],
 
     /*
     |--------------------------------------------------------------------------
@@ -149,6 +150,7 @@ return [
         
         /* Manually Added */
         Collective\Html\HtmlServiceProvider::class,
+        Mcamara\LaravelLocalization\LaravelLocalizationServiceProvider::class,
         /* Manually Added */
 
         /*
@@ -216,6 +218,7 @@ return [
         /* Manually Added */
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
+        'LaravelLocalization' => Mcamara\LaravelLocalization\Facades\LaravelLocalization::class,
         /* Manually Added */
 
     ],

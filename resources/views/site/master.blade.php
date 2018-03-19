@@ -78,8 +78,8 @@
                     <div class="navbar-left">
                         <div class="collapse navbar-collapse" id="navbar-collapse">
                             <ul class="nav navbar-nav">
-                                <li class="active"><a href="{{url('/')}}">@lang('site.home')</a></li>
-                                <li><a href="details.html">@lang('site.allads')</a></li>                                
+                                <li class="active"><a href="{{url('/')}}">@lang('topmenu.home')</a></li>
+                                <li><a href="details.html">@lang('topmenu.allads')</a></li>                                
                             </ul>
                         </div>
                     </div>
@@ -88,12 +88,22 @@
                     <div class="nav-right">
                         <!-- language-dropdown -->
                         <div class="dropdown language-dropdown">
-                            <i class="fa fa-globe"></i> 						
-                            <a data-toggle="dropdown" href="#"><span class="change-text">English</span> <i class="fa fa-angle-down"></i></a>
+                            					
+                            <a data-toggle="dropdown" href="#"><span class="change-text">@lang('topmenu.locale')</span> <i class="fa fa-angle-down"></i></a>
+
                             <ul class="dropdown-menu language-change">
-                                <li><a href="#">English</a></li>
-                                <li><a href="#">বাংলা</a></li>
-                            </ul>								
+                                @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+                                <li>
+                                    <a rel="alternate" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
+                                        {{ $properties['native'] }}
+                                    </a>
+                                </li>
+                                @endforeach
+                            </ul>
+                            <!--                            <ul class="dropdown-menu language-change">
+                                                            <li><a href="#">English</a></li>
+                                                            <li><a href="#">বাংলা</a></li>
+                                                        </ul>								-->
                         </div><!-- language-dropdown -->
 
                         <!-- sign-in -->					
@@ -125,7 +135,7 @@
                             @endguest                            
                         </ul><!-- sign-in -->					
 
-                        <a href="ad-post.html" class="btn">Post Your Ad</a>
+                        <a href="ad-post.html" class="btn">@lang('index.ad_button')</a>
                     </div>
                     <!-- nav-right -->
                 </div><!-- container -->
@@ -157,10 +167,10 @@
         <script src="{{asset('site-assets/js/custom.js')}}"></script>
 
         <script type="text/javascript">
-            $("document").ready(function ()
-            {
-                $(".chosen-select").chosen();
-            });
+                                               $("document").ready(function ()
+                                               {
+                                               $(".chosen-select").chosen();
+                                               });
         </script>
     </body>
 </html>

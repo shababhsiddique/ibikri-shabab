@@ -8,12 +8,12 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-7">
-                    <h1>স্বাগতম </h1>
+                    <h1>@lang('index.welcome')</h1>
                     <h2>iBikri.com</h2>
-                    <p>বাংলাদেশ -এ ব্যবহৃত গাড়ি থেকে শুরু করে মোবাইল ফোন ও কম্পিউটারসহ সবকিছুই কেনাবেচা করুন বা প্রপার্টি, চাকুরি এবং আরও অনেক কিছু খুঁজে নিন - বিনামূল্যে!</p>
+                    <p>@lang('index.subtitle')</p>
                     <br/><br/><br/>
                     <div class="btn-group">
-                        <a href="#" class="btn btn-primary">আপনার বিজ্ঞাপন দিন</a>
+                        <a href="#" class="btn btn-primary">@lang('index.ad_button')</a>
                     </div>
                 </div>
                 <div class="col-sm-5 pull-right">                            
