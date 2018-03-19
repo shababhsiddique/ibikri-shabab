@@ -70,14 +70,11 @@ class HomeController extends Controller {
         $authUser = \Auth::user();
         $userData = User::find($authUser->id);
 
-        //Conditional Change
-        if ($request->filled('name')) {
-            $request->validate([
-                'name' => 'required|string|max:200'
-            ]);
-            $userData->name = $request->name;
-        }
+        $request->validate([
+            'name' => 'required|string|max:200'
+        ]);
 
+        
         /* Mobile Provided */
         if ($request->filled('mobile')) {
             $request->validate([
@@ -93,7 +90,7 @@ class HomeController extends Controller {
                     'password_new' => 'required|string|min:6|confirmed',
                 ]);
                 $userData->password = Hash::make($request->password_new);
-            }else{
+            } else {
                 $request->validate([
                     'password_incorrect' => 'required',
                 ]);
@@ -114,6 +111,7 @@ class HomeController extends Controller {
             $userData->newsletter_enabled = 0;
         }
 
+        $userData->name = $request->name;
         $userData->info = $request->info;
         $userData->city_id = $request->city_id;
         $userData->user_type = $request->user_type;
