@@ -1,8 +1,8 @@
 <div class="navbar-left">
     <div class="collapse navbar-collapse" id="navbar-collapse">
         <ul class="nav navbar-nav">
-            <li class="{{ Request::is('/en/') ? 'active' : '' }}"><a href="{{url('/')}}">@lang('topmenu.home')</a></li>
-            <li class="{{ ( Request::is('/all-ads*') ) ? 'active' : '' }}"><a href="{{url('/all-ads')}}">@lang('topmenu.allads')</a></li>                                
+            <li class="{{ Request::is('/en/') ? 'active' : '' }}"><a href="{{url('/')}}">@lang('Home')</a></li>
+            <li class="{{ ( Request::is('/all-ads*') ) ? 'active' : '' }}"><a href="{{url('/all-ads')}}">@lang('All Ads')</a></li>
         </ul>
     </div>
 </div>
@@ -12,7 +12,7 @@
     <!-- language-dropdown -->
     <div class="dropdown language-dropdown">
 
-        <a data-toggle="dropdown" href="#"><span class="change-text">@lang('topmenu.locale')</span> <i class="fa fa-angle-down"></i></a>
+        <a data-toggle="dropdown" href="#"><span class="change-text">@lang('English')</span> <i class="fa fa-angle-down"></i></a>
 
         <ul class="dropdown-menu language-change">
             @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
@@ -54,6 +54,6 @@
         @endguest                            
     </ul><!-- sign-in -->					
 
-    <a href="ad-post.html" class="btn">@lang('index.ad_button')</a>
+    <a href="ad-post.html" class="btn">@lang('Place Your Ad')</a>
 </div>
 <!-- nav-right -->

@@ -8,10 +8,10 @@
         <div class="breadcrumb-section">
             <!-- breadcrumb -->
             <ol class="breadcrumb">
-                <li><a href="{{url('/dashboard')}}">@lang('site.home')</a></li>
-                <li>@lang('site.account')</li>
+                <li><a href="{{url('/dashboard')}}">@lang('Home')</a></li>
+                <li>@lang('Account')</li>
             </ol><!-- breadcrumb -->						
-            <h2 class="title">My Ads</h2>
+            <h2 class="title">@lang("My Ads")</h2>
         </div><!-- banner -->
 
         @include('site.pages.dashboard.menu')			
@@ -27,10 +27,10 @@
                     <div >
                         <!-- profile-details -->
                         <div class="profile-details section">
-                            <h2>@lang('site.account.details')</h2>
+                            <h2>@lang('Account Details')</h2>
                             <!-- form -->
                             <div class="form-group">
-                                <label class="control-label col-sm-3">@lang('site.account.name')</label>
+                                <label class="control-label col-sm-3">@lang('Full Name')</label>
                                 <div class="col-sm-9">
                                     {!! Form::text('name', null, ['class' => 'form-control']) !!}
                                     @if ($errors->has('name'))
@@ -42,14 +42,14 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="control-label col-sm-3">@lang('site.account.email')</label>
+                                <label class="control-label col-sm-3">@lang('Email Address')</label>
                                 <div class="col-sm-9">
                                     {!! Form::email('email', null, ['class' => 'form-control', 'disabled'=> 'true']) !!}    
                                 </div>                                
                             </div>
 
                             <div class="form-group">
-                                <label class="control-label col-sm-3">@lang('site.account.mobile')</label>
+                                <label class="control-label col-sm-3">@lang('Mobile Number')</label>
                                 <div class="col-sm-9">
                                     {!! Form::text('mobile', null, ['class' => 'form-control']) !!}
                                     @if ($errors->has('mobile'))
@@ -61,7 +61,7 @@
                             </div>
                             
                             <div class="form-group">
-                                <label class="control-label col-sm-3">@lang('site.account.info')</label>
+                                <label class="control-label col-sm-3">@lang('About')</label>
                                 <div class="col-sm-9">
                                     {!! Form::textarea('info', null, ['class' => 'form-control']) !!}
                                     @if ($errors->has('info'))
@@ -73,7 +73,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="control-label col-sm-3">@lang('site.account.yourcity')</label>
+                                <label class="control-label col-sm-3">@lang('Your Location')</label>
                                 <div class="col-sm-9">
                                     <a class="btn btn-select" data-toggle="modal" data-target="#popupSelectModal" data-href="{{url('ajax/locations')}}" href="#">
                                         <span id='location-selector-text' class="change-text">{{$userData->city_id}}</span> 
@@ -86,12 +86,12 @@
 
 
                             <div class="form-group">
-                                <label class="control-label col-sm-3">@lang('site.account.yourtype')</label>
+                                <label class="control-label col-sm-3">@lang('Account Type')</label>
                                 <div class="col-sm-9">
                                     <?php
                                     $selectData = [];
-                                    $selectData[0] = __('site.account.individual');
-                                    $selectData[1] = __('site.account.dealer');
+                                    $selectData[0] = __('Individual');
+                                    $selectData[1] = __('Dealer');
                                     ?>
                                     {{ Form::select('user_type', $selectData, $userData->user_type, ['class' => 'form-control']) }}
 
@@ -103,10 +103,10 @@
 
                         <!-- change-password -->
                         <div class="change-password section">
-                            <h2>@lang('site.account.changepass')</h2>
+                            <h2>@lang('Change Password')</h2>
                             <!-- form -->
                             <div class="form-group">
-                                <label class="control-label col-sm-3">@lang('site.account.oldpass')</label>
+                                <label class="control-label col-sm-3">@lang('Old Password')</label>
                                 <div class="col-sm-9">
                                     <input type="password" name="password" class="form-control">
                                     @if ($errors->has('password_incorrect'))
@@ -118,7 +118,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="control-label col-sm-3">@lang('site.account.newpass')</label>
+                                <label class="control-label col-sm-3">@lang('New Password')</label>
                                 <div class="col-sm-9">
                                     <input type="password" name="password_new" class="form-control">
                                     @if ($errors->has('password_new'))
@@ -130,7 +130,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="control-label col-sm-3">@lang('site.account.confirmpass')</label>
+                                <label class="control-label col-sm-3">@lang('Repeat Password')</label>
                                 <div class="col-sm-9">
                                     <input type="password" name="password_new_confirmation" class="form-control">                                    
                                 </div>                                
@@ -142,19 +142,19 @@
 
                         <!-- preferences-settings -->
                         <div class="preferences-settings section">
-                            <h2>@lang('site.account.preferences')</h2>
+                            <h2>@lang('Preferences')</h2>
                             <!-- checkbox -->   
                             <div class="form-group">                                
                                 <div class="col-sm-9">
                                     <label>
-                                        <input type="checkbox" name="comment_enabled" <?php echo ($userData->comment_enabled ? 'checked' : '') ?>>@lang('site.account.commentsenabled')
+                                        <input type="checkbox" name="comment_enabled" <?php echo ($userData->comment_enabled ? 'checked' : '') ?>>@lang('Allow comments on my posts')
                                     </label>
                                 </div>                                
                             </div>
                             <div class="form-group">                                
                                 <div class="col-sm-9">
                                     <label>
-                                        <input type="checkbox" name="newsletter_enabled" checked="<?php echo ($userData->newsletter_enabled ? 'checked' : '') ?>">@lang('site.account.newsletterenabled')
+                                        <input type="checkbox" name="newsletter_enabled" checked="<?php echo ($userData->newsletter_enabled ? 'checked' : '') ?>">@lang('Send me newsletter from iBikri')
                                     </label>
                                 </div>                                
                             </div>
@@ -163,8 +163,8 @@
 
                         </div><!-- preferences-settings -->
 
-                        <button type="submit" class="btn btn-success">@lang('site.account.update')</button>
-                        <a href="#" class="btn btn-default">@lang('site.account.cancel')</a>
+                        <button type="submit" class="btn btn-success">@lang('Update')</button>
+                        <a href="#" class="btn btn-default">@lang('Cancel')</a>
                     </div><!-- user-pro-edit -->
                     {!! Form::close() !!}
                 </div>

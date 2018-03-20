@@ -10,7 +10,7 @@
         <div class="breadcrumb-section">
             <!-- breadcrumb -->
             <ol class="breadcrumb">
-                <li><a href="index.html">@lang('site.home')</a></li>
+                <li><a href="index.html">@lang('Home')</a></li>
                 <li>Electronics & Gedget</li>
             </ol><!-- breadcrumb -->						
             <h2 class="title">Mobile Phones</h2>

@@ -5106,3 +5106,21 @@ h3.section-heading{
     color: #666;
     font-size: 24px;
 }
+
+.box-header h3{
+    margin-top: 5px;
+    margin-left: 0;
+    margin-bottom: 0px;
+}
+
+
+.box-header h4{
+    margin-top: 12px;
+    margin-left: 0;
+    margin-bottom: 0px;
+}
+
+.list-group-item.active a{
+    font-weight: bold;
+    color: white;
+}

@@ -7,10 +7,10 @@
         <div class="breadcrumb-section">
             <!-- breadcrumb -->
             <ol class="breadcrumb">
-                <li><a href="{{url('/dashboard')}}">@lang('site.home')</a></li>
-                <li>@lang('site.dashboard')</li>
+                <li><a href="{{url('/dashboard')}}">@lang('Home')</a></li>
+                <li>@lang('Dashboard')</li>
             </ol><!-- breadcrumb -->						
-            <h2 class="title">@lang('site.myads')</h2>
+            <h2 class="title">@lang('My Ads')</h2>
         </div><!-- banner -->
 
         @include('site.pages.dashboard.menu')			
@@ -19,7 +19,7 @@
             <div class="row">
                 <div class="col-sm-9">
                     <div class=" section">
-                        <h2>@lang('site.myads')</h2>
+                        <h2>@lang('My Ads')</h2>
                         <!-- custom-list-item -->
                         <div class="custom-list-item row">
                             <!-- item-image -->

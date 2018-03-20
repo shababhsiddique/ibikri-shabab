@@ -42,6 +42,13 @@ Route::post('/admin/authenticate', 'AdminLoginController@verifyUser');
 Route::get('/admin/logout', 'AdminController@logout');
 Route::get('/admin', 'AdminController@index');
 
+/* Category Management */
+Route::get('/admin/categories', 'AdminController@categoryView');
+
+Route::get('/admin/category/create', 'AdminController@categoryCreate');
+Route::get('/admin/category/edit/{category_id}', 'AdminController@categoryEdit');
+Route::post('/admin/category/save-category', 'AdminController@categorySaveCategory');
+
 
 Route::get('/admin/sample/table', 'AdminController@table');
 Route::get('/admin/sample/form', 'AdminController@form');

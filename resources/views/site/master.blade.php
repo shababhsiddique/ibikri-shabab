@@ -7,7 +7,7 @@
         <meta name="author" content="Theme Region">
         <meta name="description" content="">
 
-        <title>iBikri | Bangladesh's Best Classifieds Portal</title>
+        <title>@lang('iBikri') | @lang('Bangladeshs Best Classifieds Portal')</title>
 
         <!-- CSS -->
         <link rel="stylesheet" href="{{asset('site-assets/css/bootstrap.min.css')}}" >
@@ -66,7 +66,7 @@
                     <!-- navbar-header -->
                     <div class="navbar-header">
                         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
-                            <span class="sr-only">Toggle navigation</span>
+                            <span class="sr-only">@lang('Toggle navigation')</span>
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
@@ -103,12 +103,6 @@
         <script src="{{asset('site-assets/js/price-range.js')}}"></script>  
         <script src="{{asset('site-assets/js/jquery.countdown.js')}}"></script>  
         <script src="{{asset('site-assets/js/custom.js')}}"></script>
-
-        <script type="text/javascript">
-                                               $("document").ready(function ()
-                                               {
-                                               $(".chosen-select").chosen();
-                                               });
-        </script>
+       
     </body>
 </html>

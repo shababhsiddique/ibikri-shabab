@@ -8,12 +8,12 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-7">
-                    <h1>@lang('index.welcome')</h1>
+                    <h1>@lang('Welcome')</h1>
                     <h2>iBikri.com</h2>
-                    <p>@lang('index.subtitle')</p>
+                    <p>@lang('Best market place to find used and unused Vehicles, Phones, Computers, Properties and Many more for Free!')</p>
                     <br/><br/><br/>
                     <div class="btn-group">
-                        <a href="#" class="btn btn-primary">@lang('index.ad_button')</a>
+                        <a href="#" class="btn btn-primary">@lang('Place Your Ad')</a>
                     </div>
                 </div>
                 <div class="col-sm-5 pull-right">                            
