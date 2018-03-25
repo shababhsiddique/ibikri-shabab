@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Redirect;
 use App\Http\Middleware\CheckAdmin;
 use App\Models\Admin;
 use App\Models\Category;
+use App\Models\Subcategory;
+use App\Models\Division;
 
 session_start();
 
@@ -36,6 +38,15 @@ class AdminController extends Controller {
         return view('admin.master', $this->layout);
     }
 
+    
+    /**
+     * Category Management Start
+     */
+    
+    /**
+     * List Category
+     * @return type
+     */
     public function categoryView() {
 
         $categories = Category::orderBy('category_weight', 'ASC')->get();
@@ -48,6 +59,11 @@ class AdminController extends Controller {
         return view('admin.master', $this->layout);
     }
 
+    /**
+     * Edit Category Form
+     * @param type $id
+     * @return type
+     */
     public function categoryEdit($id) {
 
         $oldCategoryData = Category::find($id);
@@ -60,6 +76,10 @@ class AdminController extends Controller {
         return view('admin.master', $this->layout);
     }
 
+    /**
+     * Create Category Form
+     * @return type
+     */
     public function categoryCreate() {
 
         //Load Component
@@ -69,6 +89,11 @@ class AdminController extends Controller {
         return view('admin.master', $this->layout);
     }
 
+    /**
+     * Save Category POST handler
+     * @param Request $request
+     * @return type
+     */
     public function categorySaveCategory(Request $request) {
 
 
@@ -178,6 +203,157 @@ class AdminController extends Controller {
 
         return Redirect::to($redirectUrl);
     }
+
+    
+    
+    /**
+     * Sub Category Edit Form
+     * @param type $subcategory_id
+     * @return type
+     */
+    public function subcategoryEdit($subcategory_id) {
+
+        $oldCategoryData = Subcategory::find($subcategory_id);
+        
+        //Load Component
+        $this->layout['adminContent'] = view('admin.partials.subcategory.form')
+                ->with('oldCategoryData', $oldCategoryData);
+
+        //return view
+        return view('admin.master', $this->layout);
+    }
+
+    /**
+     * Sub Category Create Form
+     * @return type
+     */
+    public function subcategoryCreate() {
+        
+        //Load Component
+        $this->layout['adminContent'] = view('admin.partials.subcategory.form');
+
+        //return view
+        return view('admin.master', $this->layout);
+    }
+
+    /**
+     * Sub Category Save POST handler
+     * @param Request $request
+     * @return type
+     */
+    public function subcategorySave(Request $request) {
+        
+        $redirectUrl = '/admin/subcategory/create';
+
+        if (isset($request->subcategory_id)) {
+
+            $redirectUrl = '/admin/subcategory/edit/' . $request->subcategory_id;
+
+            $subcat = Subcategory::find($request->subcategory_id);
+
+            Session::put('message', array(
+                'title' => 'Sub Category Updated',
+                'body' => "Sub Category Info Updated",
+                'type' => 'info'
+            ));
+            
+            
+            $validatedData = $request->validate([
+                'parent_category_id' => 'required',
+                'subcategory_title_en' => 'required|string',
+                'subcategory_title_bn' => 'required|string'
+            ]);
+            
+        } else {
+
+            
+            $validatedData = $request->validate([
+                'parent_category_id' => 'required',
+                'subcategory_title_en' => 'required|string|unique:subcategories|max:50',
+                'subcategory_title_bn' => 'required|string|unique:subcategories|max:50'
+            ]);       
+
+            
+            $subcat = new Subcategory;
+
+            Session::put('message', array(
+                'title' => 'Sub Category Created',
+                'body' => "Created New Sub Category $request->subcategory_title_en ($request->subcategory_title_bn)",
+                'type' => 'success'
+            ));
+        }
+        
+
+        $subcat->parent_category_id = $request->parent_category_id;
+        $subcat->subcategory_title_en = $request->subcategory_title_en;
+        $subcat->subcategory_title_bn = $request->subcategory_title_bn;
+
+        if ($request->has('subcategory_weight')) {
+            $subcat->subcategory_weight = $request->subcategory_weight;
+        }else{
+            $subcat->subcategory_weight = 0;
+        }
+        $subcat->subcategory_caption = $request->subcategory_caption;
+
+        $subcat->save();
+
+        return Redirect::to($redirectUrl);
+    }
+    /**
+     * Category Management End
+     */
+    
+    
+    /**
+     * Location Management Start
+     */
+    /**
+     * List Locations
+     * @return type
+     */
+    public function locationView() {
+
+        $divisions = Division::orderBy('division_weight', 'ASC')->get();
+
+        //Load Component
+        $this->layout['adminContent'] = view('admin.partials.location.list')
+                ->with('divisions', $divisions);
+
+        //return view
+        return view('admin.master', $this->layout);
+    }
+    
+    /**
+     * Show Create Division FOrm
+     * @return type
+     */
+    public function divisionCreate() {
+
+        //Load Component
+        $this->layout['adminContent'] = view('admin.partials.location.divisionform');
+
+        //return view
+        return view('admin.master', $this->layout);
+    }
+    
+    
+    public function divisionEdit($id) {
+
+        $oldCategoryData = Category::find($id);
+
+        //Load Component
+        $this->layout['adminContent'] = view('admin.partials.category.categorycreate')
+                ->with('oldCategoryData', $oldCategoryData);
+
+        //return view
+        return view('admin.master', $this->layout);
+    }
+    
+    
+    /**
+     * Location Management End
+     */
+
 
     /*
      * Sample page with a table

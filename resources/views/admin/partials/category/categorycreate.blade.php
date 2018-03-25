@@ -113,20 +113,7 @@
         </div>
         <!-- /.box -->    
     </div>    
-    <div class="col-md-3">
-        <div class="box box-primary">
-            <div class="box-header with-border">
-                <h4>Siblings</h4>
-            </div>
-            <div class="list-group box-body">
-                <a class="list-group-item" href="#f">Cras justo odio</a>
-                <a class="list-group-item" href="#f">Cras justo odio</a>
-                <a class="list-group-item" href="#f">Cras justo odio</a>
-                <a class="list-group-item" href="#f">Cras justo odio</a>
-                <a class="list-group-item" href="#f">Cras justo odio</a>
-            </div>
-        </div>        
-    </div>
+    
 </div>
 <!-- /.row -->
 

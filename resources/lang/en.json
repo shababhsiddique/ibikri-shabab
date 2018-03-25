@@ -46,5 +46,9 @@
     "Update": "Update",
     "Cancel": "Cancel",
     "Individual": "Individual",
-    "Dealer": "Dealer"
+    "Dealer": "Dealer",
+    "Categories": "Categories",
+    "Sub Categories": "Sub Categories",
+    "category_title_en": "category_title_en",
+    "subcategory_title_en": "subcategory_title_en"
 }

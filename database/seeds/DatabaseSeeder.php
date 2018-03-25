@@ -10,7 +10,19 @@ class DatabaseSeeder extends Seeder
      * @return void
      */
     public function run()
-    {
-        // $this->call(UsersTableSeeder::class);
+    {       
+        
+        //Create Categories
+        $path = base_path('database/seeds/categories.sql');
+        $this->command->info("Seeding $path");
+        DB::unprepared(file_get_contents($path));
+        $this->command->info('Categories Seeded!');
+        
+        //Create SubCategories
+        $path = base_path('database/seeds/subcategories.sql');
+        $this->command->info("Seeding $path");
+        DB::unprepared(file_get_contents($path));
+        $this->command->info('Sub Categories Seeded!');
+        
     }
 }

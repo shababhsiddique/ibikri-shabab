@@ -42,12 +42,25 @@ Route::post('/admin/authenticate', 'AdminLoginController@verifyUser');
 Route::get('/admin/logout', 'AdminController@logout');
 Route::get('/admin', 'AdminController@index');
 
+
 /* Category Management */
 Route::get('/admin/categories', 'AdminController@categoryView');
 
 Route::get('/admin/category/create', 'AdminController@categoryCreate');
 Route::get('/admin/category/edit/{category_id}', 'AdminController@categoryEdit');
 Route::post('/admin/category/save-category', 'AdminController@categorySaveCategory');
+
+Route::get('/admin/subcategory/create', 'AdminController@subcategoryCreate');
+Route::get('/admin/subcategory/edit/{category_id}', 'AdminController@subcategoryEdit');
+Route::post('/admin/subcategory/save-subcategory', 'AdminController@subcategorySave');
+
+
+/* Location Management */
+Route::get('/admin/locations', 'AdminController@locationView');
+Route::get('/admin/division/create', 'AdminController@divisionCreate');
+Route::get('/admin/division/edit/{category_id}', 'AdminController@divisionEdit');
+Route::post('/admin/division/save-division', 'AdminController@divisionSave');
+
 
 
 Route::get('/admin/sample/table', 'AdminController@table');
