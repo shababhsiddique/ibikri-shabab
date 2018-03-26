@@ -51,15 +51,20 @@ Route::get('/admin/category/edit/{category_id}', 'AdminController@categoryEdit')
 Route::post('/admin/category/save-category', 'AdminController@categorySaveCategory');
 
 Route::get('/admin/subcategory/create', 'AdminController@subcategoryCreate');
-Route::get('/admin/subcategory/edit/{category_id}', 'AdminController@subcategoryEdit');
+Route::get('/admin/subcategory/edit/{subcategory_id}', 'AdminController@subcategoryEdit');
 Route::post('/admin/subcategory/save-subcategory', 'AdminController@subcategorySave');
 
 
 /* Location Management */
 Route::get('/admin/locations', 'AdminController@locationView');
+
 Route::get('/admin/division/create', 'AdminController@divisionCreate');
-Route::get('/admin/division/edit/{category_id}', 'AdminController@divisionEdit');
+Route::get('/admin/division/edit/{division_id}', 'AdminController@divisionEdit');
 Route::post('/admin/division/save-division', 'AdminController@divisionSave');
+
+Route::get('/admin/city/create', 'AdminController@cityCreate');
+Route::get('/admin/city/edit/{city_id}', 'AdminController@cityEdit');
+Route::post('/admin/city/save-city', 'AdminController@citySave');
 
 
 

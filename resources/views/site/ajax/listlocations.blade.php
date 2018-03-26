@@ -1,49 +1,36 @@
 <div class="container-fluid">                            
     <div class="row">
         <div class="col-md-6">
-            <h3>Locations</h3>
+            <h3>@lang('Divisions')</h3>
             <div class="list-group">
-                <a class="list-group-item" data-toggle="tab" href="#category1"><i class="icofont icofont-building-alt"></i> &nbsp;&nbsp;Dhaka<i class="fa fa-chevron-right pull-right"></i></a>
-                <a class="list-group-item" data-toggle="tab" href="#category2"><i class="icofont icofont-hill-side"></i> &nbsp;&nbsp;Chittagong<i class="fa fa-chevron-right pull-right"></i></a>
-                <a class="list-group-item" data-toggle="tab" href="#category3"><i class="icofont icofont-farmer"></i> &nbsp;&nbsp;Rajshahi<i class="fa fa-chevron-right pull-right"></i></a>
-                <a class="list-group-item" data-toggle="tab" href="#category4"><i class="icofont icofont-tea"></i> &nbsp;&nbsp;Sylhet<i class="fa fa-chevron-right pull-right"></i></a>
-                <a class="list-group-item" data-toggle="tab" href="#category5"><i class="icofont icofont-island-alt"></i> &nbsp;&nbsp;Barisal<i class="fa fa-chevron-right pull-right"></i></a>
-                <a class="list-group-item" data-toggle="tab" href="#category6"><i class="icofont icofont-ship-alt"></i> &nbsp;&nbsp;Khulna<i class="fa fa-chevron-right pull-right"></i></a>
-            </div>                                    
+                <?php
+                $column = __('division_title_en');
+                $divisions = DB::table('divisions')->orderBy('division_weight')->get();
+                ?>
+                @foreach($divisions as $aDiv)
+                <a class="list-group-item" data-toggle="tab" href="#division{{$aDiv->division_id}}"><i class="{{$aDiv->division_icon}}"></i> &nbsp;&nbsp;<?php echo $aDiv->$column ?><i class="fa fa-chevron-right pull-right"></i></a>
+                @endforeach
+            </div>                                                 
         </div>
         <div class="col-md-6 tab-content location-stage2">
-            <h3>Sub Locations</h3>
-            <div class="list-group tab-pane" id="category1">
-                @for($i = 1; $i < 10 ;$i++)
-                <a class="list-group-item" href="#f" data-id='{{$i}}' data-text='NameCity{{$i}}'>NameCity{{$i}} <span class="fa fa-chevron-right pull-right"></span></a>
-                @endfor
-            </div>
-            <div class="list-group tab-pane" id="category2">
-                <a class="list-group-item" href="#f">Cras justo odio <span class="fa fa-chevron-right pull-right"></span></a>
-                <a class="list-group-item" href="#f">Cras justo odio <span class="fa fa-chevron-right pull-right"></span></a>
-                <a class="list-group-item" href="#f">Cras justo odio <span class="fa fa-chevron-right pull-right"></span></a>
-                <a class="list-group-item" href="#f">Cras justo odio <span class="fa fa-chevron-right pull-right"></span></a>
-                <a class="list-group-item" href="#f">Cras justo odio <span class="fa fa-chevron-right pull-right"></span></a>
-                <a class="list-group-item" href="#f">Cras justo odio <span class="fa fa-chevron-right pull-right"></span></a>
-            </div>
-            <div class="list-group tab-pane" id="category3">
-                <a class="list-group-item" href="#f">Cras justo odio <span class="fa fa-chevron-right pull-right"></span></a>
-                <a class="list-group-item" href="#f">Cras justo odio <span class="fa fa-chevron-right pull-right"></span></a>
-                <a class="list-group-item" href="#f">Cras justo odio <span class="fa fa-chevron-right pull-right"></span></a>
-                <a class="list-group-item" href="#f">Cras justo odio <span class="fa fa-chevron-right pull-right"></span></a>
-                <a class="list-group-item" href="#f">Cras justo odio <span class="fa fa-chevron-right pull-right"></span></a>
-                <a class="list-group-item" href="#f">Cras justo odio <span class="fa fa-chevron-right pull-right"></span></a>
-                <a class="list-group-item" href="#f">Cras justo odio <span class="fa fa-chevron-right pull-right"></span></a>
-                <a class="list-group-item" href="#f">Cras justo odio <span class="fa fa-chevron-right pull-right"></span></a>
-                <a class="list-group-item" href="#f">Cras justo odio <span class="fa fa-chevron-right pull-right"></span></a>
-                <a class="list-group-item" href="#f">Cras justo odio <span class="fa fa-chevron-right pull-right"></span></a>
-                <a class="list-group-item" href="#f">Cras justo odio <span class="fa fa-chevron-right pull-right"></span></a>
-                <a class="list-group-item" href="#f">Cras justo odio <span class="fa fa-chevron-right pull-right"></span></a>
-                <a class="list-group-item" href="#f">Cras justo odio <span class="fa fa-chevron-right pull-right"></span></a>
-                <a class="list-group-item" href="#f">Cras justo odio <span class="fa fa-chevron-right pull-right"></span></a>
-                <a class="list-group-item" href="#f">Cras justo odio <span class="fa fa-chevron-right pull-right"></span></a>
-            </div>
-        </div>
+            <h3>@lang('Districts')</h3>
+            <?php
+            $columnDistrict = __('city_title_en');
+            foreach ($divisions as $aDiv) {
+                $districts = DB::table('cities')
+                        ->where('division_id', $aDiv->division_id)
+                        ->get();
+
+                echo '<div class="list-group tab-pane" id="division' . $aDiv->division_id . '">';
+                foreach ($districts as $aDistrict) {
+                    ?>
+                    <a class="list-group-item" href="<?php echo url("all-ads/0/$aDistrict->city_id") ?>"><?php echo $aDistrict->$columnDistrict ?><span class="fa fa-chevron-right pull-right"></span></a>
+                        <?php
+                    }
+                    echo '</div>';
+                }
+                ?>            
+        </div>        
     </div>                            
 </div>
 <script type="text/javascript">

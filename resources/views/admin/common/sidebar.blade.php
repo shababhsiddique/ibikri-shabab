@@ -6,7 +6,7 @@
         </a>
     </li>
 
-    <li class="treeview {{ ( Request::is('admin/categor*') ) ? 'active menu-open' : '' }}">
+    <li class="treeview {{ ( Request::is('admin/categor*') || Request::is('admin/subcateg*') ) ? 'active menu-open' : '' }}">
         <a href="#">
             <i class="fa fa-archive"></i> <span>Categories</span>
             <span class="pull-right-container">
@@ -20,15 +20,17 @@
         </ul>
     </li>
     
-    <li class="treeview {{ ( Request::is('admin/categor*') ) ? 'active menu-open' : '' }}">
+    <li class="treeview {{ ( Request::is('admin/locations') || Request::is('admin/division*') || Request::is('admin/city*') ) ? 'active menu-open' : '' }}">
         <a href="#">
-            <i class="fa fa-archive"></i> <span>Locations</span>
+            <i class="fa fa-map"></i> <span>Locations</span>
             <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
             </span>
         </a>
         <ul class="treeview-menu">            
-            <li class="{{ Request::is('admin/locations') ? 'active' : '' }}"><a href="{{url('admin/locations')}}"><i class="fa fa-wpforms"></i> View Locations</a></li>
+            <li class="{{ Request::is('admin/locations') ? 'active' : '' }}"><a href="{{url('admin/locations')}}"><i class="fa fa-map"></i> View Locations</a></li>
+            <li class="{{ Request::is('admin/division/create') ? 'active' : '' }}"><a href="{{url('admin/division/create')}}"><i class="fa fa-map-marker"></i> Create Division</a></li>
+            <li class="{{ Request::is('admin/city/create') ? 'active' : '' }}"><a href="{{url('admin/city/create')}}"><i class="fa fa-map-marker"></i> Create Location</a></li>
 
         </ul>
     </li>

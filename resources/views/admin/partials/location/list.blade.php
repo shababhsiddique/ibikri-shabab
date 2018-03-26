@@ -1,5 +1,6 @@
 @extends('admin.master')
 @section('adminContent')
+<link rel="stylesheet" href="{{asset('site-assets/css/icofont/css/icofont.css')}}">
 
 <div class="row">    
     <!-- left column -->
@@ -22,7 +23,7 @@
                         <ul class="list-group">
                             @foreach($divisions as $aDivision)
                             <li class="list-group-item">
-                                <a data-toggle="tab" href="#division{{$aDivision->division_id}}">&nbsp;&nbsp; {{$aDivision->division_title_en}} ({{$aDivision->division_title_bn}})</a>
+                                <a data-toggle="tab" href="#division{{$aDivision->division_id}}"><i class="{{$aDivision->division_icon}}"></i>&nbsp;&nbsp; {{$aDivision->division_title_en}} ({{$aDivision->division_title_bn}})</a>
                                 <a class="pull-right" href="{{url('/admin/division/edit/'.$aDivision->division_id)}}"><i class="fa fa-pencil"></i></a>
                             </li>
                             @endforeach
@@ -30,15 +31,15 @@
                     </div>
                     <div class="col-md-6 tab-content">
                         <?php
-                       /* foreach ($divisions as $aDivision) {
+                        foreach ($divisions as $aDivision) {
                             $cities = App\Models\City::where('division_id', $aDivision->division_id)->get();
                             ?>
-                            <div class="list-group tab-pane" id="category{{$aCategory->category_id}}">
-                                @foreach($subCategories as $aSubCat)                                
-                                <a class="list-group-item" href="{{url('admin/subcategory/edit/'.$aSubCat->subcategory_id)}}">{{$aSubCat->subcategory_title_bn}} ({{$aSubCat->subcategory_title_en}})</a>
+                            <div class="list-group tab-pane" id="division{{$aDivision->division_id}}">
+                                @foreach($cities as $aCity)                                
+                                <a class="list-group-item" href="{{url('admin/city/edit/'.$aCity->city_id)}}">{{$aCity->city_title_bn}} ({{$aCity->city_title_en}})</a>
                                 @endforeach
                             </div>
-                        <?php }*/
+                        <?php }
                         ?>                        
                     </div>
                 </div> 

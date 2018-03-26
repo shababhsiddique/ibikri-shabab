@@ -24,7 +24,7 @@
                 echo '<div class="list-group tab-pane" id="category' . $aCat->category_id . '">';
                 foreach ($subCategories as $aSubCat) {
                     ?>
-                    <a class="list-group-item" href="<?php echo url("all-ads/$aSubCat->subcategory_id")?>"><?php echo $aSubCat->$columnSubcat?><span class="fa fa-chevron-right pull-right"></span></a>
+                    <a class="list-group-item" href="<?php echo url("all-ads/$aSubCat->subcategory_id/0")?>"><?php echo $aSubCat->$columnSubcat?><span class="fa fa-chevron-right pull-right"></span></a>
                     <?php
                 }
                 echo '</div>';

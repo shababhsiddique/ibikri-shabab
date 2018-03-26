@@ -10,6 +10,7 @@ use App\Models\Admin;
 use App\Models\Category;
 use App\Models\Subcategory;
 use App\Models\Division;
+use App\Models\City;
 
 session_start();
 
@@ -336,17 +337,150 @@ class AdminController extends Controller {
         return view('admin.master', $this->layout);
     }
     
-    
+    /**
+     * Show Division Edit Form
+     * @param type $id
+     * @return type
+     */
     public function divisionEdit($id) {
 
-        $oldCategoryData = Category::find($id);
+        $oldDivisionData = Division::find($id);
 
         //Load Component
-        $this->layout['adminContent'] = view('admin.partials.category.categorycreate')
-                ->with('oldCategoryData', $oldCategoryData);
+        $this->layout['adminContent'] = view('admin.partials.location.divisionform')
+                ->with('oldDivisionData', $oldDivisionData);
 
         //return view
         return view('admin.master', $this->layout);
+    }
+    
+    /**
+     * Save Division Data, POST handler
+     * @param Request $request
+     * @return type
+     */
+    public function divisionSave(Request $request){
+        
+        
+        $redirectUrl = '/admin/division/create';
+
+        if (isset($request->division_id)) {
+
+            $redirectUrl = '/admin/division/edit/' . $request->division_id;
+
+            $validatedData = $request->validate([
+                'division_title_en' => 'required|string',
+                'division_title_bn' => 'required|string'
+            ]);
+            
+            $division = Division::find($request->division_id);
+            
+            Session::put('message', array(
+                'title' => 'Division Updated',
+                'body' => "Division Info Updated",
+                'type' => 'info'
+            ));
+            
+        } else {
+            
+            $validatedData = $request->validate([
+                'division_title_en' => 'required|string|unique:divisions|max:50',
+                'division_title_bn' => 'required|string|unique:divisions|max:50'
+            ]);       
+            
+            $division = new Division;
+
+            Session::put('message', array(
+                'title' => 'Division Created',
+                'body' => "Created New Division $request->division_title_en ($request->division_title_bn)",
+                'type' => 'success'
+            ));
+        }
+        
+        $division->division_title_en = $request->division_title_en;
+        $division->division_title_bn = $request->division_title_bn;
+        $division->division_weight = $request->division_weight;
+        $division->division_icon = $request->division_icon;
+        
+        $division->save();
+
+        return Redirect::to($redirectUrl);
+    }
+    
+    /**
+     * Show Create City Form
+     * @return type
+     */
+    public function cityCreate() {
+
+        //Load Component
+        $this->layout['adminContent'] = view('admin.partials.location.cityform');
+
+        //return view
+        return view('admin.master', $this->layout);
+    }
+    
+    public function cityEdit($id) {
+
+        $oldCityData = City::find($id);
+
+        //Load Component
+        $this->layout['adminContent'] = view('admin.partials.location.cityform')
+                ->with('oldCityData', $oldCityData);
+
+        //return view
+        return view('admin.master', $this->layout);
+    }
+    
+    public function citySave(Request $request){
+        
+        
+        $redirectUrl = '/admin/city/create';
+
+        if (isset($request->city_id)) {
+
+            $redirectUrl = '/admin/city/edit/' . $request->city_id;
+
+            $validatedData = $request->validate([
+                'city_title_en' => 'required|string',
+                'city_title_bn' => 'required|string'
+            ]);
+            
+            $city = City::find($request->city_id);
+            
+            Session::put('message', array(
+                'title' => 'City Updated',
+                'body' => "City Info Updated",
+                'type' => 'info'
+            ));
+            
+        } else {
+            
+            $validatedData = $request->validate([
+                'city_title_en' => 'required|string|unique:cities|max:50',
+                'city_title_bn' => 'required|string|unique:cities|max:50'
+            ]);       
+            
+            $city = new City;
+
+            Session::put('message', array(
+                'title' => 'City Created',
+                'body' => "Created New City $request->city_title_en ($request->city_title_bn)",
+                'type' => 'success'
+            ));
+            
+            $redirectUrl = '/admin/city/create?division_id='.$request->division_id;
+        }
+        
+        $city->city_title_en = $request->city_title_en;
+        $city->city_title_bn = $request->city_title_bn;
+        $city->city_weight = $request->city_weight;
+        
+        $city->division_id = $request->division_id;
+        
+        $city->save();
+
+        return Redirect::to($redirectUrl);
     }
     
     

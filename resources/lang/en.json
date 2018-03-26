@@ -50,5 +50,9 @@
     "Categories": "Categories",
     "Sub Categories": "Sub Categories",
     "category_title_en": "category_title_en",
-    "subcategory_title_en": "subcategory_title_en"
+    "subcategory_title_en": "subcategory_title_en",
+    "Divisions": "Divisions",
+    "division_title_en": "division_title_en",
+    "Districts": "Districts",
+    "city_title_en": "city_title_en"
 }
