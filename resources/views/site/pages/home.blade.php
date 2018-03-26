@@ -13,7 +13,7 @@
                     <p>@lang('Best market place to find used and unused Vehicles, Phones, Computers, Properties and Many more for Free!')</p>
                     <br/><br/><br/>
                     <div class="btn-group">
-                        <a href="#" class="btn btn-primary">@lang('Place Your Ad')</a>
+                        <a href="{{url('post-ad')}}" class="btn btn-primary">@lang('Place Your Ad')</a>
                     </div>
                 </div>
                 <div class="col-sm-5 pull-right">                            
@@ -33,14 +33,17 @@
                         <form action="#">
                             <!--category-change font-family: 'Mukti','Ubuntu', sans-serif;-->
                             <div class="dropdown category-dropdown">						
-                                <a data-toggle="modal" data-target="#popupSelectModal" data-href="{{url('ajax/categories')}}" href="#"><span class="change-text"><i class="fa fa-tags"></i> Select Category</span> <i class="fa fa-angle-down"></i></a>
+                                <a data-toggle="modal" data-target="#popupSelectModal" data-href="{{url('ajax/categories')}}" href="#">
+                                    <span class="change-text" id="category-selector-text"><i class="fa fa-tags"></i> Select Category</span> <i class="fa fa-angle-down"></i>
+                                    {!! Form::hidden('subcategory_id', null, ['id' => 'category-selector-value']) !!}
+                                </a>
                             </div><!-- category-change -->
 
                             <!-- language-dropdown -->
                             <div class="dropdown category-dropdown language-dropdown ">						
                                 <a data-toggle="modal" data-target="#popupSelectModal" data-href="{{url('ajax/locations')}}" href="#">
                                     <span class="change-text" id="location-selector-text"><i class="fa fa-map-marker"></i> United Kingdom</span> <i class="fa fa-angle-down"></i>
-                                    {!! Form::hidden('city', null, ['id' => 'location-selector-value']) !!}
+                                    {!! Form::hidden('city_id', null, ['id' => 'location-selector-value']) !!}
                                 </a>
                             </div><!-- language-dropdown -->
 

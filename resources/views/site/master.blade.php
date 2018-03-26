@@ -10,7 +10,11 @@
         <title>@lang('iBikri') | @lang('Bangladeshs Best Classifieds Portal')</title>
 
         <!-- CSS -->
-        <link rel="stylesheet" href="{{asset('site-assets/css/bootstrap.min.css')}}" >
+        <link rel="stylesheet" href="{{asset('site-assets/bootstrap-3.3.7/css/bootstrap.min.css')}}" >
+        
+        <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">-->
+
+        
         <link rel="stylesheet" href="{{asset('site-assets/css/font-awesome/css/font-awesome.min.css')}}">
         <link rel="stylesheet" href="{{asset('site-assets/css/icofont/css/icofont.css')}}">
         <link rel="stylesheet" href="{{asset('site-assets/css/owl.carousel.css')}}">  
@@ -37,7 +41,7 @@
         <!-- JS -->
         <script src="{{asset('site-assets/js/jquery.min.js')}}"></script>
         <script src="{{asset('site-assets/js/modernizr.min.js')}}"></script>
-        <script src="{{asset('site-assets/js/bootstrap.min.js')}}"></script>
+        <script src="{{asset('site-assets/bootstrap-3.3.7/js/bootstrap.min.js')}}"></script>
 
         <!-- animate css -->
         <link rel="stylesheet" href="{{asset('site-assets/css/animate.css')}}">  
@@ -56,6 +60,7 @@
           <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
           <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
+        @stack('styles')
     </head>
     <body class="bn">
         <!-- header -->
@@ -104,5 +109,6 @@
         <script src="{{asset('site-assets/js/jquery.countdown.js')}}"></script>  
         <script src="{{asset('site-assets/js/custom.js')}}"></script>
        
+        @stack('scripts')
     </body>
 </html>

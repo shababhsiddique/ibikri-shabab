@@ -21,15 +21,20 @@ Route::group(
     Route::get('/all-ads', 'SiteController@allAds');
 
 
-    /* Site Ajax */
+    /* Site Ajax Location and Categories */
     Route::get('/ajax/categories', 'SiteController@ajaxCategoryModal');
     Route::get('/ajax/locations', 'SiteController@ajaxLocationModal');
 
-
+    
     Auth::routes();
-    Route::get('/home', 'HomeController@index')->name('home');
+    
+    /* User */
+    Route::get('/home', 'SiteController@index')->name('home');
     Route::get('/dashboard', 'HomeController@dashboard');
     Route::get('/account', 'HomeController@account');    
+    
+    /* Place ad */
+    Route::get('/post-ad', 'HomeController@postAd');
 });
 
 /* Form Submits */

@@ -335,3 +335,14 @@ function makeNotification(nType, nTitle, nMessage) {
                 '</div>'
     });
 }
+
+
+function verifyTick() {
+
+    if ($('#confirm').is(":checked")) {
+        return true;
+    } else {
+        $("#confirm-err").html(" *Required");
+        return false;
+    }
+}

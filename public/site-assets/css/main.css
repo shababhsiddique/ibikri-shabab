@@ -1627,7 +1627,7 @@ a.verified i {
 
 .banner-form-full.banner-form .form-control, 
 .banner-form-full.banner-form .category-dropdown {
-    width:20%;
+    width: auto; /*20%;*/
 }
 
 .banner-form-full.banner-form input {
@@ -2147,6 +2147,7 @@ a.verified i {
 
 .upload-section {
     overflow:hidden;
+    margin-left: -20px;
 }
 
 .add-image h5 {
@@ -4198,4 +4199,18 @@ input[type=checkbox]{
     margin-right: 12px;
     height: auto;
     transform: scale(2);
+}
+
+.image-thumbnails-holder canvas{
+    border: 1px solid #e3e3e3;
+    border-radius: 4px;
+    position: relative;    
+    float: left;
+    margin-bottom: 0; 
+    margin-left: 10px; 
+    cursor: pointer;
+}
+
+.image-thumbnails-holder> div{
+    height: 0px;    
 }

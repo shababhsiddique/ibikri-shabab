@@ -24,7 +24,7 @@
                 echo '<div class="list-group tab-pane" id="division' . $aDiv->division_id . '">';
                 foreach ($districts as $aDistrict) {
                     ?>
-                    <a class="list-group-item" href="<?php echo url("all-ads/0/$aDistrict->city_id") ?>"><?php echo $aDistrict->$columnDistrict ?><span class="fa fa-chevron-right pull-right"></span></a>
+                    <a data-text="<?php echo $aDistrict->$columnDistrict ?>" data-id="<?php echo $aDistrict->city_id ?>" class="list-group-item" data-href="<?php echo url("all-ads/0/$aDistrict->city_id") ?>"><?php echo $aDistrict->$columnDistrict ?><span class="fa fa-chevron-right pull-right"></span></a>
                         <?php
                     }
                     echo '</div>';

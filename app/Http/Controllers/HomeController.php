@@ -23,22 +23,9 @@ class HomeController extends Controller {
         $this->layout['notification'] = view('site.common.notification');
     }
 
+    
     /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index() {
-
-        //Load Component
-        $this->layout['siteContent'] = view('site.pages.home');
-
-        //return view
-        return view('site.master', $this->layout);
-    }
-
-    /**
-     * User Profile / Controlpanel
+     * User Dashboard / Controlpanel
      * @return type
      */
     public function dashboard() {
@@ -50,8 +37,9 @@ class HomeController extends Controller {
         return view('site.master', $this->layout);
     }
 
+    
     /**
-     * User Profile / Controlpanel
+     * Profile Info Edit Form
      * @return type
      */
     public function account() {
@@ -65,6 +53,11 @@ class HomeController extends Controller {
         return view('site.master', $this->layout);
     }
 
+    /**
+     * POST handler for profile form
+     * @param Request $request
+     * @return type
+     */
     public function accountUpdate(Request $request) {
 
         $authUser = \Auth::user();
@@ -126,6 +119,16 @@ class HomeController extends Controller {
         ));
 
         return Redirect::to('/account');
+    }
+    
+    
+    public function postAd(){
+        
+        //Load Component
+        $this->layout['siteContent'] = view('site.pages.postad');
+
+        //return view
+        return view('site.master', $this->layout);
     }
 
 }

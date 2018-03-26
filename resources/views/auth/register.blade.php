@@ -39,10 +39,10 @@
                         </div>
                         
                         <div class="form-group">
-                            <label><input type="checkbox" name="signing" id="signing"> By signing up for an account you agree to our Terms and Conditions </label>
+                            <label><input type="checkbox" name="signing" id="confirm"> By signing up for an account you agree to our Terms and Conditions <span class="text-danger" id="confirm-err"></span> </label>
                         </div>
                        
-                        <button type="submit" href="#" class="btn">{{ __('Register') }}</button>	
+                        <button type="submit" onclick="return verifyTick()" href="#" class="btn">{{ __('Register') }}</button>	
                     </form>
                     <!-- checkbox -->
 
