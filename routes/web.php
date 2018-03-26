@@ -40,6 +40,9 @@ Route::group(
 /* Form Submits */
 Route::post('/account/update', 'HomeController@accountUpdate');
 
+Route::any('/post-ad-image', 'HomeController@postAdImageHandler');
+
+
 
 /* Admin Panel routes */
 Route::get('/administrator', 'AdminLoginController@index');

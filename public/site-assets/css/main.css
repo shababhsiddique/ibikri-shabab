@@ -4211,6 +4211,22 @@ input[type=checkbox]{
     cursor: pointer;
 }
 
+.image-thumbnails-holder canvas:hover{
+    opacity: 0.5;
+    content: "Delete";
+    cursor: not-allowed;
+}
+
 .image-thumbnails-holder> div{
     height: 0px;    
+}
+
+
+div.canvas-holder  div.overlay {
+    position: relative;
+    top: -20px;
+    left: 14px;
+    width: 60px !important;
+    height: 60px !important;
+    background-color: red;
 }

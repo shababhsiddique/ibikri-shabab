@@ -7,6 +7,8 @@ use Session;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Hash;
 
+use UploadHandler;
+
 /* Models */
 use App\User;
 
@@ -20,10 +22,11 @@ class HomeController extends Controller {
     public function __construct() {
         $this->middleware('auth');
 
+        //rrmdirifold(base_path("public/images/temp/"));
+        
         $this->layout['notification'] = view('site.common.notification');
     }
 
-    
     /**
      * User Dashboard / Controlpanel
      * @return type
@@ -37,7 +40,6 @@ class HomeController extends Controller {
         return view('site.master', $this->layout);
     }
 
-    
     /**
      * Profile Info Edit Form
      * @return type
@@ -67,7 +69,7 @@ class HomeController extends Controller {
             'name' => 'required|string|max:200'
         ]);
 
-        
+
         /* Mobile Provided */
         if ($request->filled('mobile')) {
             $request->validate([
@@ -120,15 +122,29 @@ class HomeController extends Controller {
 
         return Redirect::to('/account');
     }
-    
-    
-    public function postAd(){
-        
+
+
+    public function postAd() {
+
+        $folder = Session::get('post-image-cache');
+        if(!$folder){
+            $folder = uniqid();
+            Session::put('post-image-cache',$folder);
+        }
+        rrmdir(base_path("public/images/temp/$folder/"));
         //Load Component
         $this->layout['siteContent'] = view('site.pages.postad');
 
         //return view
         return view('site.master', $this->layout);
     }
+    
+    public function postAdImageHandler() {
+    
+        $upload_handler = new UploadHandler();
+        
+    }
+    
+    
 
 }
