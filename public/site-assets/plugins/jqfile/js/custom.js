@@ -57,6 +57,9 @@ $(function () {
     }).on('fileuploaddone', function (e, data) {
         $.each(data.result.files, function (index, file) {
             if (file.url) {
+                //Add record on form
+//                var fileHist = $("#post_images_uploaded").val();
+//                $("#post_images_uploaded").val(fileHist+","+file.name);
                 var link = $('<a class="image-remove-link">')
                         .attr('target', '_blank')
                         .prop('href', remlink+"/"+file.name);

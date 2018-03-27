@@ -38,9 +38,14 @@ Route::group(
 });
 
 /* Form Submits */
+
+/*Account */
 Route::post('/account/update', 'HomeController@accountUpdate');
 
-Route::any('/post-ad-image', 'HomeController@postAdImageHandler');
+/*Post Ad*/
+Route::post('/post-ad/submit', 'HomeController@postAdSubmit');
+Route::any('/post-ad-image', 'SiteController@postAdImageHandler');
+//Route::any('/post-ad-image', 'HomeController@postAdImageHandler');
 
 
 

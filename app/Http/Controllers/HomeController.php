@@ -133,10 +133,22 @@ class HomeController extends Controller {
         }
         rrmdir(base_path("public/images/temp/$folder/"));
         //Load Component
-        $this->layout['siteContent'] = view('site.pages.postad');
+        $this->layout['siteContent'] = view('site.pages.postad.form');
 
         //return view
         return view('site.master', $this->layout);
+    }
+    
+    public function postAdSubmit(Request $request) {
+        
+//        $request->validate([
+//            'name' => 'required|string|max:200'
+//        ]);
+        
+        echo "<pre>";
+        print_r($_POST);
+        exit();
+        
     }
     
     public function postAdImageHandler() {

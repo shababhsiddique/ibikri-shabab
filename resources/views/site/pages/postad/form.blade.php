@@ -16,11 +16,11 @@
         <div class="adpost-details">
             <div class="row">	
                 <div class="col-md-8">
-                    {!! Form::open(['class' => 'new-post-form', 'url' => 'post-ad/save','method' => 'post']) !!}
+                    {!! Form::open(['class' => 'new-post-form', 'url' => 'post-ad/submit','method' => 'post']) !!}
                     <fieldset>
                         <div class="section postdetails">
                             <h4>@lang('Sell an item or service') <span class="pull-right">* @lang('Mandatory Fields')</span></h4>
-                            <div class="form-group selected-product">
+                            <div class="form-group selected-product">                                
                                 {!! Form::hidden('subcategory_id', null, ['id' => 'category-selector-value']) !!}
                                 <ul class="select-category list-inline">
                                     <li>
@@ -40,19 +40,20 @@
                             <div class="row form-group">
                                 <label class="col-sm-3">@lang('Type of ad')<span class="required">*</span></label>
                                 <div class="col-sm-9 user-type">
-                                    <input type="radio" name="sellType" value="newsell" id="newsell"> <label for="newsell">@lang('I want to sell')</label>
-                                    <input type="radio" name="sellType" value="newbuy" id="newbuy"> <label for="newbuy">@lang('I want to buy')</label>	
+                                    <input type="radio" name="ad_type" value="newsell" id="newsell"> <label for="newsell">@lang('I want to sell')</label>
+                                    <input type="radio" name="ad_type" value="newbuy" id="newbuy"> <label for="newbuy">@lang('I want to buy')</label>	
                                 </div>
                             </div>
                             <div class="row form-group add-title">
                                 <label class="col-sm-3 label-title">@lang('Title for your Ad')<span class="required">*</span></label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="text" placeholder="ex, Sony Xperia dual sim 100% brand new ">
+                                    {!! Form::text('ad_title', null , ['class' => 'form-control', 'autofocus' => 'true' ,  "placeholder" => "ex: Sony Xperia dual sim 100% brand new" ]) !!}
                                 </div>
                             </div>
                             <div class="row form-group add-image">
                                 <label class="col-sm-3 label-title">@lang('Photos for your ad') <span>(@lang('This will be your cover photo'))</span> </label>
                                 <div class="col-sm-9">
+                                    {!! Form::text('post_images_uploaded', null , ['id' => 'post_images_uploaded']) !!}
                                     <h5><i class="fa fa-upload" aria-hidden="true"></i>@lang('Select Files to Upload / Drag and Drop Files')<span>@lang('You can add multiple images.')</span></h5>
                                     <br>
                                     <!-- The fileinput-button span is used to style the file input field as button -->
@@ -61,7 +62,7 @@
                                         <span>@lang('Add files...')</span>
                                         <!-- The file input field used as target for the file upload widget -->
                                         <!--<input id="fileupload" data-handler="{{url('/jqfuh.php')}}" data-removelink="{{url('ajax-remove-img')}}" type="file" name="files[]" multiple>-->
-                                        <input id="fileupload" data-handler="{{url('/post-ad-image')}}" data-removelink="{{url('ajax-remove-img')}}" type="file"  name="files[]" accept="image/x-png,image/gif,image/jpeg" multiple>
+                                        <input id="fileupload" data-handler="{{url('/post-ad-image')}}" data-removelink="{{url('ajax-remove-img')}}" type="file"  name="files[]" accept="image/x-png,image/gif,image/jpeg" multiple required="">
                                     </span>
                                     <br>
                                     <br>
@@ -100,10 +101,10 @@
                             </div>
                             <div class="row form-group select-condition">
                                 <label class="col-sm-3">@lang('Condition')<span class="required">*</span></label>
-                                <div class="col-sm-9">
-                                    <input type="radio" name="itemCon" value="new" id="new"> 
+                                <div class="col-sm-9">                                    
+                                    <input type="radio" name="item_condition" value="new" id="new"> 
                                     <label for="new">@lang('New')</label>
-                                    <input type="radio" name="itemCon" value="used" id="used"> 
+                                    <input type="radio" name="item_condition" value="used" id="used"> 
                                     <label for="used">@lang('Used')</label>
                                 </div>
                             </div>
@@ -111,7 +112,7 @@
                                 <label class="col-sm-3 label-title">@lang('Price')<span class="required">*</span></label>
                                 <div class="col-sm-9">
                                     <label>@lang('BDT')</label>
-                                    <input type="text" class="form-control" id="text1">
+                                    {!! Form::text('item_price', null , ['class' => 'form-control' ]) !!}
                                     <div class="checkbox">
                                         <label for="negotiable"><input type="checkbox" name="negotiable" value="negotiable" id="negotiable"> @lang('Negotiable')</label>                                    
                                     </div>
@@ -120,6 +121,7 @@
                             <div class="row form-group brand-name">
                                 <label class="col-sm-3 label-title">@lang('Brand Name')<span class="required">*</span></label>
                                 <div class="col-sm-9">
+                                    {!! Form::text('item_price', null , ['class' => 'form-control' ]) !!}
                                     <input type="text" class="form-control" placeholder="ex, Sony Xperia">
                                 </div>
                             </div>
@@ -127,21 +129,21 @@
                             <div class="row form-group model-name">
                                 <label class="col-sm-3 label-title">@lang('Model')</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="model" placeholder="ex, Sony Xperia dual sim 100% brand new ">	
+                                    {!! Form::text('model', null , ['class' => 'form-control' ]) !!}
                                 </div>
                             </div>
 
-                            <div class="row form-group model-name">
-                                <label class="col-sm-3 label-title">@lang('Additional')</label>
+                            <div class="row form-group item-description">
+                                <label class="col-sm-3 label-title">@lang('Short Description')<span class="required">*</span></label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="model" placeholder="ex, Sony Xperia dual sim 100% brand new ">	
+                                    {!! Form::textarea('short_description', null , ['class' => 'form-control',"id"=>"short_description", "rows"=>"3" ]) !!}                                    
                                 </div>
                             </div>
 
                             <div class="row form-group item-description">
                                 <label class="col-sm-3 label-title">@lang('Description')<span class="required">*</span></label>
                                 <div class="col-sm-9">
-                                    <textarea class="form-control" id="textarea" placeholder="Write few lines about your products" rows="8"></textarea>		
+                                    {!! Form::textarea('long_description', null , ['class' => 'form-control', "id"=>"long_description", "rows"=>"8" ]) !!}
                                 </div>
                             </div>
                             <div class="row">
@@ -156,11 +158,12 @@
                         <!--include make your ad premium-->
 
                         <div class="checkbox section agreement">
-                            <label for="send">
-                                <input type="checkbox" name="send" id="send">
+                            <label for="confirm">
+                                <input type="checkbox" name="send" id="confirm">
                                 @lang('By clicking "Post", you agree to our ')<a href="#">Terms of Use</a> @lang('and') <a href="#">Privacy Policy</a> @lang('and acknowledge that you are the rightful owner of this item and using iBikri to find a genuine buyer.')
+                                <span id="confirm-err" class="text-danger"></span>
                             </label>
-                            <button type="submit" class="btn btn-primary">@lang('Post Your Ad')</button>
+                            <button type="submit" onclick="return verifyTick()" class="btn btn-primary">@lang('Post Your Ad')</button>
                         </div><!-- section -->
 
                     </fieldset>

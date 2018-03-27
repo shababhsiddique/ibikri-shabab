@@ -102,5 +102,10 @@ class SiteController extends Controller {
         //
     }
 
+     public function postAdImageHandler() {
+    
+        $upload_handler = new UploadHandler();
+        
+    }
     
 }

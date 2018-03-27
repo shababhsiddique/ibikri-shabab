@@ -54,6 +54,6 @@
         @endguest                            
     </ul><!-- sign-in -->					
 
-    <a href="ad-post.html" class="btn">@lang('Place Your Ad')</a>
+    <a href="{{url('post-ad')}}" class="btn">@lang('Place Your Ad')</a>
 </div>
 <!-- nav-right -->
