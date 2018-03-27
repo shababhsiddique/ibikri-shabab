@@ -16,7 +16,7 @@
         <div class="adpost-details">
             <div class="row">	
                 <div class="col-md-8">
-                    {!! Form::open(['class' => 'new-post-form', 'url' => 'post-ad/submit','method' => 'post']) !!}
+                    <!--{!! Form::open(['class' => 'new-post-form', 'url' => 'post-ad/submit','method' => 'post']) !!}-->
                     <fieldset>
                         <div class="section postdetails">
                             <h4>@lang('Sell an item or service') <span class="pull-right">* @lang('Mandatory Fields')</span></h4>
@@ -53,50 +53,41 @@
                             <div class="row form-group add-image">
                                 <label class="col-sm-3 label-title">@lang('Photos for your ad') <span>(@lang('This will be your cover photo'))</span> </label>
                                 <div class="col-sm-9">
-                                    {!! Form::text('post_images_uploaded', null , ['id' => 'post_images_uploaded']) !!}
-                                    <h5><i class="fa fa-upload" aria-hidden="true"></i>@lang('Select Files to Upload / Drag and Drop Files')<span>@lang('You can add multiple images.')</span></h5>
-                                    <br>
-                                    <!-- The fileinput-button span is used to style the file input field as button -->
-                                    <span class="btn btn-success fileinput-button">
-                                        <i class="glyphicon glyphicon-plus"></i>
-                                        <span>@lang('Add files...')</span>
-                                        <!-- The file input field used as target for the file upload widget -->
-                                        <input id="fileupload" data-handler="{{url('/jqfuh.php')}}" data-removelink="{{url('ajax-remove-img')}}" type="file" name="files[]" multiple>
-                                        <!--<input id="fileupload" data-handler="{{url('/post-ad-image')}}" data-removelink="{{url('ajax-remove-img')}}" type="file"  name="files[]" accept="image/x-png,image/gif,image/jpeg" multiple required="">-->
-                                    </span>
-                                    <br>
-                                    <br>
-                                    <!-- The global progress bar -->
-                                    <div id="progress" class="progress">
-                                        <div class="progress-bar progress-bar-theme"></div>
-                                    </div>
-                                    <!-- The container for the uploaded files -->
-                                    <div id="files" class="files image-thumbnails-holder"></div>                                    
+                                    <form id="upload" method="post" action="{{url('upload.php')}}" enctype="multipart/form-data">
+                                        <div id="drop">
+                                            Drop Here
+
+                                            <a>Browse</a>
+                                            <input type="file" name="upl" multiple />
+                                        </div>
+
+                                        <ul>
+                                            <!-- The file uploads will be shown here -->
+                                        </ul>
+
+                                    </form>                                 
                                 </div>
                                 @push('styles')
-                                <!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
-                                <link rel="stylesheet" href="{{asset('site-assets/plugins/jqfile/css/jquery.fileupload.css')}}">
+
+                                <!-- The main CSS file -->
+                                <link href="{{asset('site-assets/plugins/miniupload/assets/css/style.css')}}" rel="stylesheet" />
+
                                 @endpush
                                 @push('scripts')
-                                <!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->
-                                <script src="{{asset('site-assets/plugins/jqfile/js/vendor/jquery.ui.widget.js')}}"></script>
-                                <!-- The Load Image plugin is included for the preview images and image resizing functionality -->
-                                <script src="https://blueimp.github.io/JavaScript-Load-Image/js/load-image.all.min.js"></script>
-                                <!-- The Canvas to Blob plugin is included for image resizing functionality -->
-                                <script src="https://blueimp.github.io/JavaScript-Canvas-to-Blob/js/canvas-to-blob.min.js"></script>
-                                <!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
-                                <script src="{{asset('site-assets/plugins/jqfile/js/jquery.iframe-transport.js')}}"></script>
-                                <!-- The basic File Upload plugin -->
-                                <script src="{{asset('site-assets/plugins/jqfile/js/jquery.fileupload.js')}}"></script>
-                                <!-- The File Upload processing plugin -->
-                                <script src="{{asset('site-assets/plugins/jqfile/js/jquery.fileupload-process.js')}}"></script>
-                                <!-- The File Upload image preview & resize plugin -->
-                                <script src="{{asset('site-assets/plugins/jqfile/js/jquery.fileupload-image.js')}}"></script>
 
-                                <!-- The File Upload validation plugin -->
-                                <script src="{{asset('site-assets/plugins/jqfile/js/jquery.fileupload-validate.js')}}"></script>
-                                <!--custom--> 
-                                <script src="{{asset('site-assets/plugins/jqfile/js/custom.js')}}"></script>
+                                <!-- JavaScript Includes -->
+                                <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+                                <script src="{{asset('site-assets/plugins/miniupload/assets/js/jquery.knob.js')}}"></script>
+
+                                <!-- jQuery File Upload Dependencies -->
+                                <script src="{{asset('site-assets/plugins/miniupload/assets/js/jquery.ui.widget.js')}}"></script>
+                                <script src="{{asset('site-assets/plugins/miniupload/assets/js/jquery.iframe-transport.js')}}"></script>
+                                <script src="{{asset('site-assets/plugins/miniupload/assets/js/jquery.fileupload.js')}}"></script>
+
+                                <!-- Our main JS file -->
+                                <script src="{{asset('site-assets/plugins/miniupload/assets/js/script.js')}}"></script>
+
+
                                 @endpush
                             </div>
                             <div class="row form-group select-condition">
@@ -167,7 +158,7 @@
                         </div><!-- section -->
 
                     </fieldset>
-                    {!! Form::close() !!}
+                    <!--{!! Form::close() !!}-->
                 </div>
 
 
