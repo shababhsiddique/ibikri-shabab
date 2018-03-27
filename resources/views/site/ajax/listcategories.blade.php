@@ -26,8 +26,11 @@
                     ?>
                     <a class="list-group-item" 
                        data-id="{{$aSubCat->subcategory_id}}" 
-                       data-parent="<?php echo $aCat->$column?>" 
                        data-text="<?php echo $aSubCat->$columnSubcat?>" 
+                       
+                       data-parent-id="<?php echo $aCat->category_id?>" 
+                       data-parent-text="<?php echo $aCat->$column?>" 
+                       
                        data-image="{{asset($aCat->category_image)}}" 
                        data-href="<?php echo url("all-ads/$aSubCat->subcategory_id/0")?>"><?php echo $aSubCat->$columnSubcat?><span class="fa fa-chevron-right pull-right"></span></a>
                     <?php
@@ -40,13 +43,20 @@
 </div>
 <script type="text/javascript">
     $("div.category-stage2 .list-group-item").click(function () {
-        var selVal = $(this).data("id");
-        var selParentText = $(this).data("parent");
+        var selVal = $(this).data("id");        
         var selText = $(this).data("text");
+        
+        var selParentText = $(this).data("parent-text");
+        var selParentValue = $(this).data("parent-id");
+        
         var selImage = $(this).data("image");
+        
         $("#category-selector-value").val(selVal);
-        $("#category-selector-parent").html(selParentText);
         $("#category-selector-text").html(selText);
+        
+        $("#category-selector-parent-value").val(selParentValue);
+        $("#category-selector-parent-text").html(selParentText);
+        
         $("#category-selector-image").attr('src',selImage);
         $('#popupSelectModal').modal("hide");
     });

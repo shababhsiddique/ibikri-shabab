@@ -21,6 +21,7 @@
                         <div class="section postdetails">
                             <h4>@lang('Sell an item or service') <span class="pull-right">* @lang('Mandatory Fields')</span></h4>
                             <div class="form-group selected-product">                                
+                                {!! Form::hidden('category_id', null, ['form'=>'new-post-form',  'id' => 'category-selector-parent-value']) !!}
                                 {!! Form::hidden('subcategory_id', null, ['form'=>'new-post-form',  'id' => 'category-selector-value']) !!}
                                 <ul class="select-category list-inline">
                                     <li>
@@ -28,7 +29,7 @@
                                             <span class="select" >
                                                 <img id="category-selector-image" src='{{asset("images/category/gift_item.png")}}' alt="Images" class="img-responsive">
                                             </span>
-                                            <span id="category-selector-parent">@lang('Please Select')</span>
+                                            <span id="category-selector-parent-text">@lang('Please Select')</span>
                                         </a>
                                     </li>
                                     <li class="active">
@@ -52,10 +53,7 @@
                             </div>
                             <div class="row form-group add-image">
                                 <label class="col-sm-3 label-title">@lang('Photos for your ad') <span>(@lang('This will be your cover photo'))</span> </label>
-                                <div class="col-sm-9">
-                                    <div id='hiddenInputContainer'>
-
-                                    </div>
+                                <div class="col-sm-9">                                    
                                     {!! Form::open(['url' => 'upload','id'=>'dropzoneinst', 'class'=>'dropzone', 'method' => 'post', 'enctype'=>'multipart/form-data']) !!}                                    
                                     <div class="fallback">
                                         <input name="file" type="file" multiple />
@@ -66,13 +64,13 @@
                                 <link rel="stylesheet" type="text/css" href="{{asset('site-assets/plugins/dropzone/dropzone.css')}}"/>
                                 @endpush
 
-                                 
+
                                 @push('scripts')
                                 <!-- Dropzone -->
                                 <script src="{{asset('site-assets/plugins/dropzone/dropzone.js')}}"></script>
                                 <script type="text/javascript">
+                                    var fileServerNames = new Array;
                                     $(document).ready(function () {
-
                                         Dropzone.autoDiscover = false;
                                         $("#dropzoneinst").dropzone({
                                             paramName: "file",
@@ -83,27 +81,43 @@
                                             init: function () {
                                                 this.on("removedfile", function (file) {
                                                     console.log("test");
-                                                     $.post("<?php echo url('upload-delete') ?>", {_token: '{{ csrf_token() }}', filename: file.name}, function(){
-                                                         console.log("deleted");
-                                                     });
+                                                    console.log(file);
+                                                    $.post("<?php echo url('upload-delete') ?>", {_token: '{{ csrf_token() }}', filename: file.name, uploadname: fileServerNames[file.name]}, function () {
+                                                        var fileServerNames = JSON.parse($("#imagenames").val());
+                                                        delete fileServerNames[file.name];
+                                                        $("#imagenames").val(JSON.stringify(fileServerNames));
+                                                    });
                                                 });
                                             },
                                             success: function (file, response) {
-                                                var imgName = response;
+                                                var obj = JSON.parse(response);
+                                                var imgName = Object.keys(obj)[0]
+                                                var imgUploadName = obj[Object.keys(obj)[0]];
+
                                                 file.previewElement.classList.add("dz-success");
-                                                console.log("Successfully uploaded :" + imgName);
+                                                console.log("Successfully uploaded :" + imgName + " as " + imgUploadName);
+
+                                                fileServerNames = $.extend({}, fileServerNames, obj);
+                                                $("#imagenames").val(JSON.stringify(fileServerNames));
+
                                             },
                                             error: function (file, response) {
                                                 file.previewElement.classList.add("dz-error");
-                                                $(file.previewElement).find('.dz-error-message').html(response);
-                                                console.log();
+                                                $(file.previewElement).find('.dz-error-message').html("File not allowed, or too large");
+                                                console.log("error occured");
                                             }
                                         });
-
-                                        
-
-
                                     });
+                                    Array.prototype.remove = function () {
+                                        var what, a = arguments, L = a.length, ax;
+                                        while (L && this.length) {
+                                            what = a[--L];
+                                            while ((ax = this.indexOf(what)) !== -1) {
+                                                this.splice(ax, 1);
+                                            }
+                                        }
+                                        return this;
+                                    };
                                 </script>
                                 @endpush
                             </div>
@@ -111,9 +125,9 @@
                             <div class="row form-group select-condition">
                                 <label class="col-sm-3">@lang('Condition')<span class="required">*</span></label>
                                 <div class="col-sm-9">                        
-                                    <input type="radio" form="new-post-form" name="item_condition" value="new" id="new"> 
+                                    <input type="radio" form="new-post-form" name="item_condition" value="New" id="new"> 
                                     <label for="new">@lang('New')</label>
-                                    <input type="radio" form="new-post-form" name="item_condition" value="used" id="used"> 
+                                    <input type="radio" form="new-post-form" name="item_condition" value="Used" id="used"> 
                                     <label for="used">@lang('Used')</label>
                                 </div>
                             </div>
@@ -126,13 +140,7 @@
                                         <label for="negotiable"><input type="checkbox" name="negotiable" value="negotiable" id="negotiable"> @lang('Negotiable')</label>                                    
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row form-group brand-name">
-                                <label class="col-sm-3 label-title">@lang('Brand Name')<span class="required">*</span></label>
-                                <div class="col-sm-9">
-                                    {!! Form::text('item_price', null , ['form'=>'new-post-form', 'class' => 'form-control' ]) !!}                                    
-                                </div>
-                            </div>
+                            </div>                            
 
                             <div class="row form-group model-name">
                                 <label class="col-sm-3 label-title">@lang('Model')</label>
@@ -164,8 +172,8 @@
                         <!--include inline register-->
 
                         <!--include make your ad premium-->
-                        {!! Form::open(['class' => 'new-post-form','id' => 'new-post-form', 'url' => 'post-ad/submit','method' => 'post']) !!}
-
+                        {!! Form::open(['class' => 'new-post-form','id' => 'new-post-form', 'url' => 'post-ad/submit','method' => 'post', 'enctype'=>'multipart/form-data']) !!}
+                        <input type="hidden" id="imagenames" name="imagenames" value="[]" style="width: 100%"/>
                         <div class="checkbox section agreement">
                             <label for="confirm">
                                 <input type="checkbox" name="send" id="confirm">
@@ -174,7 +182,6 @@
                             </label>
                             <button type="submit" onclick="return verifyTick()" class="btn btn-primary">@lang('Post Your Ad')</button>
                         </div><!-- section -->
-
                         {!! Form::close() !!}
                     </fieldset>
 
@@ -203,4 +210,5 @@
 </section><!-- main -->
 
 @include('site.common.categorymodal')
+
 @endsection
