@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Session;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Input;
 
 
 /* Models */
@@ -129,13 +130,59 @@ class HomeController extends Controller {
             $folder = uniqid();
             Session::put('post-image-cache', $folder);
         }
-        
+
         rrmdir(base_path("public/images/temp/$folder/"));
         //Load Component
         $this->layout['siteContent'] = view('site.pages.postad.form');
 
         //return view
         return view('site.master', $this->layout);
+    }
+
+    
+    
+    public function postImageUpload(Request $request) {
+        
+        $files = $request->file('file');        
+        $extension = $files->extension();
+        $customName = uniqid() . "." . $extension;
+        //$imgUrl = 'public/images/products/' . $customName;
+        $destinationPath = base_path("public/images/temp");
+
+        //Try upload
+        $success = $files->move($destinationPath, $customName);
+
+        if($success){
+            echo 'success';
+        }else{
+            echo 'error';
+        }
+            
+    }
+    
+    public function postImageDeleteCache(Request $request){
+        echo "<pre>";
+        print_r($_POST);
+        exit();
+        echo $request->filename;        
+    }
+
+    public function postImageDelete($imgFile) {
+
+        $redirectUrl = '/admin/manage-slider';
+
+        if (File::exists("public/images/slider/$imgFile")) {
+            File::delete("public/images/slider/$imgFile");
+        }
+
+        //Message for Notification Builder
+        Session::put('message', array(
+            'title' => 'Image deleted',
+            'body' => 'Deleted ' . $imgFile,
+            'type' => 'primary'
+        ));
+
+        return Redirect::to($redirectUrl);
     }
 
     public function postAdSubmit(Request $request) {
@@ -148,6 +195,5 @@ class HomeController extends Controller {
         print_r($_POST);
         exit();
     }
-
 
 }

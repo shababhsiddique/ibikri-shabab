@@ -38,13 +38,20 @@ Route::group(
 });
 
 /* Form Submits */
+//Route::post('/upload', function(){
+//    $file = Input::file('file');
+//    $directory = 'uploads/test/';
+//    $upload_success = Input::file('file')->move($directory, $file);
+//});
+Route::post('/upload', 'HomeController@postImageUpload');
+Route::post('/upload-delete', 'HomeController@postImageDeleteCache');
 
 /*Account */
 Route::post('/account/update', 'HomeController@accountUpdate');
 
 /*Post Ad*/
 Route::post('/post-ad/submit', 'HomeController@postAdSubmit');
-//Route::any('/post-ad-image', 'SiteController@postAdImageHandler');
+//Route::post('/post-ad-image', 'HomeController@postImageUpload');
 //Route::any('/post-ad-image', 'HomeController@postAdImageHandler');
 
 

@@ -1,9 +1,9 @@
 @extends('site.master')
 @section('siteContent')
 <!-- ad post form -->
+
 <section id="main" class="clearfix ad-details-page">
     <div class="container">
-
         <div class="breadcrumb-section">
             <!-- breadcrumb -->
             <ol class="breadcrumb">
@@ -15,13 +15,13 @@
 
         <div class="adpost-details">
             <div class="row">	
-                <div class="col-md-8">
-                    <!--{!! Form::open(['class' => 'new-post-form', 'url' => 'post-ad/submit','method' => 'post']) !!}-->
+                <div class="col-md-8">                    
+
                     <fieldset>
                         <div class="section postdetails">
                             <h4>@lang('Sell an item or service') <span class="pull-right">* @lang('Mandatory Fields')</span></h4>
                             <div class="form-group selected-product">                                
-                                {!! Form::hidden('subcategory_id', null, ['id' => 'category-selector-value']) !!}
+                                {!! Form::hidden('subcategory_id', null, ['form'=>'new-post-form',  'id' => 'category-selector-value']) !!}
                                 <ul class="select-category list-inline">
                                     <li>
                                         <a data-toggle="modal" data-target="#popupSelectModal" data-href="{{url('ajax/categories')}}" href="#">
@@ -47,55 +47,73 @@
                             <div class="row form-group add-title">
                                 <label class="col-sm-3 label-title">@lang('Title for your Ad')<span class="required">*</span></label>
                                 <div class="col-sm-9">
-                                    {!! Form::text('ad_title', null , ['class' => 'form-control', 'autofocus' => 'true' ,  "placeholder" => "ex: Sony Xperia dual sim 100% brand new" ]) !!}
+                                    {!! Form::text('ad_title', null , ['form'=>'new-post-form','class' => 'form-control', 'autofocus' => 'true' ,  "placeholder" => "ex: Sony Xperia dual sim 100% brand new" ]) !!}
                                 </div>
                             </div>
                             <div class="row form-group add-image">
                                 <label class="col-sm-3 label-title">@lang('Photos for your ad') <span>(@lang('This will be your cover photo'))</span> </label>
                                 <div class="col-sm-9">
-                                    <form id="upload" method="post" action="{{url('upload.php')}}" enctype="multipart/form-data">
-                                        <div id="drop">
-                                            Drop Here
+                                    <div id='hiddenInputContainer'>
 
-                                            <a>Browse</a>
-                                            <input type="file" name="upl" multiple />
-                                        </div>
-
-                                        <ul>
-                                            <!-- The file uploads will be shown here -->
-                                        </ul>
-
-                                    </form>                                 
+                                    </div>
+                                    {!! Form::open(['url' => 'upload','id'=>'dropzoneinst', 'class'=>'dropzone', 'method' => 'post', 'enctype'=>'multipart/form-data']) !!}                                    
+                                    <div class="fallback">
+                                        <input name="file" type="file" multiple />
+                                    </div>                                    
+                                    {!! Form::close() !!}  
                                 </div>
                                 @push('styles')
-
-                                <!-- The main CSS file -->
-                                <link href="{{asset('site-assets/plugins/miniupload/assets/css/style.css')}}" rel="stylesheet" />
-
+                                <link rel="stylesheet" type="text/css" href="{{asset('site-assets/plugins/dropzone/dropzone.css')}}"/>
                                 @endpush
+
+                                 
                                 @push('scripts')
+                                <!-- Dropzone -->
+                                <script src="{{asset('site-assets/plugins/dropzone/dropzone.js')}}"></script>
+                                <script type="text/javascript">
+                                    $(document).ready(function () {
 
-                                <!-- JavaScript Includes -->
-                                <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-                                <script src="{{asset('site-assets/plugins/miniupload/assets/js/jquery.knob.js')}}"></script>
+                                        Dropzone.autoDiscover = false;
+                                        $("#dropzoneinst").dropzone({
+                                            paramName: "file",
+                                            maxFiles: 4,
+                                            acceptedFiles: 'image/png,image/jpg,image/jpeg',
+                                            url: "<?php echo url('upload') ?>",
+                                            addRemoveLinks: true,
+                                            init: function () {
+                                                this.on("removedfile", function (file) {
+                                                    console.log("test");
+                                                     $.post("<?php echo url('upload-delete') ?>", {_token: '{{ csrf_token() }}', filename: file.name}, function(){
+                                                         console.log("deleted");
+                                                     });
+                                                });
+                                            },
+                                            success: function (file, response) {
+                                                var imgName = response;
+                                                file.previewElement.classList.add("dz-success");
+                                                console.log("Successfully uploaded :" + imgName);
+                                            },
+                                            error: function (file, response) {
+                                                file.previewElement.classList.add("dz-error");
+                                                $(file.previewElement).find('.dz-error-message').html(response);
+                                                console.log();
+                                            }
+                                        });
 
-                                <!-- jQuery File Upload Dependencies -->
-                                <script src="{{asset('site-assets/plugins/miniupload/assets/js/jquery.ui.widget.js')}}"></script>
-                                <script src="{{asset('site-assets/plugins/miniupload/assets/js/jquery.iframe-transport.js')}}"></script>
-                                <script src="{{asset('site-assets/plugins/miniupload/assets/js/jquery.fileupload.js')}}"></script>
-
-                                <!-- Our main JS file -->
-                                <script src="{{asset('site-assets/plugins/miniupload/assets/js/script.js')}}"></script>
+                                        
 
 
+                                    });
+                                </script>
                                 @endpush
                             </div>
+
                             <div class="row form-group select-condition">
                                 <label class="col-sm-3">@lang('Condition')<span class="required">*</span></label>
-                                <div class="col-sm-9">                                    
-                                    <input type="radio" name="item_condition" value="new" id="new"> 
+                                <div class="col-sm-9">                        
+                                    <input type="radio" form="new-post-form" name="item_condition" value="new" id="new"> 
                                     <label for="new">@lang('New')</label>
-                                    <input type="radio" name="item_condition" value="used" id="used"> 
+                                    <input type="radio" form="new-post-form" name="item_condition" value="used" id="used"> 
                                     <label for="used">@lang('Used')</label>
                                 </div>
                             </div>
@@ -103,7 +121,7 @@
                                 <label class="col-sm-3 label-title">@lang('Price')<span class="required">*</span></label>
                                 <div class="col-sm-9">
                                     <label>@lang('BDT')</label>
-                                    {!! Form::text('item_price', null , ['class' => 'form-control' ]) !!}
+                                    {!! Form::text('item_price', null , ['form'=>'new-post-form','class' => 'form-control' ]) !!}
                                     <div class="checkbox">
                                         <label for="negotiable"><input type="checkbox" name="negotiable" value="negotiable" id="negotiable"> @lang('Negotiable')</label>                                    
                                     </div>
@@ -112,29 +130,28 @@
                             <div class="row form-group brand-name">
                                 <label class="col-sm-3 label-title">@lang('Brand Name')<span class="required">*</span></label>
                                 <div class="col-sm-9">
-                                    {!! Form::text('item_price', null , ['class' => 'form-control' ]) !!}
-                                    <input type="text" class="form-control" placeholder="ex, Sony Xperia">
+                                    {!! Form::text('item_price', null , ['form'=>'new-post-form', 'class' => 'form-control' ]) !!}                                    
                                 </div>
                             </div>
 
                             <div class="row form-group model-name">
                                 <label class="col-sm-3 label-title">@lang('Model')</label>
-                                <div class="col-sm-9">
-                                    {!! Form::text('model', null , ['class' => 'form-control' ]) !!}
+                                <div class="col-sm-9">                                    
+                                    {!! Form::text('model', null , ['form'=>'new-post-form', 'class' => 'form-control' ]) !!}
                                 </div>
                             </div>
 
                             <div class="row form-group item-description">
                                 <label class="col-sm-3 label-title">@lang('Short Description')<span class="required">*</span></label>
                                 <div class="col-sm-9">
-                                    {!! Form::textarea('short_description', null , ['class' => 'form-control',"id"=>"short_description", "rows"=>"3" ]) !!}                                    
+                                    {!! Form::textarea('short_description', null , ['form'=>'new-post-form', 'class' => 'form-control',"id"=>"short_description", "rows"=>"3" ]) !!}                                    
                                 </div>
                             </div>
 
                             <div class="row form-group item-description">
                                 <label class="col-sm-3 label-title">@lang('Description')<span class="required">*</span></label>
                                 <div class="col-sm-9">
-                                    {!! Form::textarea('long_description', null , ['class' => 'form-control', "id"=>"long_description", "rows"=>"8" ]) !!}
+                                    {!! Form::textarea('long_description', null , ['form'=>'new-post-form', 'class' => 'form-control', "id"=>"long_description", "rows"=>"8" ]) !!}
                                 </div>
                             </div>
                             <div class="row">
@@ -147,6 +164,7 @@
                         <!--include inline register-->
 
                         <!--include make your ad premium-->
+                        {!! Form::open(['class' => 'new-post-form','id' => 'new-post-form', 'url' => 'post-ad/submit','method' => 'post']) !!}
 
                         <div class="checkbox section agreement">
                             <label for="confirm">
@@ -157,8 +175,9 @@
                             <button type="submit" onclick="return verifyTick()" class="btn btn-primary">@lang('Post Your Ad')</button>
                         </div><!-- section -->
 
+                        {!! Form::close() !!}
                     </fieldset>
-                    <!--{!! Form::close() !!}-->
+
                 </div>
 
 
