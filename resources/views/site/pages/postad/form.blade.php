@@ -61,8 +61,8 @@
                                         <i class="glyphicon glyphicon-plus"></i>
                                         <span>@lang('Add files...')</span>
                                         <!-- The file input field used as target for the file upload widget -->
-                                        <!--<input id="fileupload" data-handler="{{url('/jqfuh.php')}}" data-removelink="{{url('ajax-remove-img')}}" type="file" name="files[]" multiple>-->
-                                        <input id="fileupload" data-handler="{{url('/post-ad-image')}}" data-removelink="{{url('ajax-remove-img')}}" type="file"  name="files[]" accept="image/x-png,image/gif,image/jpeg" multiple required="">
+                                        <input id="fileupload" data-handler="{{url('/jqfuh.php')}}" data-removelink="{{url('ajax-remove-img')}}" type="file" name="files[]" multiple>
+                                        <!--<input id="fileupload" data-handler="{{url('/post-ad-image')}}" data-removelink="{{url('ajax-remove-img')}}" type="file"  name="files[]" accept="image/x-png,image/gif,image/jpeg" multiple required="">-->
                                     </span>
                                     <br>
                                     <br>

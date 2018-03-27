@@ -7,7 +7,6 @@ use Session;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Hash;
 
-use UploadHandler;
 
 /* Models */
 use App\User;
@@ -23,7 +22,7 @@ class HomeController extends Controller {
         $this->middleware('auth');
 
         //rrmdirifold(base_path("public/images/temp/"));
-        
+
         $this->layout['notification'] = view('site.common.notification');
     }
 
@@ -123,14 +122,14 @@ class HomeController extends Controller {
         return Redirect::to('/account');
     }
 
-
     public function postAd() {
 
         $folder = Session::get('post-image-cache');
-        if(!$folder){
+        if (!$folder) {
             $folder = uniqid();
-            Session::put('post-image-cache',$folder);
+            Session::put('post-image-cache', $folder);
         }
+        
         rrmdir(base_path("public/images/temp/$folder/"));
         //Load Component
         $this->layout['siteContent'] = view('site.pages.postad.form');
@@ -138,25 +137,17 @@ class HomeController extends Controller {
         //return view
         return view('site.master', $this->layout);
     }
-    
+
     public function postAdSubmit(Request $request) {
-        
+
 //        $request->validate([
 //            'name' => 'required|string|max:200'
 //        ]);
-        
+
         echo "<pre>";
         print_r($_POST);
         exit();
-        
     }
-    
-    public function postAdImageHandler() {
-    
-        $upload_handler = new UploadHandler();
-        
-    }
-    
-    
+
 
 }

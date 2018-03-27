@@ -11,7 +11,6 @@
  * https://opensource.org/licenses/MIT
  */
 
-use Symfony\Component\HttpFoundation\Session\Session;
 
 class UploadHandler {
 
@@ -40,13 +39,24 @@ class UploadHandler {
     );
     protected $image_objects = array();
 
-    public function __construct($options = null, $initialize = true, $error_messages = null) {
+    public function __construct( 
+            $options = null, 
+            $initialize = true,
+            $error_messages = null,
+            $folder="default") {
 
-        $folder = Illuminate\Support\Facades\Session::get('post-image-cache');
-        if (!$folder) {
-            $folder = uniqid();
-            Illuminate\Support\Facades\Session::put('post-image-cache',$folder);
-        }
+//        $folder = \Illuminate\Support\Facades\Session::get('post-image-cache');
+//        exit();
+//        $folder = Session::get('post-image-cache');
+//        if (!$folder) {
+//            $folder = uniqid();
+//            Session::put('post-image-cache',$folder);
+//        }        
+//        $folder = $_SESSION['post-image-cache'];
+//        if (!$folder) {
+//            $folder = uniqid();
+//            $_SESSION['post-image-cache'] = $folder;
+//        }
 
         $this->response = array();
         $this->options = array(

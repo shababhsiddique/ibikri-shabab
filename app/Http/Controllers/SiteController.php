@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+
 class SiteController extends Controller {
 
     //Layout holder
@@ -102,8 +103,10 @@ class SiteController extends Controller {
         //
     }
 
-     public function postAdImageHandler() {
-    
+     public function postAdImageHandler() {    
+        
+        error_reporting(E_ALL | E_STRICT);
+        require('../app/Helpers/UploadHandler.php');
         $upload_handler = new UploadHandler();
         
     }
