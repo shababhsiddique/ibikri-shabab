@@ -177,7 +177,7 @@
   min-height: 150px;
   border: 1px dotted rgba(0, 0, 0, 0.3);
   background: white;
-  padding: 20px 20px; }
+  padding: 15px 10px; }
   .dropzone.dz-clickable {
     cursor: pointer; }
     .dropzone.dz-clickable * {
@@ -197,7 +197,7 @@
     position: relative;
     display: inline-block;
     vertical-align: top;
-    margin: 16px;
+    margin: 0px 9px;
     min-height: 100px; }
     .dropzone .dz-preview:hover {
       z-index: 1000; }
@@ -266,10 +266,10 @@
       -webkit-filter: blur(8px);
       filter: blur(8px); }
     .dropzone .dz-preview .dz-image {
-      border-radius: 20px;
+      border-radius: 2px;
       overflow: hidden;
-      width: 120px;
-      height: 120px;
+      width: 100px;
+      height: 100px;
       position: relative;
       display: block;
       z-index: 10; }
@@ -282,7 +282,7 @@
       -o-animation: passing-through 3s cubic-bezier(0.77, 0, 0.175, 1);
       animation: passing-through 3s cubic-bezier(0.77, 0, 0.175, 1); }
     .dropzone .dz-preview.dz-error .dz-error-mark {
-      opacity: 1;
+      opacity: 0.8;
       -webkit-animation: slide-in 3s cubic-bezier(0.77, 0, 0.175, 1);
       -moz-animation: slide-in 3s cubic-bezier(0.77, 0, 0.175, 1);
       -ms-animation: slide-in 3s cubic-bezier(0.77, 0, 0.175, 1);

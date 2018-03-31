@@ -58,6 +58,12 @@ For Database:
 8) Seed database        
         coming soon
 
+tips:
+this file is edited to auto enter new lang lines to json.
+C:\xampp\htdocs\ibikri\vendor\laravel\framework\src\Illuminate\Translation\Translator.php
+
+during production, remove those lines 165 - 171
+
 ## Contributing
 
 If you would like to contribute to this project. Fork it and keep me posted with pull requests.

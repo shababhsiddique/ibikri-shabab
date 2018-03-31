@@ -60,7 +60,9 @@
           <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
           <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
+        <!--stack styles-->
         @stack('styles')
+        <!--stack styles-->
     </head>
     <body class="bn">
         <!-- header -->
@@ -109,6 +111,8 @@
         <script src="{{asset('site-assets/js/jquery.countdown.js')}}"></script>  
         <script src="{{asset('site-assets/js/custom.js')}}"></script>
        
+        <!--stack scripts-->
         @stack('scripts')
+        <!--stack scripts-->
     </body>
 </html>

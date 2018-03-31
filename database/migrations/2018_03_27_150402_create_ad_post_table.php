@@ -17,6 +17,7 @@ class CreateAdPostTable extends Migration
             $table->increments('post_id');
             $table->integer('user_id');
             $table->integer('subcategory_id');
+            $table->string('ad_type');
             $table->string('ad_title');
             $table->string('item_condition');
             $table->string('item_price');

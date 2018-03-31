@@ -17,6 +17,7 @@ class CreatePostImagesTable extends Migration
             $table->increments('postimage_id');
             $table->integer('post_id');
             $table->string('postimage_file');
+            $table->string('postimage_thumbnail');
             $table->timestamps();
         });
     }

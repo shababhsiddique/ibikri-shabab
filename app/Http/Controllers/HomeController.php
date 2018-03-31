@@ -20,12 +20,12 @@ session_start();
 class HomeController extends Controller {
 
     //Layout holder
-    private $layout;    
+    private $layout;
 
     public function __construct() {
         $this->middleware('auth');
 
-              
+
 
         $this->layout['notification'] = view('site.common.notification');
     }
@@ -132,10 +132,17 @@ class HomeController extends Controller {
      */
     public function postAd() {
 
-        $folder = Session::get('post-image-cache');
-        if ($folder) {
-            rrmdir(base_path("public/images/temp/$folder/"));
+        $errors = Session::get('errors');
+        if (isset($errors)) {
+            //This is a validation redirect, dont empty image cache
+        } else {
+            //This is a new form , empty image cache
+            $folder = Session::get('post-image-cache');
+            if ($folder) {
+                rrmdir(base_path("public/images/temp/$folder/"));
+            }
         }
+
 
         //Load Component
         $this->layout['siteContent'] = view('site.pages.postad.form');
@@ -150,9 +157,11 @@ class HomeController extends Controller {
      */
     public function postImageUpload(Request $request) {
 
+        
         $folder = Session::get('post-image-cache');
         if (!$folder) {
-            $folder = uniqid();
+            $user = \Auth::user();
+            $folder = $user->id . "_" . uniqid();
             Session::put('post-image-cache', $folder);
         }
 
@@ -167,6 +176,16 @@ class HomeController extends Controller {
         $success = $files->move($destinationPath, $customName);
 
         if ($success) {
+            
+            /* Save thumbnail to disc*/  
+            $data = $request->thumbnail;
+            $source = fopen($data, 'r');
+            $destination = fopen(base_path("public/images/temp/$folder/thumb_$customName"), 'w');
+            stream_copy_to_stream($source, $destination);
+            fclose($source);
+            fclose($destination);
+            /* Save thumbnail */
+            
             $output = array(
                 $originalName => $customName
             );
@@ -186,13 +205,13 @@ class HomeController extends Controller {
         $folder = Session::get('post-image-cache');
         if ($folder) {
             unlink(base_path("public/images/temp/$folder/$fileToDelete"));
+            unlink(base_path("public/images/temp/$folder/thumb_$fileToDelete"));
             echo "deleted";
         } else {
             echo "session not found";
         }
     }
 
-    
     /**
      * Ad Post Submit Handler
      * @param Request $request
@@ -200,6 +219,7 @@ class HomeController extends Controller {
     public function postAdSubmit(Request $request) {
 
         $request->validate([
+            'ad_type' => 'required',
             'ad_title' => 'required|string|max:200',
             'item_condition' => 'required',
             'subcategory_id' => 'required',
@@ -209,45 +229,63 @@ class HomeController extends Controller {
             'long_description' => 'required|string|max:5000',
             'imagenames' => 'required|string|min:5',
         ]);
-        
+
         $user = \Auth::user();
+
         
-//        
-//        $post = new Post;
-//        
-//        $post->user_id = $user->id;
-//        
-//        $post->ad_title = $request->ad_title;
-//        $post->item_condition = $request->item_condition;
-//        $post->subcategory_id = $request->subcategory_id;
-//        $post->item_price = $request->item_price;
-//        $post->model = $request->model;
-//        $post->short_description = $request->short_description;
-//        $post->long_description = $request->long_description;
-//        
-//        $post->save();
-//        
+        $post = new Post;
         
-        $images = json_decode($request->imagenames);        
+        $post->user_id = $user->id;
+        
+        $post->ad_type = $request->ad_type;
+        $post->ad_title = $request->ad_title;
+        $post->item_condition = $request->item_condition;
+        $post->subcategory_id = $request->subcategory_id;
+        $post->item_price = $request->item_price;
+        $post->model = $request->model;
+        $post->short_description = $request->short_description;
+        $post->long_description = $request->long_description;
+        
+        $post->save();
+        
+
+        $images = json_decode($request->imagenames);
         $folder = Session::get('post-image-cache');
-        
-        foreach($images as $orig => $filename){
+
+        foreach ($images as $orig => $filename) {
 
             $tempPath = base_path("public/images/temp/$folder/$filename");
-            $newPath = base_path("public/images/".$user->id."_".$filename);
-            
+            $newPath = base_path("public/images/" . $user->id . "_" . $filename);
+
             //move file
             rename($tempPath, $newPath);
+            
+            $tempPathThumb = base_path("public/images/temp/$folder/thumb_$filename");
+            $newPathThumb = base_path("public/images/thumb/" . $user->id . "_" . $filename);
+            
+            //move thumbnail
+            rename($tempPathThumb, $newPathThumb);
+            
+            
+            $postImage = new Postimage;
+            $postImage->post_id = $post->post_id;
+            $postImage->postimage_file = "images/" . $user->id . "_" . $filename;
+            $postImage->postimage_thumbnail = "images/thumb/" . $user->id . "_" . $filename;
+            $postImage->save();
         }
 
-        //remove directory
+        //remove temp folder
         rmdir(base_path("public/images/temp/$folder"));
 
-        echo "<pre>";
-        print_r($user->id);
-        print_r($_POST);
-        print_r($_FILES);
-        exit();
+        //Message for Notification Builder
+        Session::put('message', array(
+            'title' => 'Ad Posted',
+            'body' => 'Ad has been posted',
+            'type' => 'success'
+        ));
+        
+        return Redirect::to('/dashboard');
+        
     }
 
 }
