@@ -26,4 +26,10 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+    
+    public function City() {
+        //Each user has a city
+        return $this->hasOne('App\Models\City', 'city_id', 'city_id');
+    }
+
 }

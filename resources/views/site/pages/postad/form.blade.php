@@ -1,17 +1,6 @@
 @extends('site.master')
 @section('siteContent')
 <!-- ad post form -->
-<?php
-//echo "<pre>";
-//echo old('ad_title');
-//echo "</pre>";
-//$request = request();
-//echo "####" . $request->imagenames;
-//if ($request->has('subcategory_id')) {
-//    echo "yay";
-//}
-//exit();
-?>
 <section id="main" class="clearfix ad-details-page">
     <div class="container">
         <div class="breadcrumb-section">
@@ -25,54 +14,39 @@
 
         <div class="adpost-details">
             <div class="row">	
-                <div class="col-md-8">                    
+                <div class="col-md-8">    
+                    @if ($errors->any())
+                    {{ implode('', $errors->all('<div>:message</div>')) }}
+                    @endif
 
                     <fieldset>
                         <div class="section postdetails">
                             <h4>@lang('Sell an item or service') <span class="pull-right">* @lang('Mandatory Fields')</span></h4>
-                            <div class="row form-group">
-                                <label class="col-sm-3 label-title">@lang('Category')</label>
-                                <div class="col-sm-9">                                                                        
-                                    {!! Form::hidden('category_id', null, ['form'=>'new-post-form',  'id' => 'category-selector-parent-value']) !!}
-                                    {!! Form::hidden('subcategory_id', null, ['form'=>'new-post-form',  'id' => 'category-selector-value']) !!}
-                                    <ul class="select-category list-inline">
-                                        <li>
-                                            <a data-toggle="modal" data-target="#popupSelectModal" data-href="{{url('ajax/categories')}}" href="#">
-                                                <span class="select" >
-                                                    <img id="category-selector-image" src='{{asset("images/category/gift_item.png")}}' alt="Images" class="img-responsive">
-                                                </span>
-                                                <span id="category-selector-parent-text">@lang('Please Select')</span>
-                                            </a>
-                                        </li>
-                                        <li class="active">
-                                            <a data-toggle="modal" data-target="#popupSelectModal" data-href="{{url('ajax/categories')}}" href="#" id="category-selector-text"> @lang('Please Select Category') </a>
-                                        </li>
-                                    </ul>
-                                    @if ($errors->has('subcategory_id'))
-                                    <span class="text-danger">
-                                        <i class="fa fa-warning"></i> Please select category
-                                    </span>
-                                    @endif
-                                </div>
-                            </div>
+
                             <div class="row form-group">
                                 <label class="col-sm-3 label-title">@lang('Category')</label>
                                 <div class="col-sm-9">                                                                        
                                     <a class="btn btn-select" data-toggle="modal" data-target="#popupSelectModal" data-href="{{url('ajax/categories')}}" href="#">
-                                        <span id="category-selector-parent-text">@lang('Please Select')</span><span id='category-selector-text' class="change-text">Select Category</span> 
+                                        <img id="category-selector-image" src='{{asset("images/category/gift_item.png")}}' alt="Images">
+                                        <span id="category-selector-parent-text">@lang('Please Select')</span>
+                                        <span>&nbsp;&nbsp; &gt; &nbsp;&nbsp;</span> 
+                                        <span id='category-selector-text' class="change-text">Select Category</span> 
                                         <i class="fa fa-angle-down pull-right"></i>
                                     </a>                                       
-                                    {!! Form::hidden('subcategory_id', null , ['id' => 'category-selector-value']) !!}                                    
+                                    {!! Form::hidden('subcategory_id', null , ['form'=>'new-post-form','id' => 'category-selector-value']) !!}                                    
                                 </div>
                             </div>
                             <div class="row form-group">
                                 <label class="col-sm-3 label-title">@lang('Location')</label>
                                 <div class="col-sm-9">                                                                        
                                     <a class="btn btn-select" data-toggle="modal" data-target="#popupSelectModal" data-href="{{url('ajax/locations')}}" href="#">
-                                        <span id='location-selector-text' class="change-text">Select Location</span> 
+                                        <span id='location-selector-text' class="change-text"><?php
+                                        $columnCity = __('city_title_en');
+                                        echo $userData->city->$columnCity;
+                                        ?></span> 
                                         <i class="fa fa-angle-down pull-right"></i>
                                     </a>                                       
-                                    {!! Form::hidden('city_id', null , ['id' => 'location-selector-value']) !!}
+                                    {!! Form::hidden('city_id', null , ['form'=>'new-post-form','id' => 'location-selector-value']) !!}
                                     @include('site.common.categorymodal')
                                 </div>
                             </div>
@@ -144,7 +118,7 @@
                                     </span>
                                     @endif
                                     <div class="checkbox">
-                                        <label for="negotiable"><input type="checkbox" name="negotiable" value="negotiable" id="negotiable"> @lang('Negotiable')</label>                                    
+                                        <label for="negotiable"><input type="checkbox" form="new-post-form" name="negotiable" value="1" id="negotiable"> @lang('Negotiable')</label>                                    
                                     </div>                                    
                                 </div>
                             </div>                            
@@ -203,7 +177,7 @@
                             <div class="row form-group">
                                 <label class="col-sm-3 label-title">@lang('Mobile Number')<span class="required">*</span></label>
                                 <div class="col-sm-9">
-                                    <input type="text" name="mobileNumber" class="form-control" placeholder="ex, +912457895">
+                                    {!! Form::text('contact_phone', $userData->mobile , ['form'=>'new-post-form', 'class' => 'form-control' ]) !!}                                    
                                 </div>
                             </div>                            
                         </div><!-- section -->

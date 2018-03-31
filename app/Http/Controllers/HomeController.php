@@ -143,9 +143,13 @@ class HomeController extends Controller {
             }
         }
 
+        $authUser = \Auth::user();
+        $userData = User::find($authUser->id);
+
 
         //Load Component
-        $this->layout['siteContent'] = view('site.pages.postad.form');
+        $this->layout['siteContent'] = view('site.pages.postad.form')
+                ->with('userData',$userData);
 
         //return view
         return view('site.master', $this->layout);
@@ -217,12 +221,14 @@ class HomeController extends Controller {
      * @param Request $request
      */
     public function postAdSubmit(Request $request) {
-
+        
+       
         $request->validate([
             'ad_type' => 'required',
             'ad_title' => 'required|string|max:200',
             'item_condition' => 'required',
             'subcategory_id' => 'required',
+            'city_id' => 'required',
             'item_price' => 'required|numeric|min:1',
             'model' => 'required|string|max:100',
             'short_description' => 'required|string|max:300',
@@ -240,13 +246,31 @@ class HomeController extends Controller {
         $post->ad_type = $request->ad_type;
         $post->ad_title = $request->ad_title;
         $post->item_condition = $request->item_condition;
-        $post->subcategory_id = $request->subcategory_id;
+        $post->subcategory_id = $request->subcategory_id;        
         $post->item_price = $request->item_price;
         $post->model = $request->model;
         $post->short_description = $request->short_description;
         $post->long_description = $request->long_description;
         
+        if($request->has('negotiable')){
+            $post->price_negotiable = 1;
+        }else{
+            $post->price_negotiable = 0;
+        }
+        
+        //$post->contact_phone = $request->contact_phone;
+        //$post->city_id = $request->city_id;
+        
         $post->save();
+        
+        
+        //Update mobile and location if changed
+        $userData = User::find($user->id);
+        
+        $userData->mobile = $request->contact_phone;
+        $userData->city_id = $request->city_id;
+        
+        $userData->save();
         
 
         $images = json_decode($request->imagenames);

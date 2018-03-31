@@ -11,7 +11,7 @@
                 <li><a href="{{url('/dashboard')}}">@lang('Home')</a></li>
                 <li>@lang('Account')</li>
             </ol><!-- breadcrumb -->						
-            <h2 class="title">@lang("My Ads")</h2>
+            <h2 class="title">@lang("My Account")</h2>
         </div><!-- banner -->
 
         @include('site.pages.dashboard.menu')			
@@ -76,7 +76,10 @@
                                 <label class="control-label col-sm-3">@lang('Your Location')</label>
                                 <div class="col-sm-9">
                                     <a class="btn btn-select" data-toggle="modal" data-target="#popupSelectModal" data-href="{{url('ajax/locations')}}" href="#">
-                                        <span id='location-selector-text' class="change-text">{{$userData->city_id}}</span> 
+                                        <span id='location-selector-text' class="change-text"><?php
+                                        $columnCity = __('city_title_en');
+                                        echo $userData->city->$columnCity;
+                                        ?></span> 
                                         <i class="fa fa-angle-down pull-right"></i>
                                     </a>                                       
                                     {!! Form::hidden('city_id', $userData->city_id, ['id' => 'location-selector-value']) !!}

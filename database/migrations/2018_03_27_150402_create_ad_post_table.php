@@ -21,6 +21,7 @@ class CreateAdPostTable extends Migration
             $table->string('ad_title');
             $table->string('item_condition');
             $table->string('item_price');
+            $table->tinyInteger('price_negotiable')->default(0);
             $table->string('model');
             $table->string('short_description');
             $table->string('long_description');

@@ -1392,6 +1392,7 @@ a.verified i {
 
 .recommended-cta .single-cta {
     padding: 25px 20px;
+    word-wrap: break-word;
 }
 
 .recommended-cta .single-cta h5 {

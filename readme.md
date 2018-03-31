@@ -61,6 +61,8 @@ For Database:
 tips:
 this file is edited to auto enter new lang lines to json.
 C:\xampp\htdocs\ibikri\vendor\laravel\framework\src\Illuminate\Translation\Translator.php
+easy way to see missing translations is to use a diff tool
+http://www.jsondiff.com/
 
 during production, remove those lines 165 - 171
 

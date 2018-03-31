@@ -16,8 +16,8 @@
     </div><!-- user-profile -->
 
     <ul class="user-menu">        
-        <li class="{{ Request::is('dashboard') ? 'active' : '' }}"><a href="{{url('/dashboard')}}">@lang('My Ads')</a></li>        
-        <li class="{{ Request::is('account') ? 'active' : '' }}"><a href="{{url('/account')}}">@lang('Account Settings')</a></li>
+        <li class="{{ Request::is('*/dashboard') ? 'active' : '' }}"><a href="{{url('/dashboard')}}">@lang('My Ads')</a></li>        
+        <li class="{{ Request::is('*/account') ? 'active' : '' }}"><a href="{{url('/account')}}">@lang('Account Settings')</a></li>
         <li><a href="favourite-ads.html">@lang('Favourites')</a></li>
         <li><a href="archived-ads.html">@lang('Archived')</a></li>
         <li><a href="pending-ads.html">@lang('Pending Approval')</a></li>        
