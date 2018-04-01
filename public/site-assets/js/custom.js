@@ -346,3 +346,27 @@ function verifyTick() {
         return false;
     }
 }
+
+
+$(document).on("click", ".confirmDelete", function (e) {
+    var link = $(this).attr("href"); // "get" the intended link in a var
+    e.preventDefault();
+    bootbox.confirm({
+        message: "<h4><strong>Are you sure you want to delete?</strong></h4>",
+        buttons: {
+            cancel: {
+                label: 'No, Dont delete',
+                className: 'btn-success'
+            },
+            confirm: {
+                label: 'Yes, I am sure',
+                className: 'btn-danger'
+            }
+        },
+        callback: function (result) {
+            if (result) {
+                document.location.href = link; // if result, "set" the document location       
+            }
+        }
+    });
+});

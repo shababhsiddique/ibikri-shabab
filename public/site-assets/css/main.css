@@ -31,7 +31,7 @@
 
 html,
 body {
-    font-family: 'Ubuntu', sans-serif;
+    font-family: 'Ubuntu','Mukti', sans-serif;
     font-weight:400;
     color:#6f6f6f; 
     overflow-x:hidden;
@@ -40,16 +40,16 @@ body {
 }
 
 body.bn {
-    font-family: 'Mukti','Ubuntu', sans-serif;
+    font-family: 'Ubuntu','Mukti', sans-serif;
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: 'Ubuntu', sans-serif;
+    font-family: 'Ubuntu','Mukti', sans-serif;
     font-weight:normal;
 }
 
 body.bn h1, body.bn h3, body.bn h4, body.bn h5, body.bn h6 {
-    font-family: 'Mukti','Ubuntu', sans-serif;
+    font-family: 'Ubuntu','Mukti', sans-serif;
 }
 
 ul {
@@ -59,13 +59,13 @@ ul {
 }
 
 a {
-    font-family: 'Ubuntu', sans-serif;
+    font-family: 'Ubuntu','Mukti', sans-serif;
     color: #00a651;
 }
 
 
 body.bn a {
-    font-family: 'Mukti','Ubuntu', sans-serif;
+    font-family: 'Ubuntu','Mukti', sans-serif;
 }
 
 a, 
@@ -103,7 +103,7 @@ input:focus, textarea:focus, select:focus, .form-control:focus {
 .title {
     line-height: 34px;
     color: #ffffff;
-    font-family: 'Mukti','Ubuntu', sans-serif;
+    font-family: 'Ubuntu','Mukti', sans-serif;
     font-weight: 700;
 }
 
@@ -4125,7 +4125,7 @@ body.modal-open, .modal-open .navbar-fixed-top, .modal-open .navbar-fixed-bottom
     overflow-y: auto;
 }
 body.bn a.list-group-item{
-    font-family: 'Mukti','Ubuntu', sans-serif;  
+    font-family: 'Ubuntu','Mukti', sans-serif;  
 }
 .list-group-item .fa-chevron-right{
     margin-top: 4px !important;

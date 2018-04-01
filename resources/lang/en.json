@@ -99,5 +99,9 @@
     "Your Name": "Your Name",
     "Location": "Location",
     "Category": "Category",
-    "My Account": "My Account"
+    "My Account": "My Account",
+    "Posted On:": "Posted On:",
+    "Visited:": "Visited:",
+    "Edit this ad": "Edit this ad",
+    "Delete this ad": "Delete this ad"
 }

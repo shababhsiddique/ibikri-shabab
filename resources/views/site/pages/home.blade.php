@@ -34,7 +34,7 @@
                             <!--category-change font-family: 'Mukti','Ubuntu', sans-serif;-->
                             <div class="dropdown category-dropdown">						
                                 <a data-toggle="modal" data-target="#popupSelectModal" data-href="{{url('ajax/categories')}}" href="#">
-                                    <span class="change-text" id="category-selector-text"><i class="fa fa-tags"></i> Select Category</span> <i class="fa fa-angle-down"></i>
+                                    <span class="change-text" id="category-selector-text"><i class="fa fa-tags"></i> @lang('Please Select')</span> <i class="fa fa-angle-down"></i>
                                     {!! Form::hidden('subcategory_id', null, ['id' => 'category-selector-value']) !!}
                                 </a>
                             </div><!-- category-change -->
@@ -42,7 +42,7 @@
                             <!-- language-dropdown -->
                             <div class="dropdown category-dropdown language-dropdown ">						
                                 <a data-toggle="modal" data-target="#popupSelectModal" data-href="{{url('ajax/locations')}}" href="#">
-                                    <span class="change-text" id="location-selector-text"><i class="fa fa-map-marker"></i> United Kingdom</span> <i class="fa fa-angle-down"></i>
+                                    <span class="change-text" id="location-selector-text"><i class="fa fa-map-marker"></i> @lang('Please Select')</span> <i class="fa fa-angle-down"></i>
                                     {!! Form::hidden('city_id', null, ['id' => 'location-selector-value']) !!}
                                 </a>
                             </div><!-- language-dropdown -->

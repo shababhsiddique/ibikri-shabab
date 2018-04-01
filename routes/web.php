@@ -33,8 +33,11 @@ Route::group(
     Route::get('/dashboard', 'HomeController@dashboard');
     Route::get('/account', 'HomeController@account');    
     
-    /* Place ad */
+    /* Ad management */
     Route::get('/post-ad', 'HomeController@postAd');
+    Route::get('/edit-ad/{id}', 'HomeController@editAd');
+    Route::get('/delete-ad/{id}', 'HomeController@deleteAd');
+    
 });
 
 /* Form Submits */
@@ -51,7 +54,10 @@ Route::post('/account/update', 'HomeController@accountUpdate');
 
 /*Post Ad*/
 Route::post('/post-ad/submit', 'HomeController@postAdSubmit');
-//Route::post('/post-ad-image', 'HomeController@postImageUpload');
+Route::post('/edit-ad/submit', 'HomeController@editAdSubmit');
+
+/* Edit ad */
+Route::get('/delete-post-image/{id}', 'HomeController@postImageEditRemove');
 //Route::any('/post-ad-image', 'HomeController@postAdImageHandler');
 
 

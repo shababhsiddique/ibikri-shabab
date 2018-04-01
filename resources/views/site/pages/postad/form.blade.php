@@ -16,21 +16,46 @@
             <div class="row">	
                 <div class="col-md-8">    
                     @if ($errors->any())
-                    {{ implode('', $errors->all('<div>:message</div>')) }}
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
                     @endif
 
                     <fieldset>
+                        @if(isset($postData))                        
+                        {!! Form::model($postData,['class' => 'new-post-form','id' => 'new-post-form','url' => 'edit-ad/submit','method' => 'post','enctype'=> 'multipart/form-data']) !!}
+                        <input type="hidden" name="post_id" value="{{$postData->post_id}}" />
+                        @else
+                        {!! Form::open(['class' => 'new-post-form','id' => 'new-post-form', 'url' => 'post-ad/submit','method' => 'post', 'enctype'=>'multipart/form-data']) !!}
+                        @endif
                         <div class="section postdetails">
                             <h4>@lang('Sell an item or service') <span class="pull-right">* @lang('Mandatory Fields')</span></h4>
 
                             <div class="row form-group">
                                 <label class="col-sm-3 label-title">@lang('Category')</label>
-                                <div class="col-sm-9">                                                                        
+                                <div class="col-sm-9">
+                                    <?php
+                                    $columnCat = __('category_title_en');
+                                    $columnSubcat = __('subcategory_title_en');
+
+                                    if (old('subcategory_id')) {
+                                        $subcat = \App\Models\Subcategory::find(old('subcategory_id'));
+                                        $textCategory = $subcat->category->$columnCat;
+                                        $textSubcategory = $subcat->$columnSubcat;
+                                    } else {
+                                        $textCategory = __('Please Select');
+                                        $textSubcategory = __('Please Select');
+                                    }
+                                    ?>
                                     <a class="btn btn-select" data-toggle="modal" data-target="#popupSelectModal" data-href="{{url('ajax/categories')}}" href="#">
                                         <img id="category-selector-image" src='{{asset("images/category/gift_item.png")}}' alt="Images">
-                                        <span id="category-selector-parent-text">@lang('Please Select')</span>
+                                        <span id="category-selector-parent-text">{{$textCategory}}</span>
                                         <span>&nbsp;&nbsp; &gt; &nbsp;&nbsp;</span> 
-                                        <span id='category-selector-text' class="change-text">Select Category</span> 
+                                        <span id='category-selector-text' class="change-text">{{$textSubcategory}}</span> 
                                         <i class="fa fa-angle-down pull-right"></i>
                                     </a>                                       
                                     {!! Form::hidden('subcategory_id', null , ['form'=>'new-post-form','id' => 'category-selector-value']) !!}                                    
@@ -38,23 +63,54 @@
                             </div>
                             <div class="row form-group">
                                 <label class="col-sm-3 label-title">@lang('Location')</label>
-                                <div class="col-sm-9">                                                                        
+                                <div class="col-sm-9">
+                                    <?php
+                                    $columnCity = __('city_title_en');
+                                    if (old('city_id')) {
+                                        //Form validation redirect
+                                        $city = \App\Models\City::find(old('city_id'));
+                                        $city_text = $city->$columnCity;
+                                        $city_id = old('city_id');
+                                    } elseif (isset($userData->city)) {
+                                        //fresh form with users old city
+                                        $city_text = $userData->city->$columnCity;
+                                        $city_id = $userData->city->city_id;
+                                    } else {
+                                        //fresh form user city not given yet
+                                        $city_text = __('Please Select');
+                                        $city_id = null;
+                                    }
+                                    ?>
                                     <a class="btn btn-select" data-toggle="modal" data-target="#popupSelectModal" data-href="{{url('ajax/locations')}}" href="#">
-                                        <span id='location-selector-text' class="change-text"><?php
-                                        $columnCity = __('city_title_en');
-                                        echo $userData->city->$columnCity;
-                                        ?></span> 
+                                        <span id='location-selector-text' class="change-text">{{$city_text}}</span> 
                                         <i class="fa fa-angle-down pull-right"></i>
-                                    </a>                                       
-                                    {!! Form::hidden('city_id', null , ['form'=>'new-post-form','id' => 'location-selector-value']) !!}
+                                    </a>                                                                                                               
+                                    {!! Form::hidden('city_id', $city_id , ['form'=>'new-post-form','id' => 'location-selector-value']) !!}
                                     @include('site.common.categorymodal')
                                 </div>
                             </div>
                             <div class="row form-group">
                                 <label class="col-sm-3">@lang('Type of ad')<span class="required">*</span></label>
                                 <div class="col-sm-9">
-                                    <input type="radio" name="ad_type" form="new-post-form" value="newsell" id="newsell"> <label for="newsell">@lang('I want to sell')</label>
-                                    <input type="radio" name="ad_type" form="new-post-form" value="newbuy" id="newbuy"> <label for="newbuy">@lang('I want to buy')</label>	                                    
+
+                                    <?php if (old('ad_type') == 'newsell') { ?>
+                                        <input type="radio" checked="" name="ad_type" form="new-post-form" value="newsell" id="newsell"> <label for="newsell">@lang('I want to sell')</label>                                    
+                                        <input type="radio" name="ad_type" form="new-post-form" value="newbuy" id="newbuy"> <label for="newbuy">@lang('I want to buy')</label>	                                    
+                                    <?php } else { ?>
+                                        <?php if (isset($postData)) { ?>
+                                            @if($postData->ad_type == 'newsell')
+                                            <input type="radio" checked="" name="ad_type" form="new-post-form" value="newsell" id="newsell"> <label for="newsell">@lang('I want to sell')</label>                                    
+                                            <input type="radio" name="ad_type" form="new-post-form" value="newbuy" id="newbuy"> <label for="newbuy">@lang('I want to buy')</label>	                                    
+                                            @else
+                                            <input type="radio" name="ad_type" form="new-post-form" value="newsell" id="newsell"> <label for="newsell">@lang('I want to sell')</label>                                    
+                                            <input type="radio" checked="" name="ad_type" form="new-post-form" value="newbuy" id="newbuy"> <label for="newbuy">@lang('I want to buy')</label>	                                                                               
+                                            @endif
+                                        <?php } else { ?>
+                                            <input type="radio" name="ad_type" form="new-post-form" value="newsell" id="newsell"> <label for="newsell">@lang('I want to sell')</label>                                    
+                                            <input type="radio" checked="" name="ad_type" form="new-post-form" value="newbuy" id="newbuy"> <label for="newbuy">@lang('I want to buy')</label>	                                    
+                                        <?php } ?>
+                                    <?php } ?>
+
                                     @if ($errors->has('ad_type'))
                                     <br/>
                                     <span class="text-danger">
@@ -74,14 +130,23 @@
                                     @endif                                    
                                 </div>
                             </div>
+
                             <div class="row form-group add-image">
                                 <label class="col-sm-3 label-title">@lang('Photos for your ad') <span class="required">*</span><span>(@lang('This will be your cover photo'))</span> </label>
-                                <div class="col-sm-9">                                                                        
-                                    {!! Form::open(['url' => 'upload','id'=>'dropzoneinst', 'class'=>'dropzone', 'method' => 'post', 'enctype'=>'multipart/form-data']) !!}                                    
-                                    <div class="fallback">
-                                        <input name="file" type="file" multiple />
-                                    </div>                                    
-                                    {!! Form::close() !!}  
+                                <div class="col-sm-9">   
+                                    @if(isset($postData))
+                                    <div class="dropzone dropzone-previews oldimagesdrop">
+                                        @foreach($postData->postimages as $aPostImage)
+                                        <div class="dz-preview dz-image-preview">
+                                            <div class="dz-image"><img data-dz-thumbnail="" alt="20161222_145700.jpg" src="{{asset($aPostImage->postimage_thumbnail)}}"></div> 
+                                            <a class="dz-remove" href="{{url('delete-post-image').'/'.$aPostImage->postimage_id}}">Remove file</a>
+                                        </div>
+                                        @endforeach
+                                    </div>
+                                    @endif
+                                    <div id="uploaded-image-holder" class="dropzone-previews dropzone dz-clickable">
+                                        <div class="dz-default dz-message"><span>Drop files here to upload</span></div>                                        
+                                    </div>
                                     <button id="uploadopenbtn" type="button" class="btn btn-default">Select files for upload.. (max 4)</button>
                                     @if ($errors->has('imagenames'))
                                     <span class="text-danger">
@@ -91,15 +156,20 @@
                                 </div>                                
                             </div>
 
-                            <div class="row form-group select-condition">
+
+                            <div class="row form-group">
                                 <label class="col-sm-3">@lang('Condition')<span class="required">*</span></label>
-                                <div class="col-sm-9">                        
-                                    <input type="radio" form="new-post-form" name="item_condition" value="New" id="new"> 
-                                    <label for="new">@lang('New')</label>
-                                    <input type="radio" form="new-post-form" name="item_condition" value="Used" id="used"> 
-                                    <label for="used">@lang('Used')</label>
+                                <div class="col-sm-9">      
+
+                                    @if(($postData->item_condition??old('item_condition')) == 'New')
+                                    <input type="radio" checked="" form="new-post-form" name="item_condition" value="New" id="new" checked=""> <label for="new">@lang('New')</label>
+                                    <input type="radio" form="new-post-form" name="item_condition" value="Used" id="used"> <label for="used">@lang('Used')</label>
+                                    @else
+                                    <input type="radio" form="new-post-form" name="item_condition" value="New" id="new"> <label for="new">@lang('New')</label>
+                                    <input type="radio" checked="" form="new-post-form" name="item_condition" value="Used" id="used"> <label for="used">@lang('Used')</label>
+                                    @endif
+
                                     @if ($errors->has('item_condition'))
-                                    <br/>
                                     <span class="text-danger">
                                         <i class="fa fa-warning"></i> {{ $errors->first('item_condition') }}
                                     </span>
@@ -166,6 +236,7 @@
                         </div>
                         <!-- section -->
 
+                        @if(!isset($postData))
                         <div class="section seller-info">
                             <h4>Seller Information</h4>
                             <div class="row form-group">
@@ -181,11 +252,13 @@
                                 </div>
                             </div>                            
                         </div><!-- section -->
+                        @endif
 
                         <!--include inline register-->
 
                         <!--include make your ad premium-->
-                        {!! Form::open(['class' => 'new-post-form','id' => 'new-post-form', 'url' => 'post-ad/submit','method' => 'post', 'enctype'=>'multipart/form-data']) !!}
+
+
                         {!! Form::hidden('imagenames', null , ['id' => 'imagenames', 'form'=>'new-post-form', 'class' => 'form-control' ]) !!}
                         <!--<input type="text" id="imagenames" name="imagenames" value="[]" form="new-post-form" style="width: 100%"/>-->
                         <div class="checkbox section agreement">
@@ -197,6 +270,15 @@
                             <button type="submit" onclick="return verifyTick()" class="btn btn-primary">@lang('Post Your Ad')</button>
                         </div><!-- section -->
                         {!! Form::close() !!}
+
+                        <div style="display: none">
+                            {!! Form::open(['url' => 'upload','id'=>'dropzoneinst', 'class'=>'dropzone', 'method' => 'post', 'enctype'=>'multipart/form-data']) !!}                                    
+                            <div class="fallback">
+                                <input name="file" type="file" multiple />
+                            </div>                                    
+                            {!! Form::close() !!}  
+                        </div>
+
                     </fieldset>
 
 
@@ -243,14 +325,16 @@
                                     /* Initiade dropzone */
                                     $("#dropzoneinst").dropzone({
                                         paramName: "file",
+                                        previewsContainer: "#uploaded-image-holder",
                                         maxFiles: 4,
                                         parallelUploads: 4,
                                         acceptedFiles: 'image/png,image/jpg,image/jpeg',
                                         url: "<?php echo url('upload') ?>",
                                         addRemoveLinks: true,
                                         createImageThumbnails: true,
-                                        thumbnailWidth: 120,
-                                        thumbnailHeight: 120,
+                                        thumbnailWidth: 265,
+                                        thumbnailHeight: 177,
+                                        thumbnailMethod: "crop",
                                         autoProcessQueue: false,
                                         init: function () {
                                             thisDropzone = this;
@@ -262,6 +346,10 @@
                                                     delete fileServerNames[file.name];
                                                     $("#imagenames").val(JSON.stringify(fileServerNames));
                                                 });
+                                            });
+                                            this.on("maxfilesexceeded", function (file) {
+                                                makeNotification("warning", "Max files reached", "You are not allowed to upload more than 4 images");
+//                                                this.removeFile(file);
                                             });
                                         },
                                         success: function (file, response) {
@@ -301,8 +389,9 @@
                                         console.log("thumb Appended");
                                     });
 
+
                                     /* Fake button to trigger file upload dialog */
-                                    $("#uploadopenbtn").on("click", function () {
+                                    $("#uploadopenbtn, #uploaded-image-holder").on("click", function () {
                                         $("#dropzoneinst").click();
                                     });
 
@@ -349,6 +438,7 @@ if (old('imagenames')) {
                                     }
                                     return this;
                                 };
+
 </script>
 @endpush
 

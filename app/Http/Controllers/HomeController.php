@@ -36,8 +36,12 @@ class HomeController extends Controller {
      */
     public function dashboard() {
 
+        $userAds = Post::where("user_id", \Auth::user()->id)->get();
+
         //Load Component
-        $this->layout['siteContent'] = view('site.pages.dashboard');
+        $this->layout['siteContent'] = view('site.pages.dashboard')
+                ->with("userAds", $userAds);
+
 
         //return view
         return view('site.master', $this->layout);
@@ -140,6 +144,7 @@ class HomeController extends Controller {
             $folder = Session::get('post-image-cache');
             if ($folder) {
                 rrmdir(base_path("public/images/temp/$folder/"));
+                Session::forget('post-image-cache');
             }
         }
 
@@ -149,7 +154,7 @@ class HomeController extends Controller {
 
         //Load Component
         $this->layout['siteContent'] = view('site.pages.postad.form')
-                ->with('userData',$userData);
+                ->with('userData', $userData);
 
         //return view
         return view('site.master', $this->layout);
@@ -161,7 +166,7 @@ class HomeController extends Controller {
      */
     public function postImageUpload(Request $request) {
 
-        
+
         $folder = Session::get('post-image-cache');
         if (!$folder) {
             $user = \Auth::user();
@@ -180,8 +185,8 @@ class HomeController extends Controller {
         $success = $files->move($destinationPath, $customName);
 
         if ($success) {
-            
-            /* Save thumbnail to disc*/  
+
+            /* Save thumbnail to disc */
             $data = $request->thumbnail;
             $source = fopen($data, 'r');
             $destination = fopen(base_path("public/images/temp/$folder/thumb_$customName"), 'w');
@@ -189,7 +194,7 @@ class HomeController extends Controller {
             fclose($source);
             fclose($destination);
             /* Save thumbnail */
-            
+
             $output = array(
                 $originalName => $customName
             );
@@ -221,14 +226,15 @@ class HomeController extends Controller {
      * @param Request $request
      */
     public function postAdSubmit(Request $request) {
-        
-       
+
+
         $request->validate([
             'ad_type' => 'required',
             'ad_title' => 'required|string|max:200',
             'item_condition' => 'required',
             'subcategory_id' => 'required',
             'city_id' => 'required',
+            'contact_phone' => 'required',
             'item_price' => 'required|numeric|min:1',
             'model' => 'required|string|max:100',
             'short_description' => 'required|string|max:300',
@@ -238,40 +244,40 @@ class HomeController extends Controller {
 
         $user = \Auth::user();
 
-        
+
         $post = new Post;
-        
+
         $post->user_id = $user->id;
-        
+
         $post->ad_type = $request->ad_type;
         $post->ad_title = $request->ad_title;
         $post->item_condition = $request->item_condition;
-        $post->subcategory_id = $request->subcategory_id;        
+        $post->subcategory_id = $request->subcategory_id;
         $post->item_price = $request->item_price;
         $post->model = $request->model;
         $post->short_description = $request->short_description;
         $post->long_description = $request->long_description;
-        
-        if($request->has('negotiable')){
+
+        if ($request->has('negotiable')) {
             $post->price_negotiable = 1;
-        }else{
+        } else {
             $post->price_negotiable = 0;
         }
-        
+
         //$post->contact_phone = $request->contact_phone;
         //$post->city_id = $request->city_id;
-        
+
         $post->save();
-        
-        
+
+
         //Update mobile and location if changed
         $userData = User::find($user->id);
-        
+
         $userData->mobile = $request->contact_phone;
         $userData->city_id = $request->city_id;
-        
+
         $userData->save();
-        
+
 
         $images = json_decode($request->imagenames);
         $folder = Session::get('post-image-cache');
@@ -283,14 +289,14 @@ class HomeController extends Controller {
 
             //move file
             rename($tempPath, $newPath);
-            
+
             $tempPathThumb = base_path("public/images/temp/$folder/thumb_$filename");
             $newPathThumb = base_path("public/images/thumb/" . $user->id . "_" . $filename);
-            
+
             //move thumbnail
             rename($tempPathThumb, $newPathThumb);
-            
-            
+
+
             $postImage = new Postimage;
             $postImage->post_id = $post->post_id;
             $postImage->postimage_file = "images/" . $user->id . "_" . $filename;
@@ -307,9 +313,194 @@ class HomeController extends Controller {
             'body' => 'Ad has been posted',
             'type' => 'success'
         ));
-        
+
         return Redirect::to('/dashboard');
-        
+    }
+
+    /**
+     * Edit Ad Form
+     * @return type
+     */
+    public function editAd($post_id) {
+
+        $errors = Session::get('errors');
+        if (isset($errors)) {
+            //This is a validation redirect, dont empty image cache
+        } else {
+            //This is a new form , empty image cache
+            $folder = Session::get('post-image-cache');
+            if ($folder) {
+                rrmdir(base_path("public/images/temp/$folder/"));
+                Session::forget('post-image-cache');
+            }
+        }
+
+        $authUser = \Auth::user();
+        $userData = User::find($authUser->id);
+        $postData = Post::where("post_id", $post_id)
+                ->where("user_id", $authUser->id)
+                ->first();
+
+//        echo "<pre>";
+//        print_r($postData);
+//        exit();
+        //Load Component
+        $this->layout['siteContent'] = view('site.pages.postad.form')
+                ->with('postData', $postData)
+                ->with('userData', $userData);
+
+        //return view
+        return view('site.master', $this->layout);
+    }
+
+    /**
+     * Remove image from edit post
+     * @param type $id
+     */
+    public function postImageEditRemove($id) {
+
+        $postImage = Postimage::find($id);
+
+        $parentPost = Post::find($postImage->post_id);
+
+        if (sizeof($parentPost->postimages) > 1) {
+            unlink(base_path("public/$postImage->postimage_thumbnail"));
+            unlink(base_path("public/$postImage->postimage_file"));
+
+            $postImage->delete();
+
+            //Message for Notification Builder
+            Session::put('message', array(
+                'title' => 'Ad Image Deleted',
+                'body' => 'image deleted',
+                'type' => 'success'
+            ));
+        } else {
+            //Message for Notification Builder
+            Session::put('message', array(
+                'title' => 'This ad needs atleast 1 image.',
+                'body' => 'add one more image before deleting this',
+                'type' => 'warning'
+            ));
+        }
+
+        return Redirect::to("/edit-ad/$parentPost->post_id");
+    }
+
+    /**
+     * Submit handler for edit
+     * @param Request $request
+     * @return type
+     */
+    public function editAdSubmit(Request $request) {
+
+
+        $request->validate([
+            'ad_type' => 'required',
+            'ad_title' => 'required|string|max:200',
+            'item_condition' => 'required',
+            'subcategory_id' => 'required',
+            'city_id' => 'required',
+            'contact_phone' => 'required',
+            'item_price' => 'required|numeric|min:1',
+            'model' => 'required|string|max:100',
+            'short_description' => 'required|string|max:300',
+            'long_description' => 'required|string|max:5000',
+        ]);
+
+        $user = \Auth::user();
+
+
+        $post = Post::find();
+
+        $post->user_id = $user->id;
+
+        $post->ad_type = $request->ad_type;
+        $post->ad_title = $request->ad_title;
+        $post->item_condition = $request->item_condition;
+        $post->subcategory_id = $request->subcategory_id;
+        $post->item_price = $request->item_price;
+        $post->model = $request->model;
+        $post->short_description = $request->short_description;
+        $post->long_description = $request->long_description;
+
+        if ($request->has('negotiable')) {
+            $post->price_negotiable = 1;
+        } else {
+            $post->price_negotiable = 0;
+        }
+
+        $post->save();
+
+
+        if ($request->has('imagenames')) {
+
+            $images = json_decode($request->imagenames);
+            $folder = Session::get('post-image-cache');
+
+            foreach ($images as $orig => $filename) {
+
+                $tempPath = base_path("public/images/temp/$folder/$filename");
+                $newPath = base_path("public/images/" . $user->id . "_" . $filename);
+
+                //move file
+                rename($tempPath, $newPath);
+
+                $tempPathThumb = base_path("public/images/temp/$folder/thumb_$filename");
+                $newPathThumb = base_path("public/images/thumb/" . $user->id . "_" . $filename);
+
+                //move thumbnail
+                rename($tempPathThumb, $newPathThumb);
+
+
+                $postImage = new Postimage;
+                $postImage->post_id = $post->post_id;
+                $postImage->postimage_file = "images/" . $user->id . "_" . $filename;
+                $postImage->postimage_thumbnail = "images/thumb/" . $user->id . "_" . $filename;
+                $postImage->save();
+            }
+
+            //remove temp folder
+            rmdir(base_path("public/images/temp/$folder"));
+        }
+
+        //Message for Notification Builder
+        Session::put('message', array(
+            'title' => 'Ad Updated',
+            'body' => 'Ad has been updated',
+            'type' => 'success'
+        ));
+
+        return Redirect::to('/dashboard');
+    }
+
+    public function deleteAd($id) {
+
+        $user = \Auth::user();
+
+        $post = Post::where('post_id', $id)
+                ->where('user_id', $user->id)
+                ->first();
+
+        foreach ($post->postimages as $aPostImage) {
+
+            $image = base_path("public/$aPostImage->postimage_file");
+            $thumbnail = base_path("public/$aPostImage->postimage_thumbnail");
+
+            unlink($image);
+            unlink($thumbnail);
+        }
+
+        $post->delete();
+
+//        //Message for Notification Builder
+        Session::put('message', array(
+            'title' => 'Ad Deleted',
+            'body' => 'Ad has been permenently deleted',
+            'type' => 'success'
+        ));
+
+        return Redirect::to('/dashboard');
     }
 
 }

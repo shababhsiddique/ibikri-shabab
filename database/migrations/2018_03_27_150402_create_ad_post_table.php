@@ -23,8 +23,8 @@ class CreateAdPostTable extends Migration
             $table->string('item_price');
             $table->tinyInteger('price_negotiable')->default(0);
             $table->string('model');
-            $table->string('short_description');
-            $table->string('long_description');
+            $table->text('short_description',500);
+            $table->text('long_description',5000);
             $table->timestamps();
         });
     }

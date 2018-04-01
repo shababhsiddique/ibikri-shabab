@@ -52,6 +52,9 @@
 
         <!-- notify -->
         <script src="{{asset('site-assets/plugins/bootstrap-notify/bootstrap-notify.min.js')}}"></script>
+        
+        <!-- bootbox -->
+        <script src="{{asset('site-assets/plugins/bootbox.min.js')}}"></script>
 
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
