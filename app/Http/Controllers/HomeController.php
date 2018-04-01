@@ -36,7 +36,9 @@ class HomeController extends Controller {
      */
     public function dashboard() {
 
-        $userAds = Post::where("user_id", \Auth::user()->id)->get();
+        $userAds = Post::where("user_id", \Auth::user()->id)
+                ->orderBy('post_id','desc')
+                ->get();
 
         //Load Component
         $this->layout['siteContent'] = view('site.pages.dashboard')
@@ -400,8 +402,6 @@ class HomeController extends Controller {
             'ad_title' => 'required|string|max:200',
             'item_condition' => 'required',
             'subcategory_id' => 'required',
-            'city_id' => 'required',
-            'contact_phone' => 'required',
             'item_price' => 'required|numeric|min:1',
             'model' => 'required|string|max:100',
             'short_description' => 'required|string|max:300',
@@ -411,7 +411,7 @@ class HomeController extends Controller {
         $user = \Auth::user();
 
 
-        $post = Post::find();
+        $post = Post::find($request->post_id);
 
         $post->user_id = $user->id;
 
@@ -433,7 +433,7 @@ class HomeController extends Controller {
         $post->save();
 
 
-        if ($request->has('imagenames')) {
+        if (strlen($request->imagenames)>5) {
 
             $images = json_decode($request->imagenames);
             $folder = Session::get('post-image-cache');

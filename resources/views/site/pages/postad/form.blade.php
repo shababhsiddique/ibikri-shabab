@@ -3,6 +3,18 @@
 <!-- ad post form -->
 <section id="main" class="clearfix ad-details-page">
     <div class="container">
+
+        @if(isset($postData))
+        <div class="breadcrumb-section">
+            <!-- breadcrumb -->
+            <ol class="breadcrumb">
+                <li><a href="{{url('/dashboard')}}">@lang('Home')</a></li>
+                <li>@lang('Edit My Ad')</li>
+            </ol><!-- breadcrumb -->						
+            <h2 class="title">@lang('Edit My Ad')</h2>
+        </div><!-- banner -->
+        @include('site.pages.dashboard.menu')	
+        @else
         <div class="breadcrumb-section">
             <!-- breadcrumb -->
             <ol class="breadcrumb">
@@ -11,10 +23,11 @@
             </ol><!-- breadcrumb -->						
             <h2 class="title">@lang('Post Your Ad')</h2>
         </div><!-- banner -->
+        @endif
 
         <div class="adpost-details">
             <div class="row">	
-                <div class="col-md-8">    
+                <div class="col-md-9">    
                     @if ($errors->any())
                     <div class="alert alert-danger">
                         <ul>
@@ -42,8 +55,8 @@
                                     $columnCat = __('category_title_en');
                                     $columnSubcat = __('subcategory_title_en');
 
-                                    if (old('subcategory_id')) {
-                                        $subcat = \App\Models\Subcategory::find(old('subcategory_id'));
+                                    if (old('subcategory_id') || isset($postData)) {
+                                        $subcat = \App\Models\Subcategory::find(old('subcategory_id') ?? $postData->subcategory_id);
                                         $textCategory = $subcat->category->$columnCat;
                                         $textSubcategory = $subcat->$columnSubcat;
                                     } else {
@@ -61,6 +74,7 @@
                                     {!! Form::hidden('subcategory_id', null , ['form'=>'new-post-form','id' => 'category-selector-value']) !!}                                    
                                 </div>
                             </div>
+                            @if(!isset($postData))    
                             <div class="row form-group">
                                 <label class="col-sm-3 label-title">@lang('Location')</label>
                                 <div class="col-sm-9">
@@ -89,27 +103,21 @@
                                     @include('site.common.categorymodal')
                                 </div>
                             </div>
+                            @endif
                             <div class="row form-group">
                                 <label class="col-sm-3">@lang('Type of ad')<span class="required">*</span></label>
                                 <div class="col-sm-9">
 
-                                    <?php if (old('ad_type') == 'newsell') { ?>
-                                        <input type="radio" checked="" name="ad_type" form="new-post-form" value="newsell" id="newsell"> <label for="newsell">@lang('I want to sell')</label>                                    
-                                        <input type="radio" name="ad_type" form="new-post-form" value="newbuy" id="newbuy"> <label for="newbuy">@lang('I want to buy')</label>	                                    
-                                    <?php } else { ?>
-                                        <?php if (isset($postData)) { ?>
-                                            @if($postData->ad_type == 'newsell')
-                                            <input type="radio" checked="" name="ad_type" form="new-post-form" value="newsell" id="newsell"> <label for="newsell">@lang('I want to sell')</label>                                    
-                                            <input type="radio" name="ad_type" form="new-post-form" value="newbuy" id="newbuy"> <label for="newbuy">@lang('I want to buy')</label>	                                    
-                                            @else
-                                            <input type="radio" name="ad_type" form="new-post-form" value="newsell" id="newsell"> <label for="newsell">@lang('I want to sell')</label>                                    
-                                            <input type="radio" checked="" name="ad_type" form="new-post-form" value="newbuy" id="newbuy"> <label for="newbuy">@lang('I want to buy')</label>	                                                                               
-                                            @endif
-                                        <?php } else { ?>
-                                            <input type="radio" name="ad_type" form="new-post-form" value="newsell" id="newsell"> <label for="newsell">@lang('I want to sell')</label>                                    
-                                            <input type="radio" checked="" name="ad_type" form="new-post-form" value="newbuy" id="newbuy"> <label for="newbuy">@lang('I want to buy')</label>	                                    
-                                        <?php } ?>
-                                    <?php } ?>
+                                    @if (old('ad_type') == 'newbuy')
+                                    <input type="radio" name="ad_type" form="new-post-form" value="newsell" id="newsell"> <label for="newsell">@lang('I want to sell')</label>                                    
+                                    <input type="radio" checked="" name="ad_type" form="new-post-form" value="newbuy" id="newbuy"> <label for="newbuy">@lang('I want to buy')</label>	                                    
+                                    @elseif(isset($postData) && ($postData->ad_type == 'newbuy'))
+                                    <input type="radio" name="ad_type" form="new-post-form" value="newsell" id="newsell"> <label for="newsell">@lang('I want to sell')</label>                                    
+                                    <input type="radio" checked="" name="ad_type" form="new-post-form" value="newbuy" id="newbuy"> <label for="newbuy">@lang('I want to buy')</label>	                                    
+                                    @else
+                                    <input type="radio" checked="" name="ad_type" form="new-post-form" value="newsell" id="newsell"> <label for="newsell">@lang('I want to sell')</label>                                    
+                                    <input type="radio" name="ad_type" form="new-post-form" value="newbuy" id="newbuy"> <label for="newbuy">@lang('I want to buy')</label>	                                    
+                                    @endif                                    
 
                                     @if ($errors->has('ad_type'))
                                     <br/>
@@ -161,7 +169,10 @@
                                 <label class="col-sm-3">@lang('Condition')<span class="required">*</span></label>
                                 <div class="col-sm-9">      
 
-                                    @if(($postData->item_condition??old('item_condition')) == 'New')
+                                    @if(old('item_condition') == 'New')
+                                    <input type="radio" checked="" form="new-post-form" name="item_condition" value="New" id="new" checked=""> <label for="new">@lang('New')</label>
+                                    <input type="radio" form="new-post-form" name="item_condition" value="Used" id="used"> <label for="used">@lang('Used')</label>
+                                    @elseif(isset($postData) && ($postData->item_condition == 'New'))
                                     <input type="radio" checked="" form="new-post-form" name="item_condition" value="New" id="new" checked=""> <label for="new">@lang('New')</label>
                                     <input type="radio" form="new-post-form" name="item_condition" value="Used" id="used"> <label for="used">@lang('Used')</label>
                                     @else
@@ -287,7 +298,13 @@
 
 
                 <!-- quick-rules -->	
-                <div class="col-md-4">
+                <div class="col-md-3">
+                    @if(isset($postData)) 
+                    <div class="section quick-rules">
+                        <h4>@lang('Help')</h4>
+                        <p class="lead">@lang('To change location and contact info of your ad visit your ')<a href="{{url('/account')}}">@lang('account settings')</a></p>
+                    </div>
+                    @endif
                     <div class="section quick-rules">
                         <h4>@lang('Quick rules')</h4>
                         <p class="lead">@lang('Posting an ad on ')<a href="#">iBikri.com</a>@lang(' is free! However, all ads must follow our rules'):</p>
@@ -315,7 +332,7 @@
 @endpush                               
 @push('scripts')
 <!-- Dropzone -->
-<script src="{{asset('site-assets/plugins/dropzone/dropzone.js')}}"></script>
+<script type="text/javascript" src="{{asset('site-assets/plugins/dropzone/dropzone.js')}}"></script>
 <script type="text/javascript">
                                 var fileServerNames = new Array;
                                 var thisDropzone;
@@ -326,7 +343,13 @@
                                     $("#dropzoneinst").dropzone({
                                         paramName: "file",
                                         previewsContainer: "#uploaded-image-holder",
-                                        maxFiles: 4,
+                                        maxFiles: <?php
+                                    if (isset($postData)) {
+                                        echo (4 - sizeof($postData->postimages));
+                                    } else {
+                                        echo "4";
+                                    }
+                                    ?>,
                                         parallelUploads: 4,
                                         acceptedFiles: 'image/png,image/jpg,image/jpeg',
                                         url: "<?php echo url('upload') ?>",
@@ -362,6 +385,10 @@
 
                                             fileServerNames = $.extend({}, fileServerNames, obj);
                                             $("#imagenames").val(JSON.stringify(fileServerNames));
+
+                                            window.onbeforeunload = function () {
+                                                return "Are you sure you wish to leave the page?";
+                                            };
 
                                         },
                                         error: function (file, response) {
@@ -438,6 +465,18 @@ if (old('imagenames')) {
                                     }
                                     return this;
                                 };
+
+                                window.onbeforeunload = null;
+
+                                $("#new-post-form").change(function () {
+                                    window.onbeforeunload = function () {
+                                        return "Are you sure you wish to leave the page?";
+                                    };
+                                });
+
+                                
+
+
 
 </script>
 @endpush

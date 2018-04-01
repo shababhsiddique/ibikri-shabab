@@ -10,13 +10,16 @@
 
         <div class="favorites-user">            
             <div class="favorites">
-                <a href="#">18<small>@lang('Ads')</small></a>
+                <a href="#"><?php
+                echo \App\Models\Post::where('user_id',Auth::user()->id)
+                        ->count();
+                ?><small>@lang('Ads')</small></a>
             </div>
         </div>								
     </div><!-- user-profile -->
 
     <ul class="user-menu">        
-        <li class="{{ Request::is('*/dashboard') ? 'active' : '' }}"><a href="{{url('/dashboard')}}">@lang('My Ads')</a></li>        
+        <li class="{{ Request::is('*/dashboard') || Request::is('*/edit-ad/*') ? 'active' : '' }}"><a href="{{url('/dashboard')}}">@lang('My Ads')</a></li>        
         <li class="{{ Request::is('*/account') ? 'active' : '' }}"><a href="{{url('/account')}}">@lang('Account Settings')</a></li>
         <li><a href="favourite-ads.html">@lang('Favourites')</a></li>
         <li><a href="archived-ads.html">@lang('Archived')</a></li>
