@@ -55,7 +55,7 @@
 
     $(document).on("click", ".dtbutton", function () {
         $.get($(this).data('href'), function (data) {
-            oTable.ajax.reload();
+            oTable.ajax.reload(null, false);
         });        
     });
 </script>

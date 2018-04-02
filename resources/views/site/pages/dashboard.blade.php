@@ -35,7 +35,7 @@
                             <div class="item-info col-sm-8">
                                 <!-- ad-info -->
                                 <div class="ad-info">
-                                    <h3 class="item-price">{{$anAd->item_price}} - @lang('BDT')</h3>
+                                    <h3 class="item-price">{{$anAd->item_price}} - @lang('BDT')<span class="label label-<?php if($anAd->status== 1){ echo "success";}else{echo "danger";}?> pull-right">published</span></h3>
                                     <h4 class="item-title"><a href="#">{{$anAd->ad_title}}</a></h4>
                                     <div class="item-cat">
                                         <?php

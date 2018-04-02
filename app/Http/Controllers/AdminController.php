@@ -78,13 +78,13 @@ class AdminController extends Controller {
                             $buttons = "";
                             
                             if($row->status == 1){
-                                $buttons .= "<a class='btn btn-xs btn-warning dtbutton' href='#' data-href='" . url('admin/ads/changeStatus/unpublish') . "/$row->post_id'><i class='fa fa-thumbs-down'></i></a>";
+                                $buttons .= "<button class='btn btn-xs btn-warning dtbutton' data-href='" . url('admin/ads/changeStatus/unpublish') . "/$row->post_id'><i class='fa fa-thumbs-down'></i></button>";
                             }                            
                             elseif($row->status == 0){
-                                $buttons .= "<a class='btn btn-xs btn-success dtbutton' href='#' data-href='" . url('admin/ads/changeStatus/publish') . "/$row->post_id'><i class='fa fa-thumbs-up'></i></a>";
+                                $buttons .= "<button class='btn btn-xs btn-success dtbutton' data-href='" . url('admin/ads/changeStatus/publish') . "/$row->post_id'><i class='fa fa-thumbs-up'></i></button>";
                             }                            
                             
-                            $buttons .= "<a class='btn btn-xs btn-danger  dtbutton' href='#' data-href='" . url('admin/ads/changeStatus/delete') . "/$row->post_id'><i class='fa fa-times'></i></a>";
+                            $buttons .= "<button class='btn btn-xs btn-danger dtbutton' data-href='" . url('admin/ads/changeStatus/delete') . "/$row->post_id'><i class='fa fa-times'></i></button>";
 
                             return "<div class='btn-group'>$buttons</div>";
                         })
