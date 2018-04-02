@@ -21,7 +21,7 @@
                             <th>Short Description</th></th>
                             <th>Status</th>
                             <th>Posted</th>
-                            <th></th>
+                            <th style="min-width: 80px"></th>
                         </tr>
                     </thead>
                 </table>
