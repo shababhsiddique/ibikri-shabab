@@ -5,6 +5,13 @@
             <i class="fa fa-dashboard"></i> <span>Dashboard</span>
         </a>
     </li>
+    
+    <li class="{{ Request::is('admin/ads*') ? 'active' : '' }}">
+        <a href="{{url('admin/ads')}}">
+            <i class="fa fa-telegram"></i> <span>Manage Ads</span>
+        </a>
+    </li>
+    
 
     <li class="treeview {{ ( Request::is('admin/categor*') || Request::is('admin/subcateg*') ) ? 'active menu-open' : '' }}">
         <a href="#">

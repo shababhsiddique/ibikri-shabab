@@ -152,6 +152,7 @@ return [
         /* Manually Added */
         Collective\Html\HtmlServiceProvider::class,
         Mcamara\LaravelLocalization\LaravelLocalizationServiceProvider::class,
+        Yajra\DataTables\DataTablesServiceProvider::class,
         /* Manually Added */
 
         /*
@@ -220,6 +221,7 @@ return [
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
         'LaravelLocalization' => Mcamara\LaravelLocalization\Facades\LaravelLocalization::class,
+        'DataTables' => Yajra\DataTables\Facades\DataTables::class,
         /* Manually Added */
 
     ],

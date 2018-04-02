@@ -386,9 +386,9 @@
                                             fileServerNames = $.extend({}, fileServerNames, obj);
                                             $("#imagenames").val(JSON.stringify(fileServerNames));
 
-                                            window.onbeforeunload = function () {
-                                                return "Are you sure you wish to leave the page?";
-                                            };
+//                                            window.onbeforeunload = function () {
+//                                                return "Are you sure you wish to leave the page?";
+//                                            };
 
                                         },
                                         error: function (file, response) {
@@ -468,13 +468,24 @@ if (old('imagenames')) {
 
                                 window.onbeforeunload = null;
 
-                                $("#new-post-form").change(function () {
-                                    window.onbeforeunload = function () {
-                                        return "Are you sure you wish to leave the page?";
-                                    };
-                                });
+//                                $("#new-post-form").change(function () {
+//
+//                                    if (!submit) {
+//                                        window.onbeforeunload = function () {
+//                                            return "Are you sure you wish to leave the page?";
+//                                        };
+//                                    }else{
+//                                        window.onbeforeunload  = null;
+//                                    }
+//                                });
+//
+//                                var submitted = false;
+//                                $("form").submit(function () {
+//                                    submitted = true;
+//                                });
 
-                                
+
+
 
 
 

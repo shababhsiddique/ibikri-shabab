@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Faker\Factory;
+
 
 class DatabaseSeeder extends Seeder
 {
@@ -10,7 +12,7 @@ class DatabaseSeeder extends Seeder
      * @return void
      */
     public function run()
-    {   
+    {
         //Create Divisions
         $path = base_path('database/seeds/divisions.sql');
         $this->command->info("Seeding $path");
@@ -34,6 +36,25 @@ class DatabaseSeeder extends Seeder
         $this->command->info("Seeding $path");
         DB::unprepared(file_get_contents($path));
         $this->command->info('Sub Categories Seeded!');
+        
+        
+        $faker = Factory::create();
+
+        /* Fake Customers */
+        for ($nc = 0; $nc <= 10; $nc++) {
+//            App\User::create([
+//                
+//            ]);
+//            App\Models\Customer::create([
+//                'customer_name' => $faker->name,
+//                'customer_phone' => $faker->phoneNumber,
+//                'customer_company' => $faker->company,
+//                'customer_email' => $faker->email,
+//                'customer_address' => $faker->address,
+//                'customer_remarks' => "",
+//                'customer_balance' => 0, //$faker->numberBetween(0, 200) * 100,
+//            ]);
+        }
         
     }
 }

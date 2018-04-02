@@ -6,11 +6,14 @@ use Illuminate\Http\Request;
 use Session;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Middleware\CheckAdmin;
+use Illuminate\Support\Facades\Input;
+use DataTables;
 use App\Models\Admin;
 use App\Models\Category;
 use App\Models\Subcategory;
 use App\Models\Division;
 use App\Models\City;
+use App\Models\Post;
 
 session_start();
 
@@ -39,11 +42,91 @@ class AdminController extends Controller {
         return view('admin.master', $this->layout);
     }
 
-    
+    public function adsDatatable() {
+
+        //Load Component
+        $this->layout['adminContent'] = view('admin.partials.ads.datatable');
+
+        //return view
+        return view('admin.master', $this->layout);
+    }
+
+    /**
+     * datatables/getdata handler
+     */
+    public function adsDatatableGetData() {
+
+        $posts = Post::select(['posts.post_id', 'users.name', 'posts.ad_title', 'cities.city_title_en', 'subcategories.subcategory_title_en', 'posts.short_description','posts.status', 'posts.created_at'])
+                ->join('subcategories', 'subcategories.subcategory_id', '=', 'posts.subcategory_id')
+                ->join('users', 'users.id', '=', 'posts.user_id')
+                ->join('cities', 'cities.city_id', '=', 'users.city_id');
+
+
+        return \DataTables::of($posts)
+                        ->editColumn('status', function($row) {
+                            
+                            $status = 'something wrong';
+                            if($row->status == 1){
+                                $status = '<span class="label label-success">Published</span>';
+                            }                            
+                            elseif($row->status == 0){
+                                $status = '<span class="label label-warning">Unpublished</span>';
+                            }
+                            return $status;
+                        })
+                        ->addColumn('actions', function($row) {
+                            $buttons = "";
+                            
+                            if($row->status == 1){
+                                $buttons .= "<a class='btn btn-xs btn-warning dtbutton' href='#' data-href='" . url('admin/ads/changeStatus/unpublish') . "/$row->post_id'><i class='fa fa-thumbs-down'></i></a>";
+                            }                            
+                            elseif($row->status == 0){
+                                $buttons .= "<a class='btn btn-xs btn-success dtbutton' href='#' data-href='" . url('admin/ads/changeStatus/publish') . "/$row->post_id'><i class='fa fa-thumbs-up'></i></a>";
+                            }                            
+                            
+                            $buttons .= "<a class='btn btn-xs btn-danger  dtbutton' href='#' data-href='" . url('admin/ads/changeStatus/delete') . "/$row->post_id'><i class='fa fa-times'></i></a>";
+
+                            return "<div class='btn-group'>$buttons</div>";
+                        })
+                        ->rawColumns(['actions', 'status'])
+                        ->make(true);
+    }
+
+    public function adsChangeStatus($status, $id) {
+
+        $post = Post::find($id);
+
+        switch ($status) {
+            case "publish":
+                $post->status = 1;
+                $post->save();
+                break;
+            case "unpublish":
+                $post->status = 0;
+                $post->save();
+                break;
+            case "delete":
+                foreach ($post->postimages as $aPostImage) {
+                    //remove images
+                    $image = base_path("public/$aPostImage->postimage_file");
+                    $thumbnail = base_path("public/$aPostImage->postimage_thumbnail");
+
+                    unlink($image);
+                    unlink($thumbnail);
+                }
+                $post->delete();
+                break;
+            default:
+                break;
+        }
+        
+        return Redirect::to('admin/ads');
+    }
+
     /**
      * Category Management Start
      */
-    
+
     /**
      * List Category
      * @return type
@@ -140,7 +223,7 @@ class AdminController extends Controller {
 
         if ($request->has('categor_weight')) {
             $category->category_weight = $request->category_weight;
-        }else{
+        } else {
             $category->category_weight = 0;
         }
         $category->category_caption = $request->category_caption;
@@ -205,8 +288,6 @@ class AdminController extends Controller {
         return Redirect::to($redirectUrl);
     }
 
-    
-    
     /**
      * Sub Category Edit Form
      * @param type $subcategory_id
@@ -215,7 +296,7 @@ class AdminController extends Controller {
     public function subcategoryEdit($subcategory_id) {
 
         $oldCategoryData = Subcategory::find($subcategory_id);
-        
+
         //Load Component
         $this->layout['adminContent'] = view('admin.partials.subcategory.form')
                 ->with('oldCategoryData', $oldCategoryData);
@@ -229,7 +310,7 @@ class AdminController extends Controller {
      * @return type
      */
     public function subcategoryCreate() {
-        
+
         //Load Component
         $this->layout['adminContent'] = view('admin.partials.subcategory.form');
 
@@ -243,7 +324,7 @@ class AdminController extends Controller {
      * @return type
      */
     public function subcategorySave(Request $request) {
-        
+
         $redirectUrl = '/admin/subcategory/create';
 
         if (isset($request->subcategory_id)) {
@@ -257,24 +338,23 @@ class AdminController extends Controller {
                 'body' => "Sub Category Info Updated",
                 'type' => 'info'
             ));
-            
-            
+
+
             $validatedData = $request->validate([
                 'parent_category_id' => 'required',
                 'subcategory_title_en' => 'required|string',
                 'subcategory_title_bn' => 'required|string'
             ]);
-            
         } else {
 
-            
+
             $validatedData = $request->validate([
                 'parent_category_id' => 'required',
                 'subcategory_title_en' => 'required|string|unique:subcategories|max:50',
                 'subcategory_title_bn' => 'required|string|unique:subcategories|max:50'
-            ]);       
+            ]);
 
-            
+
             $subcat = new Subcategory;
 
             Session::put('message', array(
@@ -283,7 +363,7 @@ class AdminController extends Controller {
                 'type' => 'success'
             ));
         }
-        
+
 
         $subcat->parent_category_id = $request->parent_category_id;
         $subcat->subcategory_title_en = $request->subcategory_title_en;
@@ -291,7 +371,7 @@ class AdminController extends Controller {
 
         if ($request->has('subcategory_weight')) {
             $subcat->subcategory_weight = $request->subcategory_weight;
-        }else{
+        } else {
             $subcat->subcategory_weight = 0;
         }
         $subcat->subcategory_caption = $request->subcategory_caption;
@@ -300,14 +380,14 @@ class AdminController extends Controller {
 
         return Redirect::to($redirectUrl);
     }
+
     /**
      * Category Management End
      */
-    
-    
     /**
      * Location Management Start
      */
+
     /**
      * List Locations
      * @return type
@@ -323,7 +403,7 @@ class AdminController extends Controller {
         //return view
         return view('admin.master', $this->layout);
     }
-    
+
     /**
      * Show Create Division FOrm
      * @return type
@@ -336,7 +416,7 @@ class AdminController extends Controller {
         //return view
         return view('admin.master', $this->layout);
     }
-    
+
     /**
      * Show Division Edit Form
      * @param type $id
@@ -353,15 +433,15 @@ class AdminController extends Controller {
         //return view
         return view('admin.master', $this->layout);
     }
-    
+
     /**
      * Save Division Data, POST handler
      * @param Request $request
      * @return type
      */
-    public function divisionSave(Request $request){
-        
-        
+    public function divisionSave(Request $request) {
+
+
         $redirectUrl = '/admin/division/create';
 
         if (isset($request->division_id)) {
@@ -372,22 +452,21 @@ class AdminController extends Controller {
                 'division_title_en' => 'required|string',
                 'division_title_bn' => 'required|string'
             ]);
-            
+
             $division = Division::find($request->division_id);
-            
+
             Session::put('message', array(
                 'title' => 'Division Updated',
                 'body' => "Division Info Updated",
                 'type' => 'info'
             ));
-            
         } else {
-            
+
             $validatedData = $request->validate([
                 'division_title_en' => 'required|string|unique:divisions|max:50',
                 'division_title_bn' => 'required|string|unique:divisions|max:50'
-            ]);       
-            
+            ]);
+
             $division = new Division;
 
             Session::put('message', array(
@@ -396,17 +475,17 @@ class AdminController extends Controller {
                 'type' => 'success'
             ));
         }
-        
+
         $division->division_title_en = $request->division_title_en;
         $division->division_title_bn = $request->division_title_bn;
         $division->division_weight = $request->division_weight;
         $division->division_icon = $request->division_icon;
-        
+
         $division->save();
 
         return Redirect::to($redirectUrl);
     }
-    
+
     /**
      * Show Create City Form
      * @return type
@@ -419,7 +498,7 @@ class AdminController extends Controller {
         //return view
         return view('admin.master', $this->layout);
     }
-    
+
     public function cityEdit($id) {
 
         $oldCityData = City::find($id);
@@ -431,10 +510,10 @@ class AdminController extends Controller {
         //return view
         return view('admin.master', $this->layout);
     }
-    
-    public function citySave(Request $request){
-        
-        
+
+    public function citySave(Request $request) {
+
+
         $redirectUrl = '/admin/city/create';
 
         if (isset($request->city_id)) {
@@ -445,22 +524,21 @@ class AdminController extends Controller {
                 'city_title_en' => 'required|string',
                 'city_title_bn' => 'required|string'
             ]);
-            
+
             $city = City::find($request->city_id);
-            
+
             Session::put('message', array(
                 'title' => 'City Updated',
                 'body' => "City Info Updated",
                 'type' => 'info'
             ));
-            
         } else {
-            
+
             $validatedData = $request->validate([
                 'city_title_en' => 'required|string|unique:cities|max:50',
                 'city_title_bn' => 'required|string|unique:cities|max:50'
-            ]);       
-            
+            ]);
+
             $city = new City;
 
             Session::put('message', array(
@@ -468,27 +546,24 @@ class AdminController extends Controller {
                 'body' => "Created New City $request->city_title_en ($request->city_title_bn)",
                 'type' => 'success'
             ));
-            
-            $redirectUrl = '/admin/city/create?division_id='.$request->division_id;
+
+            $redirectUrl = '/admin/city/create?division_id=' . $request->division_id;
         }
-        
+
         $city->city_title_en = $request->city_title_en;
         $city->city_title_bn = $request->city_title_bn;
         $city->city_weight = $request->city_weight;
-        
+
         $city->division_id = $request->division_id;
-        
+
         $city->save();
 
         return Redirect::to($redirectUrl);
     }
-    
-    
+
     /**
      * Location Management End
      */
-
-
     /*
      * Sample page with a table
      */
