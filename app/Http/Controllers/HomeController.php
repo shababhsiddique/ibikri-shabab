@@ -25,8 +25,6 @@ class HomeController extends Controller {
     public function __construct() {
         $this->middleware('auth');
 
-
-
         $this->layout['notification'] = view('site.common.notification');
     }
 
