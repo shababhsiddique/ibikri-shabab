@@ -75,15 +75,30 @@
                             <div class="form-group">
                                 <label class="control-label col-sm-3">@lang('Your Location')</label>
                                 <div class="col-sm-9">
+                                     <?php
+                                    $columnCity = __('city_title_en');
+                                    if (old('city_id')) {
+                                        //Form validation redirect
+                                        $city = \App\Models\City::find(old('city_id'));
+                                        $city_text = $city->$columnCity;
+                                        $city_id = old('city_id');
+                                    } elseif (isset($userData->city)) {
+                                        //fresh form with users old city
+                                        $city_text = $userData->city->$columnCity;
+                                        $city_id = $userData->city->city_id;
+                                    } else {
+                                        //fresh form user city not given yet
+                                        $city_text = __('Please Select');
+                                        $city_id = null;
+                                    }
+                                    ?>
                                     <a class="btn btn-select" data-toggle="modal" data-target="#popupSelectModal" data-href="{{url('ajax/locations')}}" href="#">
-                                        <span id='location-selector-text' class="change-text"><?php
-                                        $columnCity = __('city_title_en');
-                                        echo $userData->city->$columnCity;
-                                        ?></span> 
+                                        <span id='location-selector-text' class="change-text">{{$city_text}}</span> 
                                         <i class="fa fa-angle-down pull-right"></i>
-                                    </a>                                       
-                                    {!! Form::hidden('city_id', $userData->city_id, ['id' => 'location-selector-value']) !!}
+                                    </a>                                                                                                               
+                                    {!! Form::hidden('city_id', $city_id , ['id' => 'location-selector-value']) !!}
                                     @include('site.common.categorymodal')
+                                    
                                 </div>
                             </div>	                            
 

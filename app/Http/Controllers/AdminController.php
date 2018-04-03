@@ -59,7 +59,8 @@ class AdminController extends Controller {
         $posts = Post::select(['posts.post_id', 'users.name', 'posts.ad_title', 'cities.city_title_en', 'subcategories.subcategory_title_en', 'posts.short_description','posts.status', 'posts.created_at'])
                 ->join('subcategories', 'subcategories.subcategory_id', '=', 'posts.subcategory_id')
                 ->join('users', 'users.id', '=', 'posts.user_id')
-                ->join('cities', 'cities.city_id', '=', 'users.city_id');
+                ->join('cities', 'cities.city_id', '=', 'users.city_id')
+                ->orderBy('posts.post_id',"DESC");
 
 
         return \DataTables::of($posts)

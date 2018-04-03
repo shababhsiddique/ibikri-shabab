@@ -22,6 +22,12 @@
                         <h2>@lang('My Ads')</h2>
                         
                         @foreach($userAds as $anAd)
+                        
+                        <?php
+//                        echo '<pre>';
+//                        print_r($anAd->postiamges);
+//                        exit();
+                        ?>
                         <!-- custom-list-item -->
                         <div class="custom-list-item row">
                             <!-- item-image -->

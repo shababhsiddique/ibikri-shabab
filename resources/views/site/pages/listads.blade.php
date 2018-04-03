@@ -11,9 +11,9 @@
             <!-- breadcrumb -->
             <ol class="breadcrumb">
                 <li><a href="index.html">@lang('Home')</a></li>
-                <li>Electronics & Gedget</li>
+                <li>@lang('All Ads')</li>
             </ol><!-- breadcrumb -->						
-            <h2 class="title">Mobile Phones</h2>
+            <h2 class="title">@lang('All Ads')</h2>
         </div>
         <div class="banner">
 

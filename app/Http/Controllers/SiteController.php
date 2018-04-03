@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Models\Post;
 
 class SiteController extends Controller {
 
@@ -45,8 +46,11 @@ class SiteController extends Controller {
      */
     public function allAds() {
         
+        $ads = Post::limit('50')->get();
+        
         //Load Component
-        $this->layout['siteContent'] = view('site.pages.listads');
+        $this->layout['siteContent'] = view('site.pages.listads')
+                ->with('ads',$ads);
 
         //return view
         return view('site.master', $this->layout);
