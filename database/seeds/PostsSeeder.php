@@ -17,10 +17,11 @@ class PostsSeeder extends Seeder {
         $faker = Factory::create();
 
         
-        $this->command->info("Generating 10 fake users..");
+        $numberOfUsers = 500;
+        $this->command->info("Generating $numberOfUsers fake users..");
         /* Fake Users */
         DB::table('Users')->delete();
-        for ($nc = 0; $nc < 10; $nc++) {
+        for ($nc = 0; $nc < $numberOfUsers; $nc++) {
 
             App\User::create([
                 'name' => $faker->name,
@@ -32,13 +33,13 @@ class PostsSeeder extends Seeder {
             ]);
         }
 
-        $numberOfAds = 5000; //<- change this to less numbers if you want less test data
+        $numberOfAds = 3000; //<- change this to less numbers if you want less test data
         $this->command->info("Generating $numberOfAds fake posts..");
 
         /* Fake Ads */
         for ($indx = 1; $indx <= $numberOfAds; $indx++) {
 
-            $rndUser = $faker->numberBetween(1, 10);
+            $rndUser = $faker->numberBetween(1, $numberOfUsers);
             $imgCount = $faker->numberBetween(2, 4);
 
             $types = ['New','Used'];
