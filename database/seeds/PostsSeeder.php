@@ -32,10 +32,11 @@ class PostsSeeder extends Seeder {
             ]);
         }
 
-        $this->command->info("Generating 1000 fake posts..");
+        $numberOfAds = 5000; //<- change this to less numbers if you want less test data
+        $this->command->info("Generating $numberOfAds fake posts..");
 
         /* Fake Ads */
-        for ($indx = 1; $indx <= 1000; $indx++) {
+        for ($indx = 1; $indx <= $numberOfAds; $indx++) {
 
             $rndUser = $faker->numberBetween(1, 10);
             $imgCount = $faker->numberBetween(2, 4);

@@ -56,6 +56,8 @@ class AdSearchController extends Controller {
             return $q->where('cities.city_id', '=', request('city_id'));
         });
         
+        $query->limit(500);
+        
         
         //Load Component
         $this->layout['siteContent'] = view('site.pages.listads')
