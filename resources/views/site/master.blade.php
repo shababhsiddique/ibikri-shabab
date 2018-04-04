@@ -27,10 +27,10 @@
         <!-- font -->
         <link href='https://fonts.googleapis.com/css?family=Ubuntu:400,500,700,300' rel='stylesheet' type='text/css'>
         <link href='https://fonts.googleapis.com/css?family=Signika+Negative:400,300,600,700' rel='stylesheet' type='text/css'>
-        <link href="https://fonts.maateen.me/mukti/font.css" rel="stylesheet">
+        <link href="{{asset('site-assets/css/mukti/font.css')}}" rel="stylesheet">
 
         <!-- icons -->
-        <link rel="icon" href="images/ico/favicon.ico">	
+        <link rel="icon" href="{{asset('site-assets/logo/favicon.ico')}}">	
         <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{asset('site-assets/images/ico/apple-touch-icon-144-precomposed.png')}}">
         <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{{asset('site-assets/images/ico/apple-touch-icon-114-precomposed.png')}}">
         <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{asset('site-assets/images/ico/apple-touch-icon-72-precomposed.html')}}">

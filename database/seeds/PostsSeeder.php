@@ -26,7 +26,8 @@ class PostsSeeder extends Seeder {
                 'name' => $faker->name,
                 'email' => $faker->email,
                 'password' => Hash::make('123456'),
-                'mobile' => $faker->phoneNumber,
+                'mobile' => $faker->phoneNumber,                
+                'user_type' => $faker->numberBetween(0, 1),
                 'city_id' => $faker->numberBetween(1, 64)
             ]);
         }
@@ -34,27 +35,30 @@ class PostsSeeder extends Seeder {
         $this->command->info("Generating 1000 fake posts..");
 
         /* Fake Ads */
-        for ($postId = 1; $postId <= 50; $postId++) {
+        for ($indx = 1; $indx <= 1000; $indx++) {
 
             $rndUser = $faker->numberBetween(1, 10);
-            $imgCount = $faker->numberBetween(1, 3);
+            $imgCount = $faker->numberBetween(2, 4);
 
-            App\Models\Post::create([
+            $types = ['New','Used'];
+            
+            $postId = App\Models\Post::create([
                 'user_id' => $rndUser,
-                'subcategory_id' => $faker->numberBetween(1, 62),
+                'subcategory_id' => $faker->numberBetween(2, 62),
                 'ad_type' => "newsell",
                 'ad_title' => $faker->sentence(6, true),
-                'item_condition' => "New",
+                'item_condition' => $types[$faker->numberBetween(0,1)],
                 'item_price' => $faker->numberBetween(10, 500) * 100,
                 'price_negotiable' => '0',
                 'model' => $faker->sentence(3, true),
                 'status' => 1,
                 'short_description' => $faker->sentence(10, true),
-                'long_description' => $faker->paragraph(2, true)
-            ]);
+                'long_description' => $faker->paragraph(2, true),
+                'created_at' => $faker->dateTimeBetween('-30 days','now')
+            ])->post_id;
 
             /* Fake Ad Images */
-            for ($i = 1; $i < $imgCount; $i++) {
+            for ($i = 1; $i <= $imgCount; $i++) {
 
                 $randomImageFile = $faker->numberBetween(1, 10);
 

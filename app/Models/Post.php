@@ -19,9 +19,9 @@ class Post extends Model
         return $this->hasOne('App\Models\Subcategory', 'subcategory_id', 'subcategory_id');
     }
     
-//    public function User(){
-//        return $this->hasOne('App\User', 'user_id', 'id');
-//    }
+    public function User(){
+        return $this->hasOne('App\User', 'id', 'user_id');
+    }
     
     protected static function boot() {
         parent::boot();

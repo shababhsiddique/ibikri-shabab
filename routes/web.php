@@ -18,7 +18,8 @@ Route::group(
 
     /* Site */
     Route::get('/', 'SiteController@index');
-    Route::get('/all-ads', 'SiteController@allAds');
+    Route::get('/all-ads', 'AdSearchController@allAds');
+    Route::get('/test', 'AdSearchController@test');
 
 
     /* Site Ajax Location and Categories */

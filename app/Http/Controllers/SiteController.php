@@ -39,23 +39,7 @@ class SiteController extends Controller {
         return view('site.ajax.listlocations');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function allAds() {
-        
-        $ads = Post::limit('50')->get();
-        
-        //Load Component
-        $this->layout['siteContent'] = view('site.pages.listads')
-                ->with('ads',$ads);
-
-        //return view
-        return view('site.master', $this->layout);
-    }
-
+    
     /**
      * Store a newly created resource in storage.
      *
