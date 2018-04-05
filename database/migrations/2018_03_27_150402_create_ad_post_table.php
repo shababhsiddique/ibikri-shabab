@@ -19,10 +19,12 @@ class CreateAdPostTable extends Migration
             $table->integer('subcategory_id');
             $table->string('ad_type');
             $table->string('ad_title');
-            $table->string('item_condition');
+            $table->string('item_condition');            
             $table->string('item_price');
             $table->tinyInteger('price_negotiable')->default(0);
-            $table->string('model');
+            $table->string('brand')->nullable();
+            $table->string('model')->nullable();
+            $table->string('delivery')->nullable();
             $table->tinyInteger('status')->default(1); // 1 published, 2 unpublished
             $table->text('short_description',500);
             $table->text('long_description',5000);

@@ -385,6 +385,7 @@ textarea {
     background-repeat: no-repeat;
     background-position: top center;
     background-color: #f7f7f7;
+    background-size: cover;
 }
 
 #main.home-default {
@@ -1716,12 +1717,12 @@ a.verified i {
 }
 
 #product-carousel .carousel-indicators {
-    bottom:-140px;
+    bottom:-100px;
 }
 
 #product-carousel .carousel-indicators li,
 #product-carousel .carousel-indicators li.active {
-    height: 105px;
+    height: 70px;
     width: 107px;
     text-indent: inherit;
     border: none !important;
@@ -4231,4 +4232,16 @@ div.canvas-holder  div.overlay {
     width: 60px !important;
     height: 60px !important;
     background-color: red;
+}
+
+.bold{
+    font-weight: bold !important;
+}
+
+ul.children{
+    padding-left: 40px;
+}
+
+.margin-bottom-60{
+    margin-bottom: 60px !important;
 }

@@ -15,18 +15,20 @@ class PostsSeeder extends Seeder {
     public function run() {
 
         $faker = Factory::create();
+        $faker->locale('en_GB'); 
 
         
         $numberOfUsers = 500;
         $this->command->info("Generating $numberOfUsers fake users..");
         /* Fake Users */
         DB::table('Users')->delete();
+        $pass = Hash::make('123456'); //for all fake user pass is 123456
         for ($nc = 0; $nc < $numberOfUsers; $nc++) {
 
             App\User::create([
                 'name' => $faker->name,
                 'email' => $faker->email,
-                'password' => Hash::make('123456'),
+                'password' => $pass,
                 'mobile' => $faker->phoneNumber,                
                 'user_type' => $faker->numberBetween(0, 1),
                 'city_id' => $faker->numberBetween(1, 64)
@@ -41,6 +43,7 @@ class PostsSeeder extends Seeder {
 
             $rndUser = $faker->numberBetween(1, $numberOfUsers);
             $imgCount = $faker->numberBetween(2, 4);
+            
 
             $types = ['New','Used'];
             
@@ -48,30 +51,32 @@ class PostsSeeder extends Seeder {
                 'user_id' => $rndUser,
                 'subcategory_id' => $faker->numberBetween(2, 62),
                 'ad_type' => "newsell",
-                'ad_title' => $faker->sentence(6, true),
+                'ad_title' => $faker->complexProduct,
                 'item_condition' => $types[$faker->numberBetween(0,1)],
-                'item_price' => $faker->numberBetween(10, 500) * 100,
+                'item_price' => $faker->price(1000, 50000),
                 'price_negotiable' => '0',
-                'model' => $faker->sentence(3, true),
+                'model' => $faker->size." ".$faker->material,
+                'brand' => $faker->company,
+                'delivery' => "In Person",
                 'status' => 1,
-                'short_description' => $faker->sentence(10, true),
-                'long_description' => $faker->paragraph(2, true),
+                'short_description' => $faker->elaborateProduct,
+                'long_description' => $faker->elaborateProduct."<br/><br/>".$faker->realText(1000, true)."<br/><br/><br/>".$faker->realText(1000, true),
                 'created_at' => $faker->dateTimeBetween('-30 days','now')
             ])->post_id;
 
             /* Fake Ad Images */
             for ($i = 1; $i <= $imgCount; $i++) {
 
-                $randomImageFile = $faker->numberBetween(1, 10);
-
                 $filename = uniqid();
-                $tempPath = base_path("public/images/sampleimages/$randomImageFile.jpeg");
+                $randomImageFile = mt_rand(1, 10); 
+                
+                $tempPath = base_path($faker->imageOffline($randomImageFile));
                 $newPath = base_path("public/images/" . $rndUser . "_" . "$filename.jpeg");
 
                 //move file
                 copy($tempPath, $newPath);
 
-                $tempPathThumb = base_path("public/images/sampleimages/$randomImageFile.jpeg");
+                $tempPathThumb = base_path($faker->imageOffline($randomImageFile, true));
                 $newPathThumb = base_path("public/images/thumb/" . $rndUser . "_" . "$filename.jpeg");
 
                 //move thumbnail

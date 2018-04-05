@@ -19,6 +19,8 @@ Route::group(
     /* Site */
     Route::get('/', 'SiteController@index');
     Route::get('/all-ads', 'AdSearchController@allAds');
+    Route::get('/ads-by/{id}/{username}', 'AdSearchController@adsByUser');
+    Route::get('/ad/{id}/{title}', 'AdSearchController@adDetails');
     Route::get('/test', 'AdSearchController@test');
 
 

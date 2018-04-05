@@ -5,7 +5,10 @@
             <div class="list-group">
                 <?php
                 $column = __('division_title_en');
-                $divisions = DB::table('divisions')->orderBy('division_weight')->get();
+                //Cache Divisions
+                $divisions = Cache::rememberForever('divisions', function() {
+                            return DB::table('divisions')->orderBy('division_weight')->get();
+                        });
                 ?>
                 @foreach($divisions as $aDiv)
                 <a class="list-group-item" data-toggle="tab" href="#division{{$aDiv->division_id}}"><i class="{{$aDiv->division_icon}}"></i> &nbsp;&nbsp;<?php echo $aDiv->$column ?><i class="fa fa-chevron-right pull-right"></i></a>
@@ -17,9 +20,12 @@
             <?php
             $columnDistrict = __('city_title_en');
             foreach ($divisions as $aDiv) {
-                $districts = DB::table('cities')
-                        ->where('division_id', $aDiv->division_id)
-                        ->get();
+                //Cache Districts For All Divisions
+                $districts = Cache::rememberForever("div-$aDiv->division_id-cities", function() use ($aDiv) {
+                            return DB::table('cities')
+                                            ->where('division_id', $aDiv->division_id)
+                                            ->get();
+                        });                
 
                 echo '<div class="list-group tab-pane" id="division' . $aDiv->division_id . '">';
                 foreach ($districts as $aDistrict) {

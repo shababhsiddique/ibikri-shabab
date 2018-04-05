@@ -5,7 +5,9 @@
             <div class="list-group">
                 <?php
                 $column = __('category_title_en');
-                $categories = DB::table('categories')->get();
+                $categories = Cache::rememberForever('categories', function() {
+                            return DB::table('categories')->get();
+                        });
                 ?>
                 @foreach($categories as $aCat)
                 <a class="list-group-item" data-toggle="tab" href="#category{{$aCat->category_id}}"><i class="{{$aCat->category_icon}}"></i> &nbsp;&nbsp;<?php echo $aCat->$column ?><i class="fa fa-chevron-right pull-right"></i></a>
@@ -17,47 +19,51 @@
             <?php
             $columnSubcat = __('subcategory_title_en');
             foreach ($categories as $aCat) {
-                $subCategories = DB::table('subcategories')
-                        ->where('parent_category_id', $aCat->category_id)
-                        ->get();
+
+                //Cache sub categories of this category
+                $subCategories = Cache::rememberForever("cat-$aCat->category_id-subcats", function() use ($aCat) {
+                            return DB::table('subcategories')
+                                            ->where('parent_category_id', $aCat->category_id)
+                                            ->get();
+                        });
 
                 echo '<div class="list-group tab-pane" id="category' . $aCat->category_id . '">';
                 foreach ($subCategories as $aSubCat) {
                     ?>
                     <a class="list-group-item" 
                        data-id="{{$aSubCat->subcategory_id}}" 
-                       data-text="<?php echo $aSubCat->$columnSubcat?>" 
-                       
-                       data-parent-id="<?php echo $aCat->category_id?>" 
-                       data-parent-text="<?php echo $aCat->$column?>" 
-                       
+                       data-text="<?php echo $aSubCat->$columnSubcat ?>" 
+
+                       data-parent-id="<?php echo $aCat->category_id ?>" 
+                       data-parent-text="<?php echo $aCat->$column ?>" 
+
                        data-image="{{asset($aCat->category_image)}}" 
-                       data-href="<?php echo url("all-ads/$aSubCat->subcategory_id/0")?>"><?php echo $aSubCat->$columnSubcat?><span class="fa fa-chevron-right pull-right"></span></a>
-                    <?php
+                       data-href="<?php echo url("all-ads/$aSubCat->subcategory_id/0") ?>"><?php echo $aSubCat->$columnSubcat ?><span class="fa fa-chevron-right pull-right"></span></a>
+                        <?php
+                    }
+                    echo '</div>';
                 }
-                echo '</div>';
-            }
-            ?>            
+                ?>            
         </div>
     </div>                            
 </div>
 <script type="text/javascript">
     $("div.category-stage2 .list-group-item").click(function () {
-        var selVal = $(this).data("id");        
+        var selVal = $(this).data("id");
         var selText = $(this).data("text");
-        
+
         var selParentText = $(this).data("parent-text");
         var selParentValue = $(this).data("parent-id");
-        
+
         var selImage = $(this).data("image");
-        
+
         $("#category-selector-value").val(selVal);
         $("#category-selector-text").html(selText);
-        
+
         $("#category-selector-parent-value").val(selParentValue);
         $("#category-selector-parent-text").html(selParentText);
-        
-        $("#category-selector-image").attr('src',selImage);
+
+        $("#category-selector-image").attr('src', selImage);
         $('#popupSelectModal').modal("hide");
     });
 </script>

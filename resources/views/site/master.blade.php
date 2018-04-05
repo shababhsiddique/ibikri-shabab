@@ -100,6 +100,7 @@
         @yield('siteContent')
         <!--site content--> 
 
+        @stack('modals')
 
         @include('site.common.footer')
 

@@ -80,7 +80,6 @@
     "Negotiable": "Negotiable",
     "Brand Name": "Brand Name",
     "Additional": "Additional",
-    "Model": "Model",
     "Description": "Description",
     " characters left": " characters left",
     "By clicking \"Post\", you agree to our ": "By clicking \"Post\", you agree to our ",
@@ -102,6 +101,7 @@
     "My Account": "My Account",
     "Posted On:": "Posted On:",
     "Visited:": "Visited:",
+    "Model" : "Model",
     "Edit this ad": "Edit this ad",
     "Delete this ad": "Delete this ad",
     "Help": "Help",
@@ -111,5 +111,6 @@
     "oh no": "oh no",
     "Something broke and we are so sorry, if this keeps happening please contact us": "Something broke and we are so sorry, if this keeps happening please contact us",
     "We could not find the page you where looking for. now what?": "We could not find the page you where looking for. now what?",
-    "Get Back to": "Get Back to"
+    "Get Back to": "Get Back to",
+    "What are you looking for?" : "What are you looking for ?"
 }

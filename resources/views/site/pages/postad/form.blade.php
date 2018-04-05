@@ -202,8 +202,32 @@
                                         <label for="negotiable"><input type="checkbox" form="new-post-form" name="negotiable" value="1" id="negotiable"> @lang('Negotiable')</label>                                    
                                     </div>                                    
                                 </div>
-                            </div>                            
+                            </div> 
+                            
+                             <div class="row form-group model-name">
+                                <label class="col-sm-3 label-title">@lang('Delivery')</label>
+                                <div class="col-sm-9">
+                                    <?php
+                                    $selectData = [];
+                                    $selectData["In Person"] = __('In Person');
+                                    $selectData["By Post"] = __('By Post');
+                                    ?>
+                                    {{ Form::select('delivery', $selectData, null, ['class' => 'form-control']) }}                                   
+                                </div>
+                            </div>
 
+                            <div class="row form-group model-name">
+                                <label class="col-sm-3 label-title">@lang('Brand')</label>
+                                <div class="col-sm-9">                                    
+                                    {!! Form::text('brand', null , ['form'=>'new-post-form', 'class' => 'form-control' ]) !!}
+                                    @if ($errors->has('brand'))
+                                    <span class="text-danger">
+                                        <i class="fa fa-warning"></i> {{ $errors->first('brand') }}
+                                    </span>
+                                    @endif
+                                </div>
+                            </div>
+                            
                             <div class="row form-group model-name">
                                 <label class="col-sm-3 label-title">@lang('Model')<span class="required">*</span></label>
                                 <div class="col-sm-9">                                    
@@ -345,12 +369,12 @@
                                         previewsContainer: "#uploaded-image-holder",
                                         maxFiles: <?php
                                     if (isset($postData)) {
-                                        echo (4 - sizeof($postData->postimages));
+                                        echo (5 - sizeof($postData->postimages));
                                     } else {
-                                        echo "4";
+                                        echo "5";
                                     }
                                     ?>,
-                                        parallelUploads: 4,
+                                        parallelUploads: 5,
                                         acceptedFiles: 'image/png,image/jpg,image/jpeg',
                                         url: "<?php echo url('upload') ?>",
                                         addRemoveLinks: true,

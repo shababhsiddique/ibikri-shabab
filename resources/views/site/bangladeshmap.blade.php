@@ -130,7 +130,7 @@
             d="M370.267,1793.104c0-2.467-7.859-2.563-6-10   C364.645,1781.595,374.519,1782.476,370.267,1793.104z" />
     </g>
     <path
-        id="BarishalJilla" class="cities mapclickable"
+        id="BarisalJilla" class="cities mapclickable"
         d="M725.628,1481.276l16.521-8.764l16.521-7.508   l5.083-13.768h7.626l2.542-3.754l15.25,3.754l2.542-8.763h8.896l-1.271-7.509l-15.25-2.502l3.813-7.51l6.354,1.25l-1.271-6.256   l-20.336-2.504l-5.082-6.256l-10.168-1.252l1.271-7.512l5.083-3.754l-11.438-13.768h-8.896l-5.083-6.258l-16.521,10.012   l-20.334-3.754l-1.271-5.006h-5.084l-7.625-12.518h-8.896l1.271-12.516l-7.625-10.012v-15.02l11.438-12.516l1.271-6.259   l11.438-6.261l2.541-6.256l11.438-1.252v-15.018l15.251,1.252l5.083-7.511l6.354,2.505l-1.271,30.031l17.792,7.51l10.167-2.505   l6.354-3.755l7.63,5.007l3.813-8.763l15.251-7.508l17.792,3.754l17.793,10.015l12.709,11.263l15.25,6.258l15.251,6.258   l11.438,10.013l7.625,17.521l-7.625,8.762l-12.709,6.256l-21.605,15.021l-11.438,11.264l-1.271,8.762l-15.251,2.506l8.896,13.764   l-3.813,10.014l1.271,11.265l5.084,7.511l-15.252,1.25l-13.979,7.51v8.76l-2.542,8.766l-8.896-2.505l-7.625-1.252l-16.521-7.513   l-8.896,5.008l-1.271,6.262l-15.251,6.256l-1.271-11.266L725.628,1481.276L725.628,1481.276z" />
     <g
         id="Barisal" class="divisions mapclickable">
@@ -329,26 +329,32 @@
     $("#BangladeshSVG .mapclickable").click(function () {
         console.log($(this).attr('id'));
         console.log($(this).attr('class'));
-        console.log($(this).hasClass('.mapclickable'));
         
+        var name = $(this).attr('id');
+
         var divisionIds = [];
-        var cities = [];
         var cityIds = [];
-        
-       
+
+
         <?php
         $divisions = \App\Models\Division::all();
-        
-        foreach($divisions as $aDiv){
+
+        foreach ($divisions as $aDiv) {
             echo "divisionIds['$aDiv->division_title_en'] =  $aDiv->division_id;\n";
         }
-        ?>
-        if($(this).hasClass('divisions')){
-            console.log('was a div');
+        $cities = \App\Models\City::all();
+
+        foreach ($cities as $aCity) {
+            echo "cityIds['$aCity->city_title_en"."Jilla'] =  $aCity->city_id;\n";
         }
-        
-                
-        
-//        window.location.replace('<?php echo url('all-ads')?>');
+        ?>
+
+        if ($(this).attr('class') === 'divisions mapclickable'){
+            window.location.href  = '<?php echo url('all-ads') ?>?division_id='+divisionIds[name]+"&division="+name;
+        }else if ($(this).attr('class') === 'cities mapclickable'){
+            window.location.href  = '<?php echo url('all-ads') ?>?city_id='+cityIds[name]+"&jilla="+name;
+        }
+
+
     });
 </script>

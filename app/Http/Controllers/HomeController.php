@@ -236,7 +236,9 @@ class HomeController extends Controller {
             'city_id' => 'required',
             'contact_phone' => 'required',
             'item_price' => 'required|numeric|min:1',
+            'brand' => 'string|max:100',
             'model' => 'required|string|max:100',
+            'delivery' => 'required|string|max:100',
             'short_description' => 'required|string|max:300',
             'long_description' => 'required|string|max:5000',
             'imagenames' => 'required|string|min:5',
@@ -255,6 +257,8 @@ class HomeController extends Controller {
         $post->subcategory_id = $request->subcategory_id;
         $post->item_price = $request->item_price;
         $post->model = $request->model;
+        $post->brand = $request->brand;
+        $post->delivery = $request->delivery;
         $post->short_description = $request->short_description;
         $post->long_description = $request->long_description;
 
