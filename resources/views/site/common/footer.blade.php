@@ -1,5 +1,5 @@
 <!-- footer -->
-<footer id="footer" class="clearfix">
+<footer id="footer" class="clearfix hidden-print">
     <!-- footer-top -->
     <section class="footer-top clearfix">
         <div class="container">

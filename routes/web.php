@@ -21,6 +21,7 @@ Route::group(
     Route::get('/all-ads', 'AdSearchController@allAds');
     Route::get('/ads-by/{id}/{username}', 'AdSearchController@adsByUser');
     Route::get('/ad/{id}/{title}', 'AdSearchController@adDetails');
+    Route::get('/ad/{id}', 'AdSearchController@adDetails');
     Route::get('/test', 'AdSearchController@test');
 
 
@@ -34,7 +35,10 @@ Route::group(
     /* User */
     Route::get('/home', 'SiteController@index')->name('home');
     Route::get('/dashboard', 'HomeController@dashboard');
+    Route::get('/favourites', 'HomeController@userFavourites');
     Route::get('/account', 'HomeController@account');    
+    
+    
     
     /* Ad management */
     Route::get('/post-ad', 'HomeController@postAd');
@@ -44,11 +48,7 @@ Route::group(
 });
 
 /* Form Submits */
-//Route::post('/upload', function(){
-//    $file = Input::file('file');
-//    $directory = 'uploads/test/';
-//    $upload_success = Input::file('file')->move($directory, $file);
-//});
+
 Route::post('/upload', 'HomeController@postImageUpload');
 Route::post('/upload-delete', 'HomeController@postImageDeleteCache');
 
@@ -63,9 +63,19 @@ Route::post('/edit-ad/submit', 'HomeController@editAdSubmit');
 Route::get('/delete-post-image/{id}', 'HomeController@postImageEditRemove');
 //Route::any('/post-ad-image', 'HomeController@postAdImageHandler');
 
+/* Report an ad */
+Route::post('/report', 'HomeController@reportAd');    
+
+/* Favourite an And */
+Route::get('/favour/{id}', 'HomeController@favourAd');    
 
 
-/* Admin Panel routes */
+
+
+/**
+ * Admin Panel Routes
+ */
+
 Route::get('/administrator', 'AdminLoginController@index');
 Route::post('/admin/authenticate', 'AdminLoginController@verifyUser');
 Route::get('/admin/logout', 'AdminController@logout');
@@ -76,6 +86,16 @@ Route::get('/admin/ads', 'AdminController@adsDatatable');
 Route::get('/admin/ads/getdata', 'AdminController@adsDatatableGetData')->name('datatable/getdata');
 
 Route::get('/admin/ads/changeStatus/{status}/{id}', 'AdminController@adsChangeStatus');
+
+
+/* User Reports Management */
+Route::get('/admin/ad/complains', 'AdminController@reportsDatatable');
+Route::get('/admin/ad/complains/getdata', 'AdminController@reportsDatatableGetData')->name('datatable/getreportdata');
+
+Route::get('/admin/ad/complain/end/{id}', 'AdminController@reportsEnd');
+
+Route::get('/admin/ads/changeStatus/{status}/{id}', 'AdminController@adsChangeStatus');
+
 
 
 /* Category Management */

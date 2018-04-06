@@ -8,9 +8,9 @@
             <!-- breadcrumb -->
             <ol class="breadcrumb">
                 <li><a href="{{url('/dashboard')}}">@lang('Home')</a></li>
-                <li>@lang('Dashboard')</li>
+                <li>@lang('Favourites')</li>
             </ol><!-- breadcrumb -->						
-            <h2 class="title">@lang('My Ads')</h2>
+            <h2 class="title">@lang('My Favourites')</h2>
         </div><!-- banner -->
 
         @include('site.pages.dashboard.menu')			
@@ -19,15 +19,11 @@
             <div class="row">
                 <div class="col-sm-9">
                     <div class=" section">
-                        <h2>@lang('My Ads')</h2>
-                        
-                        @foreach($userAds as $anAd)
-                        
-                        <?php
-//                        echo '<pre>';
-//                        print_r($anAd->postiamges);
-//                        exit();
-                        ?>
+                        <h2>@lang('My Favourites')</h2>
+
+                        @foreach($favAds as $aFav)
+                        <?php $anAd = $aFav->post ?>
+
                         <!-- custom-list-item -->
                         <div class="custom-list-item row">
                             <!-- item-image -->
@@ -41,8 +37,8 @@
                             <div class="item-info col-sm-8">
                                 <!-- ad-info -->
                                 <div class="ad-info">
-                                    <h3 class="item-price">{{$anAd->item_price}} - @lang('BDT')<span class="label label-<?php if($anAd->status== 1){ echo "success";}else{echo "danger";}?> pull-right">published</span></h3>
-                                    <h4 class="item-title"><a href="{{url('ad/'.$anAd->post_id)}}">{{$anAd->ad_title}}</a></h4>
+                                    <h3 class="item-price">{{$anAd->item_price}} - @lang('BDT')</h3>
+                                    <h4 class="item-title"><a href="#">{{$anAd->ad_title}}</a></h4>
                                     <div class="item-cat">
                                         <?php
                                         $columnCategoryTitle = __('category_title_en');
@@ -58,12 +54,13 @@
                                     <div class="meta-content">
                                         <span class="dated">@lang('Posted On:') <a href="#">7 Jan, 16  10:10 pm </a></span>
                                         <span class="visitors">@lang('Visited:') 12</span> 
-                                    </div>										
+                                    </div>
                                     <!-- item-info-right -->
                                     <div class="user-option pull-right">
-                                        <a class="edit-item" href="{{url('/edit-ad/'.$anAd->post_id)}}" data-toggle="tooltip" data-placement="top" title="@lang('Edit this ad')"><i class="fa fa-pencil"></i></a>
-                                        <a class="delete-item confirmDelete"  href="{{url('/delete-ad/'.$anAd->post_id)}}" data-toggle="tooltip" data-placement="top" title="@lang('Delete this ad')"><i class="fa fa-times"></i></a>
-                                    </div><!-- item-info-right -->
+                                        <a href="#" data-toggle="tooltip" data-placement="top" title="{{$anAd->user->city->$city_title}}"><i class="fa fa-map-marker"></i> </a>
+                                        <a class="" href="#" data-toggle="tooltip" data-placement="top" title="{{$usertype[$anAd->user->user_type]}}"><i class="fa fa-{{($aFav->post->user_type == 0)?'user':'suitcase'}}"></i> </a>											
+                                    </div>
+                                    <!-- item-info-right -->
                                 </div><!-- ad-meta -->
                             </div><!-- item-info -->
                         </div>

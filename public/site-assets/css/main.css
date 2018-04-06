@@ -1260,8 +1260,12 @@ a.verified i {
 }
 
 .single-service {
+    float: left;
+    /*display: block;*/
+    min-height: 180px;
+
     display:inline-block;
-    width: 19.6%;
+    width: 20%;
     padding:15px;
     margin-bottom:25px;
 }
@@ -1282,7 +1286,7 @@ a.verified i {
 }
 
 .single-service li a {
-    color: #b5b5b5;
+    color: #7b7b7b;
 }
 
 .single-service li a:hover {
@@ -4244,4 +4248,12 @@ ul.children{
 
 .margin-bottom-60{
     margin-bottom: 60px !important;
+}
+
+h2.price{
+    padding: 11px;
+    width: fit-content;
+    background-color: #14A99B;
+    color: white !important;
+    border-top-right-radius: 21px;
 }

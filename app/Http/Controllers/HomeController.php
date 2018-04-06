@@ -14,6 +14,9 @@ use Illuminate\Http\Testing\File;
 use App\User;
 use App\Models\Post;
 use App\Models\Postimage;
+use App\Models\Report;
+use App\Models\Favourites;
+use View;
 
 session_start();
 
@@ -26,6 +29,17 @@ class HomeController extends Controller {
         $this->middleware('auth');
 
         $this->layout['notification'] = view('site.common.notification');
+        
+        
+        $usertype = [];
+        $usertype[0] = __('Individual');
+        $usertype[1] = __('Dealer');
+        View::share('usertype',$usertype);        
+
+        View::share('category_title',__('category_title_en'));        
+        View::share('subcategory_title',__('subcategory_title_en'));        
+        View::share('division_title',__('division_title_en'));        
+        View::share('city_title',__('city_title_en'));    
     }
 
     /**
@@ -35,12 +49,31 @@ class HomeController extends Controller {
     public function dashboard() {
 
         $userAds = Post::where("user_id", \Auth::user()->id)
-                ->orderBy('post_id','desc')
+                ->orderBy('post_id', 'desc')
                 ->get();
 
         //Load Component
         $this->layout['siteContent'] = view('site.pages.dashboard')
                 ->with("userAds", $userAds);
+
+
+        //return view
+        return view('site.master', $this->layout);
+    }
+
+    /**
+     * Show users favourite ads
+     * @return type
+     */
+    public function userFavourites() {
+
+        $favouriteAds = Favourites::where("user_id", \Auth::user()->id)
+                ->orderBy('post_id', 'desc')
+                ->get();
+
+        //Load Component
+        $this->layout['siteContent'] = view('site.pages.dashboard.favourites')
+                ->with("favAds", $favouriteAds);
 
 
         //return view
@@ -56,7 +89,7 @@ class HomeController extends Controller {
         $userData = User::find(\Auth::user()->id);
 
         //Load Component
-        $this->layout['siteContent'] = view('site.pages.account')->with('userData', $userData);
+        $this->layout['siteContent'] = view('site.pages.dashboard.account')->with('userData', $userData);
 
         //return view
         return view('site.master', $this->layout);
@@ -435,7 +468,7 @@ class HomeController extends Controller {
         $post->save();
 
 
-        if (strlen($request->imagenames)>5) {
+        if (strlen($request->imagenames) > 5) {
 
             $images = json_decode($request->imagenames);
             $folder = Session::get('post-image-cache');
@@ -476,6 +509,11 @@ class HomeController extends Controller {
         return Redirect::to('/dashboard');
     }
 
+    /**
+     * Delete your own ad
+     * @param type $id
+     * @return type
+     */
     public function deleteAd($id) {
 
         $user = \Auth::user();
@@ -503,6 +541,83 @@ class HomeController extends Controller {
         ));
 
         return Redirect::to('/dashboard');
+    }
+
+    /**
+     * Show report form for someones ad
+     */
+    public function reportAd(Request $request) {
+
+        $already = Report::where("post_id", $request->post_id)
+                ->where("user_id", \Auth::user()->id)
+                ->first();
+
+        if ($already) {
+            Session::put('message', array(
+                'title' => 'You Reported this already',
+                'body' => 'Be patient we will see it',
+                'type' => 'warning'
+            ));
+
+            return Redirect::to("ad/$request->post_id");
+        }
+
+        $request->validate([
+            'user_id' => 'required',
+            'post_id' => 'required',
+            'reason' => 'required',
+            'message' => 'required|string|max:500'
+        ]);
+
+        $report = new Report;
+        $report->user_id = \Auth::user()->id;
+        $report->post_id = $request->post_id;
+        $report->reason = $request->reason;
+        $report->message = $request->message;
+        $report->report_status = 0; //0 means new
+        $report->save();
+
+        Session::put('message', array(
+            'title' => 'Ad Reported',
+            'body' => 'We will see your complain shortly',
+            'type' => 'success'
+        ));
+
+        return Redirect::to("ad/$request->post_id");
+    }
+
+    /**
+     * Set this ad as your favourite
+     * @param type $id
+     */
+    public function favourAd($id) {
+
+        $user_id = \Auth::user()->id;
+        $already = Favourites::where("post_id", $id)
+                ->where("user_id", $user_id)
+                ->first();
+        if ($already) {
+            Session::put('message', array(
+                'title' => 'Already in favourite',
+                'body' => 'You can see this ad on your dashboard > favourites',
+                'type' => 'warning'
+            ));
+        } else {
+            $favourite = new Favourites;
+
+            $favourite->user_id = $user_id;
+            $favourite->post_id = $id;
+            $favourite->save();
+
+            Session::put('message', array(
+                'title' => 'Added to favourites',
+                'body' => 'You will see this ad on your dashboard > favourites',
+                'type' => 'success'
+            ));
+        }
+
+
+        return Redirect::to("ad/$id");
     }
 
 }

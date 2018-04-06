@@ -370,3 +370,23 @@ $(document).on("click", ".confirmDelete", function (e) {
         }
     });
 });
+
+$(".popupFacebook").on("click",function(){
+    var href = $(this).data('href');
+    var fbpopup = window.open("https://www.facebook.com/sharer/sharer.php?u="+href, "pop", "width=600, height=400, scrollbars=no");
+    return false;
+});
+
+$(".popupTwitter").on("click",function(){
+    var href = $(this).data('href');
+    var text = $(this).data('text');
+    var twpopup = window.open("https://twitter.com/intent/tweet?url="+href+"&text="+text, "pop", "width=600, height=400, scrollbars=no");
+    return false;
+});
+
+$(".popupGoogle").on("click",function(){
+    var href = $(this).data('href');
+    var text = $(this).data('text');
+    var fbpopup = window.open("https://twitter.com/intent/tweet?url="+href+"&text="+text, "pop", "width=600, height=400, scrollbars=no");
+    return false;
+});

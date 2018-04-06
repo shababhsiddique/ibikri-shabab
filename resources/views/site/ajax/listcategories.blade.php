@@ -6,7 +6,9 @@
                 <?php
                 $column = __('category_title_en');
                 $categories = Cache::rememberForever('categories', function() {
-                            return DB::table('categories')->get();
+                            return DB::table('categories')
+                                    ->orderBy('category_weight','asc')
+                                    ->get();
                         });
                 ?>
                 @foreach($categories as $aCat)
@@ -24,6 +26,7 @@
                 $subCategories = Cache::rememberForever("cat-$aCat->category_id-subcats", function() use ($aCat) {
                             return DB::table('subcategories')
                                             ->where('parent_category_id', $aCat->category_id)
+                                            ->orderBy('subcategory_weight','asc')
                                             ->get();
                         });
 

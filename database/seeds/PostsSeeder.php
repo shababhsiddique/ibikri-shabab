@@ -18,7 +18,7 @@ class PostsSeeder extends Seeder {
         $faker->locale('en_GB'); 
 
         
-        $numberOfUsers = 500;
+        $numberOfUsers = 5;
         $this->command->info("Generating $numberOfUsers fake users..");
         /* Fake Users */
         DB::table('Users')->delete();
@@ -35,7 +35,7 @@ class PostsSeeder extends Seeder {
             ]);
         }
 
-        $numberOfAds = 3000; //<- change this to less numbers if you want less test data
+        $numberOfAds = 100; //<- change this to less numbers if you want less test data
         $this->command->info("Generating $numberOfAds fake posts..");
 
         /* Fake Ads */
@@ -49,7 +49,7 @@ class PostsSeeder extends Seeder {
             
             $postId = App\Models\Post::create([
                 'user_id' => $rndUser,
-                'subcategory_id' => $faker->numberBetween(2, 62),
+                'subcategory_id' => $faker->numberBetween(2, 65),
                 'ad_type' => "newsell",
                 'ad_title' => $faker->complexProduct,
                 'item_condition' => $types[$faker->numberBetween(0,1)],

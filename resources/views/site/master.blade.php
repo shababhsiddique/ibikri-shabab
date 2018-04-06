@@ -1,13 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html prefix="og: http://ogp.me/ns#">
     <head>
+        
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="author" content="Theme Region">
         <meta name="description" content="">
+        
+        
 
         <title>@lang('iBikri') | @lang('Bangladeshs Best Classifieds Portal')</title>
+        @stack('meta')
 
         <!-- CSS -->
         <link rel="stylesheet" href="{{asset('site-assets/bootstrap-3.3.7/css/bootstrap.min.css')}}" >

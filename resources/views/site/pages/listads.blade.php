@@ -5,14 +5,14 @@
 
 <?php
 /* Prep languages */
-$usertype = [];
-$usertype[0] = __('Individual');
-$usertype[1] = __('Dealer');
-
-$category_title = __('category_title_en');
-$subcategory_title = __('subcategory_title_en');
-$division_title = __('division_title_en');
-$city_title = __('city_title_en');
+//$usertype = [];
+//$usertype[0] = __('Individual');
+//$usertype[1] = __('Dealer');
+//
+//$category_title = __('category_title_en');
+//$subcategory_title = __('subcategory_title_en');
+//$division_title = __('division_title_en');
+//$city_title = __('city_title_en');
 
 $currentQuery = Illuminate\Support\Facades\Request::query();
 ?>
@@ -49,7 +49,7 @@ $currentQuery = Illuminate\Support\Facades\Request::query();
                 if ($locationText) {
                     echo "<li>$locationText</li>";
                 }
-                
+
                 $categoryText = false;
                 if (isset($_GET['category_id']) && $_GET['category_id'] != '') {
                     $id = $_GET['category_id'];
@@ -58,7 +58,7 @@ $currentQuery = Illuminate\Support\Facades\Request::query();
                                                 ->where('category_id', $id)
                                                 ->first()->$category_title;
                             });
-                    $headText = $categoryText;                            
+                    $headText = $categoryText;
                 }
                 if (isset($_GET['subcategory_id']) && $_GET['subcategory_id'] != '') {
                     $id = $_GET['subcategory_id'];
@@ -67,19 +67,18 @@ $currentQuery = Illuminate\Support\Facades\Request::query();
                                                 ->where('subcategory_id', $id)
                                                 ->first()->$subcategory_title;
                             });
-                    $headText = $categoryText;                            
+                    $headText = $categoryText;
                 }
                 if ($categoryText) {
                     echo "<li>$categoryText</li>";
                 }
-                
                 ?>
             </ol><!-- breadcrumb -->						
             <h2 class="title"><?php
                 if (sizeof($currentQuery) > 0) {
                     echo $headText;
                 } else {
-                    echo $bigtitle??__('All Ads');
+                    echo $bigtitle ?? __('All Ads');
                 }
                 ?></h2>
         </div>
@@ -117,8 +116,10 @@ $currentQuery = Illuminate\Support\Facades\Request::query();
                                                     $subCats = Cache::rememberForever("cat-$aCategory->category_id-subcats", function() use ($aCategory) {
                                                                 return DB::table('subcategories')
                                                                                 ->where('parent_category_id', $aCategory->category_id)
+                                                                                ->orderBy('subcategory_weight', 'asc')
                                                                                 ->get();
                                                             });
+
                                                     $currentQuery['category_id'] = $aCategory->category_id;
                                                     $query = http_build_query($currentQuery);
                                                     ?>
@@ -132,10 +133,10 @@ $currentQuery = Illuminate\Support\Facades\Request::query();
                                                         $query = http_build_query($currentQuery);
                                                         ?>
                                                         <li class="cat-item"><a class="<?php
-                                                            if (isset($_GET['subcategory_id']) && ($_GET['subcategory_id'] == $aSubcat->subcategory_id)) {
-                                                                echo 'bold';
-                                                            }
-                                                            ?>" href="{{url('all-ads').'?'.$query}}">{{$aSubcat->$subcategory_title}}</a></li>
+                                                    if (isset($_GET['subcategory_id']) && ($_GET['subcategory_id'] == $aSubcat->subcategory_id)) {
+                                                        echo 'bold';
+                                                    }
+                                                        ?>" href="{{url('all-ads').'?'.$query}}">{{$aSubcat->$subcategory_title}}</a></li>
                                                         @endforeach
                                                     </ul>
                                                     <?php

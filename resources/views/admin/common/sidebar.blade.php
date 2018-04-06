@@ -12,6 +12,12 @@
         </a>
     </li>
     
+    <li class="{{ Request::is('admin/ad/complain*') ? 'active' : '' }}">
+        <a href="{{url('admin/ad/complains')}}">
+            <i class="fa fa-warning"></i> <span>Reported Items</span>
+        </a>
+    </li>
+    
 
     <li class="treeview {{ ( Request::is('admin/categor*') || Request::is('admin/subcateg*') ) ? 'active menu-open' : '' }}">
         <a href="#">

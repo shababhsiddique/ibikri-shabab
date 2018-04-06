@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use View;
 
 use App\Models\Post;
 
@@ -16,6 +17,16 @@ class SiteController extends Controller {
 //        $this->middleware(CheckAdmin::class);
         $this->layout['siteContent'] = view('site.pages.home');
         $this->layout['notification'] = view('site.common.notification');
+        
+        $usertype = [];
+        $usertype[0] = __('Individual');
+        $usertype[1] = __('Dealer');
+        View::share('usertype',$usertype);        
+
+        View::share('category_title',__('category_title_en'));        
+        View::share('subcategory_title',__('subcategory_title_en'));        
+        View::share('division_title',__('division_title_en'));        
+        View::share('city_title',__('city_title_en'));    
     }
 
     /**

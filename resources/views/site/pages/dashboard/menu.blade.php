@@ -21,9 +21,9 @@
     <ul class="user-menu">        
         <li class="{{ Request::is('*/dashboard') || Request::is('*/edit-ad/*') ? 'active' : '' }}"><a href="{{url('/dashboard')}}">@lang('My Ads')</a></li>        
         <li class="{{ Request::is('*/account') ? 'active' : '' }}"><a href="{{url('/account')}}">@lang('Account Settings')</a></li>
-        <li><a href="favourite-ads.html">@lang('Favourites')</a></li>
-        <li><a href="archived-ads.html">@lang('Archived')</a></li>
-        <li><a href="pending-ads.html">@lang('Pending Approval')</a></li>        
+        <li class="{{ Request::is('*/favourites') ? 'active' : '' }}"><a href="{{url('/favourites')}}">@lang('Favourites')</a></li>
+        
+<!--        <li><a href="pending-ads.html">@lang('Pending Approval')</a></li>        -->
     </ul>
 
 </div><!-- ad-profile -->

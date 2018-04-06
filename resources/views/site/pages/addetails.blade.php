@@ -1,20 +1,35 @@
 @extends('site.master')
 @section('siteContent')
+@push('meta')
+<meta property="og:url"           content="{{url()->current()}}" />
+<meta property="og:type"          content="website" />
+<meta property="og:title"         content="{{$adDetails->ad_title}}" />
+<meta property="og:description"   content="{{$adDetails->short_description}}" />
+<meta property="og:image"         content="{{asset('$adDetails->postimages->first()->postimage_thumbnail')}}" />
+<style>
+    @media print {
+        div.slide{
+            margin: 0px 0px 20px 0px !important;
+            height: 400px !important;
+        }
+    }
+</style>
+@endpush
 <!-- services-ad -->
 <?php
-$usertype = [];
-$usertype[0] = __('Individual');
-$usertype[1] = __('Dealer');
-
-$category_title = __('category_title_en');
-$subcategory_title = __('subcategory_title_en');
-$city_title = __('city_title_en');
-$division_title = __('division_title_en');
+//$usertype = [];
+//$usertype[0] = __('Individual');
+//$usertype[1] = __('Dealer');
+//
+//$category_title = __('category_title_en');
+//$subcategory_title = __('subcategory_title_en');
+//$city_title = __('city_title_en');
+//$division_title = __('division_title_en');
 ?>
 <!-- main -->
 <section id="main" class="clearfix details-page">
     <div class="container">
-        <div class="breadcrumb-section">
+        <div class="breadcrumb-section  hidden-print">
             <!-- breadcrumb -->
             <ol class="breadcrumb">
                 <li><a href="{{url('/')}}">@lang('Home')</a></li>                
@@ -32,7 +47,7 @@ $division_title = __('division_title_en');
                 <div class="col-md-7 margin-bottom-60" >
                     <div id="product-carousel" class="carousel slide" data-ride="carousel">
                         <!-- Indicators -->
-                        <ol class="carousel-indicators">
+                        <ol class="carousel-indicators hidden-print">
                             @foreach($adDetails->postimages as $indx => $aPostImage)
                             <li data-target="#product-carousel" data-slide-to="{{$indx}}" class="{{($indx?'':'active')}}">
                                 <img src="{{asset($aPostImage->postimage_thumbnail)}}" alt="Thumbnail" class="img-responsive">
@@ -67,7 +82,8 @@ $division_title = __('division_title_en');
                 <div class="col-md-5">
 
                     <div class="slider-text">
-                        <h2>{{$adDetails->item_price}} @lang('BDT')</h2>
+                        
+                        <h2 class="price">{{$adDetails->item_price}} @lang('BDT')</h2>
                         <h3 class="title">{{$adDetails->ad_title}}</h3>
                         <p>
                             <span><a href="{{url('all-ads').'?category_id='.$adDetails->subcategory->category->category_id}}">{{$adDetails->subcategory->category->$category_title}}</a>/&nbsp;&nbsp;<a href="{{url('all-ads').'?subcategory_id='.$adDetails->subcategory->subcategory_id}}">{{$adDetails->subcategory->$subcategory_title}}</a></span>
@@ -80,32 +96,31 @@ $division_title = __('division_title_en');
                         <!-- short-info -->
                         <div class="short-info">
                             <h4>@lang("Short Info")</h4>
+                            <h4 class="visible-print">{{$adDetails->user->mobile}}</h4>
                             <p><strong>@lang("Condition"): </strong><a href="#">{{__($adDetails->item_condition)}}</a> </p>
                             <p><strong>@lang("Model"): </strong><a href="#">{{$adDetails->model}}</a></p>
+                            <p><strong>@lang("Delivery"): </strong><a href="#">{{__($adDetails->delivery)}}</a></p>
                             <p>{{$adDetails->short_description}}</p>
                         </div><!-- short-info -->
 
                         <!-- contact-with -->
-                        <div class="contact-with">
+                        <div class="contact-with hidden-print">
                             <h4>@lang("Contact with") </h4>
                             <span class="btn btn-red show-number">
                                 <i class="fa fa-phone-square"></i>
                                 <span class="hide-text">@lang("Click to show phone number") </span> 
                                 <span class="hide-number">{{$adDetails->user->mobile}}</span>
                             </span>
-                            <a href="#" class="btn"><i class="fa fa-envelope-square"></i>@lang("Reply by email")</a>
+                            <a href="#" class="btn "><i class="fa fa-envelope-square"></i>@lang("Reply by email")</a>
                         </div><!-- contact-with -->
 
                         <!-- social-links -->
-                        <div class="social-links">
+                        <div class="social-links hidden-print">
                             <h4>@lang("Share this ad")</h4>
+
                             <ul class="list-inline">
-                                <li><a href="#"><i class="fa fa-facebook-square"></i></a></li>
-                                <li><a href="#"><i class="fa fa-twitter-square"></i></a></li>
-                                <li><a href="#"><i class="fa fa-google-plus-square"></i></a></li>
-                                <li><a href="#"><i class="fa fa-linkedin-square"></i></a></li>
-                                <li><a href="#"><i class="fa fa-pinterest-square"></i></a></li>
-                                <li><a href="#"><i class="fa fa-tumblr-square"></i></a></li>
+                                <li><a class="popupFacebook" data-href="{{url()->current()}}" href="#"><i class="fa fa-facebook-square"></i></a></li>
+                                <li><a class="popupTwitter" data-href="{{url()->current()}}" data-text='check it out {{$adDetails->ad_title}} at {{$adDetails->item_price}}-Tk @ibikri.com' href="#"><i class="fa fa-twitter-square"></i></a></li>
                             </ul>
                         </div>
                         <!-- social-links -->						
@@ -122,7 +137,7 @@ $division_title = __('division_title_en');
                         <h4>@lang("Description")</h4>
                         {!! $adDetails->long_description !!}
                     </div>
-                    <div class="section recommended-ads">
+                    <div class="section recommended-ads hidden-print">
                         <div class="featured-top">
                             <h4>@lang("Similar Products")</h4>
                         </div>
@@ -167,16 +182,14 @@ $division_title = __('division_title_en');
 
                 <!-- description-short-info -->
                 <div class="col-md-4">					
-                    <div class="short-info">
-                        <h4>@lang("Short Info")</h4>
-                        <!-- social-icon -->
+                    <div class="short-info hidden-print">
+                        <br/>
                         <ul>
-                            <li><i class="fa fa-shopping-cart"></i><a href="#">@lang("Delivery"): {{__($adDetails->delivery)}}</a></li>
-                            <li><i class="fa fa-user-plus"></i><a href="{{url('ads-by').'/'.$adDetails->user->id.'/'.$adDetails->user->name}}">@lang("More ads by") <span>{{$adDetails->user->name}}</span></a></li>
-                            <li><i class="fa fa-print"></i><a href="#">@lang("Print this ad")</a></li>
+                            <li><i class="fa fa-user-plus"></i><a href="{{url('ads-by').'/'.$adDetails->user->id.'/'.$adDetails->user->name}}">@lang("Ads by") <span>{{$adDetails->user->name}}</span></a></li>
+                            <li><i class="fa fa-print"></i><a href="#" onclick="javascript:window.print();">@lang("Print this ad")</a></li>
                             <li><i class="fa fa-reply"></i><a href="#">@lang("Send to a friend")</a></li>
-                            <li><i class="fa fa-heart-o"></i><a href="#">@lang("Save ad as Favorite")</a></li>
-                            <li><i class="fa fa-exclamation-triangle"></i><a href="#">@lang("Report this ad")</a></li>
+                            <li><i class="fa fa-heart-o"></i><a href="{{url('favour/'.$adDetails->post_id)}}">@lang("Save ad as Favorite")</a></li>
+                            <li><i class="fa fa-exclamation-triangle"></i><a data-toggle="modal" data-target="#reportModal" href="#">@lang("Report this ad")</a></li>                            
                         </ul>
                         <!-- social-icon -->
                     </div>
@@ -187,5 +200,5 @@ $division_title = __('division_title_en');
     </div><!-- container -->
 </section><!-- main -->
 
-
+@include('site.modal.report', ['adDetails' => $adDetails])
 @endsection

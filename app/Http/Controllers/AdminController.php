@@ -14,6 +14,8 @@ use App\Models\Subcategory;
 use App\Models\Division;
 use App\Models\City;
 use App\Models\Post;
+use App\Models\Report;
+use Cache;
 
 session_start();
 
@@ -26,6 +28,8 @@ class AdminController extends Controller {
     public function __construct() {
         $this->middleware(CheckAdmin::class);
 
+        Cache::flush();
+        
         $this->layout['adminNotification'] = view('admin.common.notification');
     }
 
@@ -42,6 +46,10 @@ class AdminController extends Controller {
         return view('admin.master', $this->layout);
     }
 
+    /**
+     * Show Posts in Datatable
+     * @return type
+     */
     public function adsDatatable() {
 
         //Load Component
@@ -56,35 +64,33 @@ class AdminController extends Controller {
      */
     public function adsDatatableGetData() {
 
-        $posts = Post::select(['posts.post_id', 'users.name', 'posts.ad_title', 'cities.city_title_en', 'subcategories.subcategory_title_en', 'posts.short_description','posts.status', 'posts.created_at'])
+        $posts = Post::select(['posts.post_id', 'users.name', 'posts.ad_title', 'cities.city_title_en', 'subcategories.subcategory_title_en', 'posts.short_description', 'posts.status', 'posts.created_at'])
                 ->join('subcategories', 'subcategories.subcategory_id', '=', 'posts.subcategory_id')
                 ->join('users', 'users.id', '=', 'posts.user_id')
                 ->join('cities', 'cities.city_id', '=', 'users.city_id')
-                ->orderBy('posts.post_id',"DESC");
+                ->orderBy('posts.post_id', "DESC");
 
 
         return \DataTables::of($posts)
                         ->editColumn('status', function($row) {
-                            
+
                             $status = 'something wrong';
-                            if($row->status == 1){
+                            if ($row->status == 1) {
                                 $status = '<span class="label label-success">Published</span>';
-                            }                            
-                            elseif($row->status == 0){
+                            } elseif ($row->status == 0) {
                                 $status = '<span class="label label-warning">Unpublished</span>';
                             }
                             return $status;
                         })
                         ->addColumn('actions', function($row) {
                             $buttons = "";
-                            
-                            if($row->status == 1){
+
+                            if ($row->status == 1) {
                                 $buttons .= "<button class='btn btn-xs btn-warning dtbutton' data-href='" . url('admin/ads/changeStatus/unpublish') . "/$row->post_id'><i class='fa fa-thumbs-down'></i></button>";
-                            }                            
-                            elseif($row->status == 0){
+                            } elseif ($row->status == 0) {
                                 $buttons .= "<button class='btn btn-xs btn-success dtbutton' data-href='" . url('admin/ads/changeStatus/publish') . "/$row->post_id'><i class='fa fa-thumbs-up'></i></button>";
-                            }                            
-                            
+                            }
+
                             $buttons .= "<button class='btn btn-xs btn-danger dtbutton' data-href='" . url('admin/ads/changeStatus/delete') . "/$row->post_id'><i class='fa fa-times'></i></button>";
 
                             return "<div class='btn-group'>$buttons</div>";
@@ -120,7 +126,82 @@ class AdminController extends Controller {
             default:
                 break;
         }
-        
+
+        return Redirect::to('admin/ads');
+    }
+
+    /**
+     * Show Posts in Datatable
+     * @return type
+     */
+    public function reportsDatatable() {
+
+        //Load Component
+        $this->layout['adminContent'] = view('admin.partials.reports.datatable');
+
+        //return view
+        return view('admin.master', $this->layout);
+    }
+
+    /**
+     * datatables/getdata handler
+     */
+    public function reportsDatatableGetData() {
+
+        $reports = Report::select([
+                    'reports.report_id',
+                    'users.name',
+                    'posts.ad_title',
+                    'posts.status',
+                    'posts.post_id',
+                    'reports.reason',
+                    'reports.message',
+                    'reports.created_at'
+                ])
+                ->join('users', 'users.id', '=', 'reports.user_id')
+                ->join('posts', 'posts.post_id', '=', 'reports.post_id')
+                ->where('report_status', '=', 0)
+                ->orderBy('reports.report_id', "DESC");
+
+
+        return \DataTables::of($reports)
+                        ->editColumn('status', function($row) {
+
+                            $status = 'something wrong';
+                            if ($row->status == 1) {
+                                $status = '<span class="label label-success">Published</span>';
+                            } elseif ($row->status == 0) {
+                                $status = '<span class="label label-warning">Unpublished</span>';
+                            }
+                            return $status;
+                        })
+                        ->addColumn('actions', function($row) {
+                            $buttons = "";
+
+                            /* View Complain */
+                            $buttons .= "<button id='external' class='btn btn-xs btn-primary dtbutton' data-href='" . url('ad') . "/$row->report_id/report'><i class='fa fa-eye'></i></button>";
+
+                            if ($row->status == 1) {
+                                $buttons .= "<button class='btn btn-xs btn-warning dtbutton' data-href='" . url('admin/ads/changeStatus/unpublish') . "/$row->post_id'><i class='fa fa-thumbs-down'></i></button>";
+                            } elseif ($row->status == 0) {
+                                $buttons .= "<button class='btn btn-xs btn-success dtbutton' data-href='" . url('admin/ads/changeStatus/publish') . "/$row->post_id'><i class='fa fa-thumbs-up'></i></button>";
+                            }
+
+                            /* End Report */
+                            $buttons .= "<button class='btn btn-xs btn-danger dtbutton confirmalert' data-href='" . url('admin/ad/complain/end') . "/$row->report_id'><i class='fa fa-times'></i></button>";
+
+                            return "<div class='btn-group'>$buttons</div>";
+                        })
+                        ->rawColumns(['actions', 'status'])
+                        ->make(true);
+    }
+
+    public function reportsEnd($id) {
+
+        $report = Report::find($id);
+        $report->report_status = 1;
+        $report->save();
+
         return Redirect::to('admin/ads');
     }
 
@@ -222,11 +303,7 @@ class AdminController extends Controller {
 
         $category->category_icon = $request->category_icon;
 
-        if ($request->has('categor_weight')) {
-            $category->category_weight = $request->category_weight;
-        } else {
-            $category->category_weight = 0;
-        }
+        $category->category_weight = $request->category_weight;
         $category->category_caption = $request->category_caption;
 
 

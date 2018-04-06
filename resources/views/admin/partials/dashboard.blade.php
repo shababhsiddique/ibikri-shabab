@@ -3,12 +3,12 @@
 @section('adminContent')
 
 <div class="row">
-    <div class="col-lg-3 col-xs-6">
+    <div class="col-md-4 col-xs-12">
         <!-- small box -->
         <a href="#test" class="small-box bg-aqua">
             <div class="inner">
                 <h3>--</h3>
-                <p>Total Sales</p>
+                <p>Total Ads</p>
             </div>
             <div class="icon">
                 <i class="ion ion-bag"></i>
@@ -17,13 +17,13 @@
         </a>
     </div>
     <!-- ./col -->
-    <div class="col-lg-3 col-xs-6">
+    <div class="col-md-4 col-xs-12">
         <!-- small box -->
         <a href="{{url('/products')}}"  class="small-box bg-green">
             <div class="inner">
                 <h3>100<sup style="font-size: 20px"></sup></h3>
 
-                <p>Total Products</p>
+                <p>Total Users</p>
             </div>
             <div class="icon">
                 <i class="fa fa-square-o"></i>
@@ -32,13 +32,13 @@
         </a>
     </div>
     <!-- ./col -->
-    <div class="col-lg-3 col-xs-6">
+    <div class="col-md-4 col-xs-12">
         <!-- small box -->
         <a href="{{url('/customers')}}"  class="small-box bg-yellow">
             <div class="inner">
                 <h3>50</h3>
 
-                <p>Total Clients</p>
+                <p>People Watching</p>
             </div>
             <div class="icon">
                 <i class="ion ion-person-stalker"></i>
@@ -47,21 +47,7 @@
         </a>
     </div>
     <!-- ./col -->
-    <div class="col-lg-3 col-xs-6">
-        <!-- small box -->
-        <a href="#test"  class="small-box bg-red">
-            <div class="inner">
-                <h3>--</h3>
-
-                <p>Recievings</p>
-            </div>
-            <div class="icon">
-                <i class="ion ion-pie-graph"></i>
-            </div>
-            <span class="small-box-footer">Reports&nbsp;&nbsp;<i class="fa fa-arrow-circle-right"></i></span>
-        </a>
-    </div>
-    <!-- ./col -->
+    
 </div>
 
 
@@ -193,66 +179,6 @@
 </div>
 <!-- /.row -->
 
-
-<!-- Info boxes -->
-<div class="row">
-    <div class="col-md-3 col-sm-6 col-xs-12">
-
-        <a href="#sale" class="info-box">
-            <span class="info-box-icon bg-blue"><i class="ion ion-ios-cart"></i></span>
-
-            <div class="info-box-content">
-                <h2><strong>New Sale <i class="fa fa-plus-circle"></i></strong></h2>
-            </div>
-            <!-- /.info-box-content -->
-        </a>
-        <!-- /.info-box -->
-    </div>
-    <!-- /.col -->
-    <div class="col-md-3 col-sm-6 col-xs-12">
-        <a href="{{url('/product-create')}}" class="info-box">
-            <span class="info-box-icon bg-green"><i class="ion ion-archive"></i></span>
-
-            <div class="info-box-content">
-                <h2><strong>New Product <i class="fa fa-plus-circle"></i></strong></h2>
-            </div>
-            <!-- /.info-box-content -->
-        </a>
-        <!-- /.info-box -->
-    </div>
-    <!-- /.col -->
-
-    <!-- fix for small devices only -->
-    <div class="clearfix visible-sm-block"></div>
-
-    <div class="col-md-3 col-sm-6 col-xs-12">
-        <a href="{{url('/customer-create')}}" class="info-box">
-            <span class="info-box-icon bg-yellow"><i class="ion ion-ios-person"></i></span>
-
-            <div class="info-box-content">
-                <h2><strong>New Client <i class="fa fa-plus-circle"></i></strong></h2>
-            </div>
-            <!-- /.info-box-content -->
-        </a>
-        <!-- /.info-box -->
-    </div>
-    <!-- /.col -->
-
-    <div class="col-md-3 col-sm-6 col-xs-12">
-        <a href="#report" class="info-box">
-            <span class="info-box-icon bg-red"><i class="ion ion-ios-paper"></i></span>
-
-            <div class="info-box-content">
-                <h2><strong>View Reports</strong></h2>
-            </div>
-            <!-- /.info-box-content -->
-        </a>
-        <!-- /.info-box -->
-    </div>
-    <!-- /.col -->
-
-</div>
-<!-- /.row -->
 
 <!-- Morris.js charts -->
 <!--<script src="{{asset('assets/components/raphael/raphael.min.js')}}"></script>-->
