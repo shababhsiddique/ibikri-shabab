@@ -6,7 +6,6 @@
             <!-- single-cta -->						
             <div class="single-cta">                                
                 <h4>{{ Auth::user()->name }}</h4>
-                <p>Description</p>
                 <h4>@lang('Email Address')</h4>
                 <p>{{ Auth::user()->email }}</p>
                 <h4>@lang('Mobile Number')</h4>

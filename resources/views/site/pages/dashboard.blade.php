@@ -23,17 +23,12 @@
                         
                         @foreach($userAds as $anAd)
                         
-                        <?php
-//                        echo '<pre>';
-//                        print_r($anAd->postiamges);
-//                        exit();
-                        ?>
                         <!-- custom-list-item -->
                         <div class="custom-list-item row">
                             <!-- item-image -->
                             <div class="item-image-box col-sm-4">
                                 <div class="item-image">
-                                    <a href="details.html"><img src="{{asset($anAd->postimages->first()->postimage_thumbnail)}}" alt="Image" class="img-responsive"></a>
+                                    <a href="{{url('ad/'.$anAd->post_id)}}"><img src="{{asset($anAd->postimages->first()->postimage_thumbnail)}}" alt="Image" class="img-responsive"></a>
                                 </div><!-- item-image -->
                             </div>
 
@@ -41,7 +36,7 @@
                             <div class="item-info col-sm-8">
                                 <!-- ad-info -->
                                 <div class="ad-info">
-                                    <h3 class="item-price">{{$anAd->item_price}} - @lang('BDT')<span class="label label-<?php if($anAd->status== 1){ echo "success";}else{echo "danger";}?> pull-right">published</span></h3>
+                                    <h3 class="item-price">{{currency($anAd->item_price,'BDT')}}<span class="label label-<?php if($anAd->status== 1){ echo "success";}else{echo "danger";}?> pull-right">published</span></h3>
                                     <h4 class="item-title"><a href="{{url('ad/'.$anAd->post_id)}}">{{$anAd->ad_title}}</a></h4>
                                     <div class="item-cat">
                                         <?php
@@ -56,8 +51,8 @@
                                 <!-- ad-meta -->
                                 <div class="ad-meta">
                                     <div class="meta-content">
-                                        <span class="dated">@lang('Posted On:') <a href="#">7 Jan, 16  10:10 pm </a></span>
-                                        <span class="visitors">@lang('Visited:') 12</span> 
+                                        <span class="dated">@lang('Posted On:') <a href="#">{{ formatDateLocalized($anAd->created_at) }}</a></span>
+                                        <span class="visitors">@lang('Visited:') {{number($anAd->views)}}</span> 
                                     </div>										
                                     <!-- item-info-right -->
                                     <div class="user-option pull-right">

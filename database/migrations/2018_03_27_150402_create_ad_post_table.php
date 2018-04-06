@@ -28,6 +28,7 @@ class CreateAdPostTable extends Migration
             $table->tinyInteger('status')->default(1); // 1 published, 2 unpublished
             $table->text('short_description',500);
             $table->text('long_description',5000);
+            $table->integer('views')->default(0);
             $table->timestamps();
         });
     }

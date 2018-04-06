@@ -153,6 +153,16 @@ class AdSearchController extends Controller {
         //return view
         return view('site.master', $this->layout);
     }
+    
+    /**
+     * 
+     * @param type $id
+     */
+    public function ajaxView($id){
+        $post = Post::find($id);
+        $post->views = $post->views + 1;
+        $post->save();
+    }
 
     public function test() {
 

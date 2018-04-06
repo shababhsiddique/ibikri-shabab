@@ -154,6 +154,7 @@ return [
         Collective\Html\HtmlServiceProvider::class,
         Mcamara\LaravelLocalization\LaravelLocalizationServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
+        Propaganistas\LaravelIntl\IntlServiceProvider::class,
         /* Manually Added */
 
         /*

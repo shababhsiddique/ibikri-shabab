@@ -293,7 +293,7 @@ jQuery(function ($) {
 function makeNotification(nType, nTitle, nMessage) {
 
     var nIcon = '';
-    
+
     switch (nType) {
         case 'info':
             nIcon = "fa fa-bell-o";
@@ -304,7 +304,7 @@ function makeNotification(nType, nTitle, nMessage) {
         case 'danger':
             nIcon = "fa fa-exclamation-circle";
             break;
-            
+
         default:
             nIcon = "fa fa-bell-o";
             break;
@@ -313,7 +313,7 @@ function makeNotification(nType, nTitle, nMessage) {
     $.notify({
         /* options */
         icon: nIcon,
-        title: '<strong>'+nTitle+'</strong>',
+        title: '<strong>' + nTitle + '</strong>',
         message: nMessage
     }, {
         /* settings */
@@ -371,22 +371,34 @@ $(document).on("click", ".confirmDelete", function (e) {
     });
 });
 
-$(".popupFacebook").on("click",function(){
+$(".popupFacebook").on("click", function () {
     var href = $(this).data('href');
-    var fbpopup = window.open("https://www.facebook.com/sharer/sharer.php?u="+href, "pop", "width=600, height=400, scrollbars=no");
+    var fbpopup = window.open("https://www.facebook.com/sharer/sharer.php?u=" + href, "pop", "width=600, height=400, scrollbars=no");
     return false;
 });
 
-$(".popupTwitter").on("click",function(){
+$(".popupTwitter").on("click", function () {
     var href = $(this).data('href');
     var text = $(this).data('text');
-    var twpopup = window.open("https://twitter.com/intent/tweet?url="+href+"&text="+text, "pop", "width=600, height=400, scrollbars=no");
+    var twpopup = window.open("https://twitter.com/intent/tweet?url=" + href + "&text=" + text, "pop", "width=600, height=400, scrollbars=no");
     return false;
 });
 
-$(".popupGoogle").on("click",function(){
+$(".popupGoogle").on("click", function () {
     var href = $(this).data('href');
     var text = $(this).data('text');
-    var fbpopup = window.open("https://twitter.com/intent/tweet?url="+href+"&text="+text, "pop", "width=600, height=400, scrollbars=no");
+    var fbpopup = window.open("https://twitter.com/intent/tweet?url=" + href + "&text=" + text, "pop", "width=600, height=400, scrollbars=no");
     return false;
+});
+
+function prodView(url) {
+    setTimeout(function () {
+        $.ajax({
+            url: url,
+            type: "GET"
+        });
+    }, 10000);
+}
+$("div#product-infos").load(function () {
+    console.log("time to update");
 });

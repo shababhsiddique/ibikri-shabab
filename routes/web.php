@@ -27,7 +27,7 @@ Route::group(
 
     /* Site Ajax Location and Categories */
     Route::get('/ajax/categories', 'SiteController@ajaxCategoryModal');
-    Route::get('/ajax/locations', 'SiteController@ajaxLocationModal');
+    Route::get('/ajax/locations', 'SiteController@ajaxLocationModal');    
 
     
     Auth::routes();
@@ -59,6 +59,7 @@ Route::post('/account/update', 'HomeController@accountUpdate');
 Route::post('/post-ad/submit', 'HomeController@postAdSubmit');
 Route::post('/edit-ad/submit', 'HomeController@editAdSubmit');
 
+
 /* Edit ad */
 Route::get('/delete-post-image/{id}', 'HomeController@postImageEditRemove');
 //Route::any('/post-ad-image', 'HomeController@postAdImageHandler');
@@ -68,6 +69,9 @@ Route::post('/report', 'HomeController@reportAd');
 
 /* Favourite an And */
 Route::get('/favour/{id}', 'HomeController@favourAd');    
+
+/* Update View Count */
+Route::get('/ajax/view/{id}', 'AdSearchController@ajaxView');
 
 
 

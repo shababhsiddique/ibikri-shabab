@@ -111,5 +111,17 @@
     "oh no": "এ কি হলো!",
     "Something broke and we are so sorry, if this keeps happening please contact us": "কিছু একটা সমস্যা হয়েছে আমাদের, যদি এরকম হতে থাকে বারবার তাহলে আমাদের ইমেইল করে জানাবেন",
     "We could not find the page you where looking for. now what?": "আপনি যে পেইজ টা খুজছেন তা পাওয়া যাচ্ছে না। এখন কি করার?",
-    "Get Back to": "ফিরে যান -"
+    "Get Back to": "ফিরে যান -",
+	"Jan" : "জানুয়ারি",
+	"Feb" : "ফেব্রুয়ারি",
+	"Mar" : "মার্চ",
+	"Apr" : "এপ্রিল",
+	"May" : "মে",
+	"Jun" : "জুন",
+	"Jul" : "জুলাই",
+	"Aug" : "আগস্ট",
+	"Sep" : "সেপ্টেম্বার",
+	"Oct" : "অক্টোবর",
+	"Nov" : "নভেম্বর",
+	"Dec" : "ডিসেম্বর"
 }

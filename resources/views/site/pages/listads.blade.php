@@ -238,16 +238,17 @@ $currentQuery = Illuminate\Support\Facades\Request::query();
                     </div>
                 </div><!-- accordion-->
 
-                <!-- recommended-ads -->
+                
                 <div class="col-md-8 col-sm-7 ">				
                     <div class="section recommended-ads">
                         <!-- featured-top -->
                         <div class="featured-top">
+                            <h5></h5>						
                             <!--Showing {{sizeof($ads)}} results-->
                             <div class="dropdown pull-right">
                                 <!-- category-change -->
-                                <div class="dropdown category-dropdown">
-                                    <h5>Sort by:</h5>						
+                                
+                                <div class="dropdown category-dropdown">                                    
                                     <a data-toggle="dropdown" href="#"><span class="change-text">Newest</span><i class="fa fa-caret-square-o-down"></i></a>
                                     <ul class="dropdown-menu category-change">
                                         <li><a href="#">Featured</a></li>
@@ -266,7 +267,7 @@ $currentQuery = Illuminate\Support\Facades\Request::query();
                             <div class="item-image-box col-sm-4">
                                 <div class="item-image">
                                     <!--asset($anAd->postimages->first()->postimage_thumbnail)-->
-                                    <a href="details.html"><img src="{{asset($anAd->postimage_thumbnail)}}" alt="Image" class="img-responsive"></a>
+                                    <a href='{{url("ad/$anAd->post_id/$anAd->ad_title")}}'><img src="{{asset($anAd->postimage_thumbnail)}}" alt="Image" class="img-responsive"></a>
                                 </div><!-- item-image -->
                             </div>
 
@@ -274,24 +275,24 @@ $currentQuery = Illuminate\Support\Facades\Request::query();
                             <div class="item-info col-sm-8">
                                 <!-- ad-info -->
                                 <div class="ad-info">
-                                    <h3 class="item-price">{{$anAd->item_price}} - @lang('BDT')</h3>
+                                    <h3 class="item-price">{{currency($anAd->item_price,'BDT')}}</h3>
                                     <h4 class="item-title"><a href='{{url("ad/$anAd->post_id/$anAd->ad_title")}}'>{{$anAd->ad_title}}</a></h4>
                                     <div class="item-cat">
-                                        <span><a href="#">{{$anAd->$category_title}}</a></span> /
-                                        <span><a href="#">{{$anAd->$subcategory_title}}</a></span>
+                                        <span><a href="{{url('all-ads').'?category_id='.$anAd->category_id}}">{{$anAd->$category_title}}</a></span> /
+                                        <span><a href="{{url('all-ads').'?subcategory_id='.$anAd->subcategory_id}}">{{$anAd->$subcategory_title}}</a></span>
                                     </div>										
                                 </div><!-- ad-info -->
 
                                 <!-- ad-meta -->
                                 <div class="ad-meta">
                                     <div class="meta-content">
-                                        <span class="dated"><a href="#">{{date('d-m-Y',strtotime($anAd->created_at))}} </a></span>
+                                        <span class="dated"><a href="#">{{ formatDateLocalized($anAd->created_at) }} </a></span>
                                         <a href="#" class="tag"><i class="fa fa-tags"></i> {{__($anAd->item_condition)}}</a>
                                     </div>										
                                     <!-- item-info-right -->
                                     <div class="user-option pull-right">
-                                        <a href="#" data-toggle="tooltip" data-placement="top" title="{{$anAd->$city_title}}"><i class="fa fa-map-marker"></i> </a>
-                                        <a class="" href="#" data-toggle="tooltip" data-placement="top" title="{{$usertype[$anAd->user_type]}}"><i class="fa fa-{{($anAd->user_type == 0)?'user':'suitcase'}}"></i> </a>											
+                                        <a href="{{url('all-ads').'?city_id='.$anAd->city_id}}" data-toggle="tooltip" data-placement="top" title="{{$anAd->$city_title}}"><i class="fa fa-map-marker"></i> </a>
+                                        <a class="" href="{{url('ads-by').'/'.$anAd->user_id.'/'.$anAd->name}}" data-toggle="tooltip" data-placement="top" title="{{$usertype[$anAd->user_type]}}"><i class="fa fa-{{($anAd->user_type == 0)?'user':'suitcase'}}"></i> </a>
                                     </div><!-- item-info-right -->
                                 </div><!-- ad-meta -->
                             </div><!-- item-info -->

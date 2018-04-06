@@ -15,17 +15,7 @@
     }
 </style>
 @endpush
-<!-- services-ad -->
-<?php
-//$usertype = [];
-//$usertype[0] = __('Individual');
-//$usertype[1] = __('Dealer');
-//
-//$category_title = __('category_title_en');
-//$subcategory_title = __('subcategory_title_en');
-//$city_title = __('city_title_en');
-//$division_title = __('division_title_en');
-?>
+
 <!-- main -->
 <section id="main" class="clearfix details-page">
     <div class="container">
@@ -79,11 +69,11 @@
                     </div>
                 </div><!-- Controls -->	
                 <!-- slider-text -->
-                <div class="col-md-5">
+                <div id='product-infos' class="col-md-5">
 
                     <div class="slider-text">
-                        
-                        <h2 class="price">{{$adDetails->item_price}} @lang('BDT')</h2>
+
+                        <h2 class="price">{{currency($adDetails->item_price,'BDT')}}</h2>
                         <h3 class="title">{{$adDetails->ad_title}}</h3>
                         <p>
                             <span><a href="{{url('all-ads').'?category_id='.$adDetails->subcategory->category->category_id}}">{{$adDetails->subcategory->category->$category_title}}</a>/&nbsp;&nbsp;<a href="{{url('all-ads').'?subcategory_id='.$adDetails->subcategory->subcategory_id}}">{{$adDetails->subcategory->$subcategory_title}}</a></span>
@@ -196,9 +186,15 @@
                 </div>
             </div><!-- row -->
         </div><!-- description-info -->	
-
     </div><!-- container -->
 </section><!-- main -->
 
 @include('site.modal.report', ['adDetails' => $adDetails])
+@push('scripts')
+<script type="text/javascript">
+    $(document).ready(function () {
+        prodView('{{url("ajax/view/$adDetails->post_id")}}');
+    });
+</script> 
+@endpush
 @endsection

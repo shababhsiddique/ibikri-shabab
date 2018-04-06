@@ -61,6 +61,15 @@ For Database:
 tips:
 this file is edited to auto enter new lang lines to json.
 C:\xampp\htdocs\ibikri\vendor\laravel\framework\src\Illuminate\Translation\Translator.php
+        getFromJson()
+            /* Add New Line to Lang Dictionary Shabab */            
+            $jsonPath = base_path() .'/resources/lang/en.json';            
+            $this->loadedDev = json_decode(file_get_contents($jsonPath), true);
+            $this->loadedDev[$key] = $key;
+            $jsonData = json_encode($this->loadedDev, JSON_PRETTY_PRINT);
+            file_put_contents($jsonPath, $jsonData);
+            /* Add New Line to Lang Dictionary */
+
 easy way to see missing translations is to use a diff tool
 http://www.jsondiff.com/
 

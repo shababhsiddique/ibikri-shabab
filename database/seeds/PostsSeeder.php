@@ -18,7 +18,11 @@ class PostsSeeder extends Seeder {
         $faker->locale('en_GB'); 
 
         
-        $numberOfUsers = 5;
+        $numberOfUsers = 50; //<- change this to less numbers if you want less test data
+        $numberOfAds = 3000; //<- change this to less numbers if you want less test data
+        
+        
+        
         $this->command->info("Generating $numberOfUsers fake users..");
         /* Fake Users */
         DB::table('Users')->delete();
@@ -35,7 +39,7 @@ class PostsSeeder extends Seeder {
             ]);
         }
 
-        $numberOfAds = 100; //<- change this to less numbers if you want less test data
+        
         $this->command->info("Generating $numberOfAds fake posts..");
 
         /* Fake Ads */
@@ -59,6 +63,7 @@ class PostsSeeder extends Seeder {
                 'brand' => $faker->company,
                 'delivery' => "In Person",
                 'status' => 1,
+                'views' => mt_rand(0, 1000),
                 'short_description' => $faker->elaborateProduct,
                 'long_description' => $faker->elaborateProduct."<br/><br/>".$faker->realText(1000, true)."<br/><br/><br/>".$faker->realText(1000, true),
                 'created_at' => $faker->dateTimeBetween('-30 days','now')

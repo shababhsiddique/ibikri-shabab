@@ -41,5 +41,18 @@ function rrmdirifold($dir) {
 }
 
 
+function formatDateLocalized($string){
+    
+    $date = date('d',strtotime($string));
+    $Month = date('M',strtotime($string));
+    $year = date('Y',strtotime($string));
+    
+    $date = number($date);
+    $Month = __($Month);
+    $year = str_replace(",", "", number($year));
+    
+    return "$date $Month $year";
+}
+
 
 ?>

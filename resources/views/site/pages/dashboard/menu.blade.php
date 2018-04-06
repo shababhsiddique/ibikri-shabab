@@ -5,14 +5,14 @@
         </div>
         <div class="user">
             <h2>@lang('Hello'), <a href="#">{{ Auth::user()->name }}</a></h2>
-            <h5>@lang('You joined at'): {{ Auth::user()->created_at }}</h5>
+            <h5>@lang('You joined at'): {{ formatDateLocalized(Auth::user()->created_at) }}</h5>
         </div>
 
         <div class="favorites-user">            
             <div class="favorites">
                 <a href="#"><?php
-                echo \App\Models\Post::where('user_id',Auth::user()->id)
-                        ->count();
+                echo number(\App\Models\Post::where('user_id',Auth::user()->id)
+                        ->count());
                 ?><small>@lang('Ads')</small></a>
             </div>
         </div>								
