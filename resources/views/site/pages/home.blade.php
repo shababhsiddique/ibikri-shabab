@@ -88,10 +88,10 @@
                 <!-- Nav tabs -->   
                 <ul class="nav nav-tabs">
                     <li  class="active">
-                        <a data-toggle="tab" href="#recent">Most Recent</a>
+                        <a data-toggle="tab" href="#recent">@lang('Most Recent')</a>
                     </li>
                     <li>
-                        <a data-toggle="tab" href="#popular">Most Viewed</a>
+                        <a data-toggle="tab" href="#popular">@lang('Most Viewed')</a>
                     </li>
                 </ul>
             </div>
@@ -179,11 +179,7 @@
                         </div><!-- item-info -->
                     </div><!-- custom-list-item --> 
                     @endforeach
-                </div>
-                <div id="menu1" class="tab-pane fade">
-                    <h3>Menu 1</h3>
-                    <p>Some content in menu 1.</p>
-                </div>
+                </div>                
             </div>
 
         </div><!-- trending-ads -->			

@@ -15,10 +15,9 @@ use App\Models\Division;
 use App\Models\City;
 use App\Models\Post;
 use App\Models\Report;
+use App\Models\Page;
 use App\User;
-
 use DB;
-
 use Cache;
 
 session_start();
@@ -33,7 +32,7 @@ class AdminController extends Controller {
         $this->middleware(CheckAdmin::class);
 
         Cache::flush();
-        
+
         $this->layout['adminNotification'] = view('admin.common.notification');
     }
 
@@ -133,13 +132,11 @@ class AdminController extends Controller {
 
         return Redirect::to('admin/ads');
     }
-    
-    
-    
+
     /**
      * User Management
      */
-    
+
     /**
      * Show users in datatable
      * @return type
@@ -158,8 +155,8 @@ class AdminController extends Controller {
      */
     public function usersDatatableGetData() {
 
-        $users = User::select(['users.id', DB::raw("COUNT(posts.post_id) as post_count"),  'users.name', 'users.mobile', 'users.account_status', 'cities.city_title_en', 'users.created_at'])
-                ->join('posts','posts.user_id','=','users.id')
+        $users = User::select(['users.id', DB::raw("COUNT(posts.post_id) as post_count"), 'users.name', 'users.mobile', 'users.account_status', 'cities.city_title_en', 'users.created_at'])
+                ->join('posts', 'posts.user_id', '=', 'users.id')
                 ->join('cities', 'cities.city_id', '=', 'users.city_id')
                 ->groupBy('users.id')
                 ->orderBy('users.id', "DESC");
@@ -723,6 +720,94 @@ class AdminController extends Controller {
     /**
      * Location Management End
      */
+
+    /**
+     * Site Content Management
+     */
+    public function pagesView() {
+
+        $pages = Page::all();
+
+        //Load Component
+        $this->layout['adminContent'] = view('admin.partials.pages.list')
+                ->with('pages', $pages);
+
+        //return view
+        return view('admin.master', $this->layout);
+    }
+
+    /**
+     * Show page create form
+     * @return type
+     */
+    public function pageCreate() {
+        //Load Component
+        $this->layout['adminContent'] = view('admin.partials.pages.form');
+
+        //return view
+        return view('admin.master', $this->layout);
+    }
+
+    /**
+     * Show page edit form
+     * @param type $id
+     * @return type
+     */
+    public function pageEdit($id) {
+
+        $oldPageData = Page::find($id);
+
+        //Load Component
+        $this->layout['adminContent'] = view('admin.partials.pages.form')->with('oldPageData', $oldPageData);
+
+        //return view
+        return view('admin.master', $this->layout);
+    }
+
+    public function pageSave(Request $request) {
+
+
+        if ($request->has('page_id')) {
+            $id = $request->page_id;
+            $page = Page::find($id);
+            $request->validate([                
+//                'page_slug' => "required|string|unique:pages,page_slug,$id|max:50",
+//                'page_title_en' => "required|string|unique:pages,page_title_en,$id|max:100",
+//                'page_title_bn' => "required|string|unique:pages,page_title_bn,$id|max:100",
+                'page_body_en' => 'required',
+                'page_body_bn' => 'required'
+            ]);
+        } else {
+            $page = new Page;
+            $request->validate([
+                'page_slug' => "required|string|unique:pages|max:50",
+                'page_title_en' => "required|string|unique:pages|max:100",
+                'page_title_bn' => "required|string|unique:pages|max:100",
+                'page_body_en' => 'required',
+                'page_body_bn' => 'required'
+            ]);
+        }
+
+
+        $page->page_slug = $request->page_slug;
+        $page->page_title_en = $request->page_title_en;
+        $page->page_title_bn = $request->page_title_bn;
+        $page->page_body_en = $request->page_body_en;
+        $page->page_body_bn = $request->page_body_bn;
+        $page->save();
+
+        Session::put('message', array(
+            'title' => 'Page Created',
+            'body' => "Created New Page $request->page_slug ($request->page_title_en)",
+            'type' => 'success'
+        ));
+
+
+        $redirectUrl = '/admin/pages';
+
+        return Redirect::to($redirectUrl);
+    }
+
     /*
      * Sample page with a table
      */

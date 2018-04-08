@@ -79,7 +79,7 @@
                             <span><a href="{{url('all-ads').'?category_id='.$adDetails->subcategory->category->category_id}}">{{$adDetails->subcategory->category->$category_title}}</a>/&nbsp;&nbsp;<a href="{{url('all-ads').'?subcategory_id='.$adDetails->subcategory->subcategory_id}}">{{$adDetails->subcategory->$subcategory_title}}</a></span>
                             <span>@lang('Offered by'): <a href="#">{{$adDetails->user->name}}</a></span>
                         </p>
-                        <span class="icon"><i class="fa fa-clock-o"></i><a href="#">{{date("d M, Y h:i A",strtotime($adDetails->created_at))}}</a></span>
+                        <span class="icon"><i class="fa fa-clock-o"></i><a href="#">{{formatDateLocalized($adDetails->created_at) }}</a></span>
                         <span class="icon"><i class="fa fa-map-marker"></i><a href="#">{{$adDetails->user->city->division->$division_title}} - {{$adDetails->user->city->$city_title}}</a></span>
                         <span class="icon"><i class="fa fa-suitcase online"></i><a href="#">{{$usertype[$adDetails->user->user_type]}} <strong>(online)</strong></a></span>
 
@@ -126,48 +126,7 @@
                     <div class="description">
                         <h4>@lang("Description")</h4>
                         {!! $adDetails->long_description !!}
-                    </div>
-                    <div class="section recommended-ads hidden-print">
-                        <div class="featured-top">
-                            <h4>@lang("Similar Products")</h4>
-                        </div>
-
-                        <!-- custom-list-item -->
-                        <div class="custom-list-item row">
-                            <div class="item-image-box col-sm-4">
-                                <!-- item-image -->
-                                <div class="item-image">
-                                    <a href="details.html"><img src="{{asset('site-assets/images/trending/4.jpg')}}" alt="Image" class="img-responsive"></a>
-                                </div><!-- item-image -->
-                            </div><!-- item-image-box -->
-
-
-                            <div class="item-info col-sm-8">
-                                <!-- ad-info -->
-                                <div class="ad-info">
-                                    <h3 class="item-price">$800.00</h3>
-                                    <h4 class="item-title"><a href="#">Rick Morton- Magicius Chase</a></h4>
-                                    <div class="item-cat">
-                                        <span><a href="#">Books & Magazines</a></span> /
-                                        <span><a href="#">Story book</a></span>
-                                    </div>										
-                                </div><!-- ad-info -->
-
-                                <!-- ad-meta -->
-                                <div class="ad-meta">
-                                    <div class="meta-content">
-                                        <span class="dated"><a href="#">7 Jan, 16  10:10 pm </a></span>
-                                        <a href="#" class="tag"><i class="fa fa-tags"></i> Used</a>
-                                    </div>									
-                                    <!-- item-info-right -->
-                                    <div class="user-option pull-right">
-                                        <a href="#" data-toggle="tooltip" data-placement="top" title="Los Angeles, USA"><i class="fa fa-map-marker"></i> </a>
-                                        <a href="#" data-toggle="tooltip" data-placement="top" title="Individual"><i class="fa fa-user"></i> </a>
-                                    </div><!-- item-info-right -->
-                                </div><!-- ad-meta -->
-                            </div><!-- item-info -->
-                        </div><!-- custom-list-item -->
-                    </div>
+                    </div>                    
                 </div><!-- description -->
 
                 <!-- description-short-info -->
@@ -184,17 +143,63 @@
                         <!-- social-icon -->
                     </div>
                 </div>
-            </div><!-- row -->
+            </div>
+            <!-- row -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="section recommended-ads hidden-print">
+                        <div class="featured-top">
+                            <h4>@lang("Similar Products")</h4>
+                        </div>
+
+                        @foreach($relatedPosts as $anAd)
+                        <div class="custom-list-item row">
+                            <!-- item-image -->
+                            <div class="item-image-box col-sm-3">
+                                <div class="item-image">
+                                    <!--asset($anAd->postimages->first()->postimage_thumbnail)-->
+                                    <a href='{{url("ad/$anAd->post_id/$anAd->ad_title")}}'><img src="{{asset($anAd->postimage_thumbnail)}}" alt="Image" class="img-responsive"></a>
+                                </div><!-- item-image -->
+                            </div>
+
+                            <!-- rending-text -->
+                            <div class="item-info col-sm-9">
+                                <!-- ad-info -->
+                                <div class="ad-info">
+                                    <h3 class="item-price">{{currency($anAd->item_price,'BDT')}}</h3>
+                                    <h4 class="item-title"><a href='{{url("ad/$anAd->post_id/$anAd->ad_title")}}'>{{$anAd->ad_title}}</a></h4>
+                                    <div class="item-cat">
+                                        <span><a href="{{url('all-ads').'?category_id='.$anAd->category_id}}">{{$anAd->$category_title}}</a></span> /
+                                        <span><a href="{{url('all-ads').'?subcategory_id='.$anAd->subcategory_id}}">{{$anAd->$subcategory_title}}</a></span>
+                                    </div>										
+                                </div><!-- ad-info -->
+
+                                <!-- ad-meta -->
+                                <div class="ad-meta">
+                                    <div class="meta-content">
+                                        <span class="dated"><a href="#">{{ formatDateLocalized($anAd->created_at) }} </a></span>
+                                        <a href="#" class="tag"><i class="fa fa-tags"></i> {{__($anAd->item_condition)}}</a>
+                                    </div>										
+                                    <!-- item-info-right -->
+                                    <div class="user-option pull-right">
+                                        <a href="{{url('all-ads').'?city_id='.$anAd->city_id}}" data-toggle="tooltip" data-placement="top" title="{{$anAd->$city_title}}"><i class="fa fa-map-marker"></i> </a>
+                                        <a class="" href="{{url('ads-by').'/'.$anAd->user_id.'/'.$anAd->name}}" data-toggle="tooltip" data-placement="top" title="{{$usertype[$anAd->user_type]}}"><i class="fa fa-{{($anAd->user_type == 0)?'user':'suitcase'}}"></i> </a>
+                                    </div><!-- item-info-right -->
+                                </div><!-- ad-meta -->
+                            </div><!-- item-info -->
+                        </div>
+                        @endforeach
+                    </div>
+                </div>                
+            </div>
         </div><!-- description-info -->	
     </div><!-- container -->
 </section><!-- main -->
 
 @include('site.modal.report', ['adDetails' => $adDetails])
 @push('scripts')
-<script type="text/javascript">
-    $(document).ready(function () {
-        prodView('{{url("ajax/view/$adDetails->post_id")}}');
-    });
-</script> 
+<script type="text/javascript">$(document).ready(function () {
+        prodView('{{url("ajax/view/$adDetails->post_id/".csrf_token())}}');
+    });</script> 
 @endpush
 @endsection

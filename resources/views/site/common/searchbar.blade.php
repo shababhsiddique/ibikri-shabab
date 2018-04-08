@@ -73,7 +73,7 @@ $currentQuery = Illuminate\Support\Facades\Request::query();
     </div>
     <!-- category-change -->
 
-    {!! Form::text('q',null, [ "class"=>"form-control" , "placeholder"=>"What are you looking for ?"  ]) !!}                    
+    {!! Form::text('q',null, [ "class"=>"form-control" , "placeholder"=>__("What are you looking for ?")  ]) !!}                    
 
 
     

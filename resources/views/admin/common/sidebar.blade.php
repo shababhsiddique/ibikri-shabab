@@ -56,17 +56,14 @@
         </ul>
     </li>
     
-    <li class="treeview {{ ( Request::is('admin/sample/*') ) ? 'active menu-open' : '' }}">
-        <a href="#">
-            <i class="fa fa-archive"></i> <span>Sample Pages</span>
-            <span class="pull-right-container">
-                <i class="fa fa-angle-left pull-right"></i>
-            </span>
+    
+    <li class="{{ Request::is('admin/page*') ? 'active' : '' }}">
+        <a href="{{url('admin/pages')}}">
+            <i class="fa fa-paragraph"></i> <span>Manage Pages</span>
         </a>
-        <ul class="treeview-menu">            
-            <li class="{{ Request::is('admin/sample/table') ? 'active' : '' }}"><a href="{{url('admin/sample/table')}}"><i class="fa fa-wpforms"></i> List Products</a></li>
-            <li class="{{ Request::is('admin/sample/form') ? 'active' : '' }}"><a href="{{url('admin/sample/form')}}"><i class="fa fa-archive"></i> Create Product</a></li>
-        </ul>
     </li>
+    
+    
+    
     
 </ul>

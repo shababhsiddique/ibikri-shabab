@@ -3104,15 +3104,15 @@ a.verified i {
 }
 
 .footer-widget h3 {
-    font-weight: 300;
-    color: #000;
+    font-weight: 400;
+    color: #3DB8AC;
     line-height: 28px;
-    margin-bottom: 45px;
+    margin-bottom: 15px;
 }
 
 .social-widget h3,
 .news-widget h3 {
-    margin-bottom: 50px;
+    margin-bottom: 20px;
 }
 
 .footer-widget ul li {
@@ -3120,7 +3120,6 @@ a.verified i {
     font-size: 16px;
     font-weight: 300;
     line-height: 36px;
-    margin-bottom:10px;
 }
 
 .footer-widget ul li:last-child {
@@ -3129,14 +3128,14 @@ a.verified i {
 
 .footer-widget ul li a {
     color: #858585;
-    font-size: 18px;
+    font-size: 15px;
     line-height: 28px;
     text-transform: capitalize;
     display:block;
 }
 
 .social-widget ul li {
-    margin-bottom:20px;
+    margin-bottom: 0px;
 }
 
 .social-widget ul li a {
@@ -3205,15 +3204,15 @@ a.verified i {
 }
 
 .footer-bottom {
-    background-color: #f7f7f7;
-    color: #6e6e6e;
+    background-color: #3DB8AC;
+    color: #FFF;
     font-size: 14px;
     padding: 19px 0 12px;
-    font-weight: 300;
+    font-weight: 500;
 }
 
 .footer-bottom a {
-    color: #6e6e6e;
+    color: whitesmoke !important;
 }
 
 .footer-bottom a:hover {

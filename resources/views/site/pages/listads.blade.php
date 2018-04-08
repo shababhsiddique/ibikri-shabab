@@ -163,7 +163,7 @@ $currentQuery = Illuminate\Support\Facades\Request::query();
                                 <!-- panel-heading -->
                                 <div class="panel-heading">
                                     <a data-toggle="collapse" data-parent="#accordion" href="#accordion-two">
-                                        <h4 class="panel-title">Condition<span class="pull-right"><i class="fa fa-plus"></i></span></h4>
+                                        <h4 class="panel-title">@lang('Condition')<span class="pull-right"><i class="fa fa-plus"></i></span></h4>
                                     </a>
                                 </div><!-- panel-heading -->
 
@@ -195,7 +195,7 @@ $currentQuery = Illuminate\Support\Facades\Request::query();
                                 <div class="panel-heading">
                                     <a data-toggle="collapse" data-parent="#accordion" href="#accordion-three">
                                         <h4 class="panel-title">
-                                            Price
+                                            @lang('Price')
                                             <span class="pull-right"><i class="fa fa-plus"></i></span>
                                         </h4>
                                     </a>
@@ -228,7 +228,7 @@ $currentQuery = Illuminate\Support\Facades\Request::query();
                                 <div class="panel-heading">
                                     <a data-toggle="collapse" data-parent="#accordion" href="#accordion-four">
                                         <h4 class="panel-title">
-                                            Posted By
+                                            @lang('Advertizer Type')
                                             <span class="pull-right"><i class="fa fa-plus"></i></span>
                                         </h4>
                                     </a>
@@ -270,11 +270,11 @@ $currentQuery = Illuminate\Support\Facades\Request::query();
                 </div><!-- accordion-->
 
 
-                <div class="col-md-8 col-sm-7 ">				
+                <div class="col-md-8 col-sm-7">				
                     <div class="section recommended-ads">
                         <!-- featured-top -->
                         <div class="featured-top">
-                            <h5>{{$number_of_results}} results</h5>						
+                            <h5>{{number($number_of_results)}} @lang('results')</h5>						
                             <!--Showing {{sizeof($ads)}} results-->
                             <div class="dropdown pull-right">
                                 <!-- category-change -->

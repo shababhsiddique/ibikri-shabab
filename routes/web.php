@@ -40,6 +40,11 @@ Route::group(
     
     
     
+    /* basic site pages */
+    Route::get('/help/{slug}', 'SiteController@page');    
+    
+    
+    
     /* Ad management */
     Route::get('/post-ad', 'HomeController@postAd');
     Route::get('/edit-ad/{id}', 'HomeController@editAd');
@@ -71,7 +76,7 @@ Route::post('/report', 'HomeController@reportAd');
 Route::get('/favour/{id}', 'HomeController@favourAd');    
 
 /* Update View Count */
-Route::get('/ajax/view/{id}', 'AdSearchController@ajaxView');
+Route::get('/ajax/view/{id}/{tok}', 'AdSearchController@ajaxView');
 
 
 
@@ -132,6 +137,12 @@ Route::get('/admin/city/create', 'AdminController@cityCreate');
 Route::get('/admin/city/edit/{city_id}', 'AdminController@cityEdit');
 Route::post('/admin/city/save-city', 'AdminController@citySave');
 
+
+/* Basic Content Management */
+Route::get('/admin/pages', 'AdminController@pagesView');
+Route::get('/admin/page/create', 'AdminController@pageCreate');
+Route::get('/admin/page/edit/{id}', 'AdminController@pageEdit');
+Route::post('/admin/page/save-page', 'AdminController@pageSave');
 
 
 Route::get('/admin/sample/table', 'AdminController@table');

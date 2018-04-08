@@ -7,15 +7,11 @@
                 <!-- footer-widget -->
                 <div class="col-sm-4">
                     <div class="footer-widget">
-                        <h3>Quik Links</h3>
+                        <h3>@lang('Quick Links')</h3>
                         <ul>
-                            <li><a href="#">About Us</a></li>
-                            <li><a href="#">Contact Us</a></li>
-                            <li><a href="#">Careers</a></li>
-                            <li><a href="#">All Cities</a></li>
-                            <li><a href="#">Help & Support</a></li>
-                            <li><a href="#">Advertise With Us</a></li>
-                            <li><a href="#">Blog</a></li>
+                            <li><a href="{{url('help/faq')}}">@lang('About Us')</a></li>
+                            <li><a href="{{url('help/faq')}}">@lang('Contact Us')</a></li>
+                            <li><a href="{{url('help/faq')}}">@lang('Help & Support')</a></li>
                         </ul>
                     </div>
                 </div><!-- footer-widget -->
@@ -23,14 +19,11 @@
                 <!-- footer-widget -->
                 <div class="col-sm-4">
                     <div class="footer-widget">
-                        <h3>How to sell fast</h3>
+                        <h3>@lang('How To')</h3>
                         <ul>
-                            <li><a href="#">How to sell fast</a></li>
-                            <li><a href="#">Membership</a></li>
-                            <li><a href="#">Banner Advertising</a></li>
-                            <li><a href="#">Promote your ad</a></li>
-                            <li><a href="#">Trade Delivers</a></li>
-                            <li><a href="#">FAQ</a></li>
+                            <li><a href="{{url('help/faq')}}">@lang('How to sell fast')</a></li>
+                            <li><a href="{{url('help/faq')}}">@lang('Promote your ad')</a></li>
+                            <li><a href="{{url('help/faq')}}">@lang('FAQ')</a></li>
                         </ul>
                     </div>
                 </div><!-- footer-widget -->
@@ -38,12 +31,12 @@
                 <!-- footer-widget -->
                 <div class="col-sm-4">
                     <div class="footer-widget social-widget">
-                        <h3>Follow us on</h3>
+                        <h3>@lang('Follow us on')</h3>
                         <ul>
-                            <li><a href="#"><i class="fa fa-facebook-official"></i>Facebook</a></li>
-                            <li><a href="#"><i class="fa fa-twitter-square"></i>Twitter</a></li>
-                            <li><a href="#"><i class="fa fa-google-plus-square"></i>Google+</a></li>
-                            <li><a href="#"><i class="fa fa-youtube-play"></i>youtube</a></li>
+                            <li><a href="#"><i class="fa fa-facebook-official"></i>@lang('Facebook')</a></li>
+                            <li><a href="#"><i class="fa fa-twitter-square"></i>@lang('Twitter')</a></li>
+                            <li><a href="#"><i class="fa fa-google-plus-square"></i>@lang('Google+')</a></li>
+                            <li><a href="#"><i class="fa fa-youtube-play"></i>@lang('Youtube')</a></li>
                         </ul>
                     </div>
                 </div><!-- footer-widget -->
@@ -55,7 +48,7 @@
 
     <div class="footer-bottom clearfix text-center">
         <div class="container">
-            <p>Copyright &copy; 2016. Developed by <a href="http://themeregion.com/">ThemeRegion</a></p>
+            <p>@lang('Copyright') &copy; @lang('2018. Developed by') <a href="http://shababhsiddique.com/">@lang('Shabab Haider Siddique')</a></p>
         </div>
     </div><!-- footer-bottom -->
 </footer><!-- footer -->

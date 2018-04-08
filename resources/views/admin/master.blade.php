@@ -52,6 +52,8 @@
         <!-- Bootstrap 3.3.7 -->
         <script src="{{asset('assets/components/bootstrap/dist/js/bootstrap.min.js')}}"></script>
 
+        <!-- CK Editor -->
+        <script src="{{asset('assets/components/ckeditor/ckeditor.js')}}"></script>
 
         <!-- DataTables -->
         <link rel="stylesheet"          href="{{asset('assets/components/datatables.net-bs/css/dataTables.bootstrap.css')}}">
