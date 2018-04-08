@@ -42,6 +42,17 @@ function rrmdirifold($dir) {
 
 
 function formatDateLocalized($string){
+//    
+//    $date = "12111022";
+//    $dateTranslated = number($date);
+//    $dateTranslated = str_replace(",", "", $dateTranslated);
+//    $datePieces = str_split($dateTranslated, 2);
+//    
+//    
+//    echo "<pre>";
+//    print_r($datePieces);
+//    exit();
+//    return "";
     
     $date = date('d',strtotime($string));
     $Month = date('M',strtotime($string));

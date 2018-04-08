@@ -2109,7 +2109,7 @@ a.verified i {
     margin-bottom:0;
 }
 
-.adpost-details input[type="radio"] {
+.adpost-details input[type="radio"], .sidebar-filters input[type="radio"] {
     display:none;
 }
 
@@ -4256,4 +4256,18 @@ h2.price{
     background-color: #14A99B;
     color: white !important;
     border-top-right-radius: 21px;
+}
+
+
+label.unstyled{
+    display: inline !important;
+    padding-left: 0px !important;
+}
+
+label.unstyled::before{
+    content: '' !important;
+}
+
+ul.order-by-change{
+    padding: 10px 0px;
 }

@@ -133,10 +133,10 @@ $currentQuery = Illuminate\Support\Facades\Request::query();
                                                         $query = http_build_query($currentQuery);
                                                         ?>
                                                         <li class="cat-item"><a class="<?php
-                                                    if (isset($_GET['subcategory_id']) && ($_GET['subcategory_id'] == $aSubcat->subcategory_id)) {
-                                                        echo 'bold';
-                                                    }
-                                                        ?>" href="{{url('all-ads').'?'.$query}}">{{$aSubcat->$subcategory_title}}</a></li>
+                                                            if (isset($_GET['subcategory_id']) && ($_GET['subcategory_id'] == $aSubcat->subcategory_id)) {
+                                                                echo 'bold';
+                                                            }
+                                                            ?>" href="{{url('all-ads').'?'.$query}}">{{$aSubcat->$subcategory_title}}</a></li>
                                                         @endforeach
                                                     </ul>
                                                     <?php
@@ -167,12 +167,25 @@ $currentQuery = Illuminate\Support\Facades\Request::query();
                                     </a>
                                 </div><!-- panel-heading -->
 
-                                <div id="accordion-two" class="panel-collapse collapse">
+                                <div id="accordion-two" class="panel-collapse collapse {{$condition_collapse}}">
                                     <!-- panel-body -->
-                                    <div class="panel-body">
-                                        <label for="new"><input type="checkbox" name="new" id="new"> New</label>
-                                        <label for="used"><input type="checkbox" name="used" id="used"> Used</label>
-                                    </div><!-- panel-body -->
+                                    <div class="panel-body item_condition">
+
+                                        @if (isset($_GET['item_condition']) && $_GET['item_condition'] == 'New')                                        
+                                        <input type="radio" name="item_condition" form="search-bar-form"  id="all" value="all"/> <label class="unstyled" for="all">@lang('All')</label> <br/>
+                                        <input checked="" type="radio" name="item_condition" form="search-bar-form"  id="New" value="New"/> <label class="unstyled" for="New">@lang('New')</label> <br/>
+                                        <input type="radio" name="item_condition" form="search-bar-form"  id="Used" value="Used"/> <label class="unstyled" for="Used">@lang('Used')</label>
+                                        @elseif(isset($_GET['item_condition']) && $_GET['item_condition'] == 'Used')
+
+                                        <input type="radio" name="item_condition" form="search-bar-form"  id="all" value="all"/> <label class="unstyled" for="all">@lang('All')</label> <br/>
+                                        <input type="radio" name="item_condition" form="search-bar-form"  id="New" value="New"/> <label class="unstyled" for="New">@lang('New')</label> <br/>
+                                        <input checked="" type="radio" name="item_condition" form="search-bar-form"  id="Used" value="Used"/> <label class="unstyled" for="Used">@lang('Used')</label>
+                                        @else                                        
+                                        <input type="radio" name="item_condition" form="search-bar-form"  id="all" value="all"/> <label class="unstyled" for="all">@lang('All')</label> <br/>
+                                        <input type="radio" name="item_condition" form="search-bar-form"  id="New" value="New"/> <label class="unstyled" for="New">@lang('New')</label> <br/>
+                                        <input type="radio" name="item_condition" form="search-bar-form"  id="Used" value="Used"/> <label class="unstyled" for="Used">@lang('Used')</label>
+                                        @endif
+                                    </div><!-- panel-body -->                                    
                                 </div>
                             </div><!-- panel -->
 
@@ -193,18 +206,16 @@ $currentQuery = Illuminate\Support\Facades\Request::query();
                                     <div class="panel-body">
                                         <div class="price-range"><!--price-range-->
                                             <div class="price">
-                                                <span>$100 - <strong>$700</strong></span>
-                                                <div class="dropdown category-dropdown pull-right">	
-                                                    <a data-toggle="dropdown" href="#"><span class="change-text">USD</span><i class="fa fa-caret-square-o-down"></i></a>
-                                                    <ul class="dropdown-menu category-change">
-                                                        <li><a href="#">$05</a></li>
-                                                        <li><a href="#">$10</a></li>
-                                                        <li><a href="#">$15</a></li>
-                                                        <li><a href="#">$20</a></li>
-                                                        <li><a href="#">$25</a></li>
-                                                    </ul>								
-                                                </div><!-- category-change -->													
-                                                <input type="text"value="" data-slider-min="0" data-slider-max="700" data-slider-step="5" data-slider-value="[250,450]" id="price" ><br />
+                                                <span>{{currency(1000,'BDT')}} - <strong>{{currency(100000,'BDT')}}</strong></span>
+                                                <input form="search-bar-form" 
+                                                       name='price_range' 
+                                                       type="text"
+                                                       data-slider-min="1000" 
+                                                       data-slider-max="100000"
+                                                       data-slider-step="1000"
+                                                       data-slider-value="[2000,90000]"
+                                                       id="price" ><br />
+                                                <button class="btn btn-success pull-right" type="submit" form="search-bar-form"><i class="fa fa-refresh"></i></button>
                                             </div>
                                         </div><!--/price-range-->
                                     </div><!-- panel-body -->
@@ -223,37 +234,70 @@ $currentQuery = Illuminate\Support\Facades\Request::query();
                                     </a>
                                 </div><!-- panel-heading -->
 
-                                <div id="accordion-four" class="panel-collapse collapse">
+                                <div id="accordion-four" class="panel-collapse collapse {{$sellertype_collapse}}">
                                     <!-- panel-body -->
-                                    <div class="panel-body">
-                                        <label for="individual"><input type="checkbox" name="individual" id="individual"> Individual</label>
-                                        <label for="dealer"><input type="checkbox" name="dealer" id="dealer"> Dealer</label>
+                                    <div class="panel-body user_type">
+
+                                        @if (isset($_GET['user_type']) && $_GET['user_type'] == '0')                                        
+                                        <input type="radio" name="user_type" form="search-bar-form"  id="all" value="all" /> <label class="unstyled" for="all">@lang('All')</label> <br/>
+                                        <input checked="" type="radio" name="user_type" form="search-bar-form"  id="individual" value="0"/> <label class="unstyled" for="individual">@lang('Individual')</label> <br/>
+                                        <input type="radio" name="user_type" form="search-bar-form"  id="dealer" value="1"/> <label class="unstyled" for="dealer">@lang('Dealer')</label>                                               
+                                        @elseif(isset($_GET['user_type']) && $_GET['user_type'] == '1')                                        
+                                        <input type="radio" name="user_type" form="search-bar-form"  id="all" value="all" /> <label class="unstyled" for="all">@lang('All')</label> <br/>
+                                        <input type="radio" name="user_type" form="search-bar-form"  id="individual" value="0"/> <label class="unstyled" for="individual">@lang('Individual')</label> <br/>
+                                        <input checked="" type="radio" name="user_type" form="search-bar-form"  id="dealer" value="1"/> <label class="unstyled" for="dealer">@lang('Dealer')</label>                                               
+                                        @else                                        
+                                        <input checked="" type="radio" name="user_type" form="search-bar-form"  id="all" value="all" /> <label class="unstyled" for="all">@lang('All')</label> <br/>
+                                        <input type="radio" name="user_type" form="search-bar-form"  id="individual" value="0"/> <label class="unstyled" for="individual">@lang('Individual')</label> <br/>
+                                        <input type="radio" name="user_type" form="search-bar-form"  id="dealer" value="1"/> <label class="unstyled" for="dealer">@lang('Dealer')</label>                                               
+                                        @endif
+
                                     </div>
                                     <!-- panel-body -->
                                 </div>
                             </div><!-- panel -->
+                            @push('scripts')
+                            <script>
+                                $(".item_condition input, .user_type input").on('click', function () {
+                                    $("#search-bar-form").submit();
+                                });
+                            </script>
+                            @endpush
 
 
                         </div><!-- panel-group -->
                     </div>
                 </div><!-- accordion-->
 
-                
+
                 <div class="col-md-8 col-sm-7 ">				
                     <div class="section recommended-ads">
                         <!-- featured-top -->
                         <div class="featured-top">
-                            <h5></h5>						
+                            <h5>{{$number_of_results}} results</h5>						
                             <!--Showing {{sizeof($ads)}} results-->
                             <div class="dropdown pull-right">
                                 <!-- category-change -->
-                                
+
                                 <div class="dropdown category-dropdown">                                    
-                                    <a data-toggle="dropdown" href="#"><span class="change-text">Newest</span><i class="fa fa-caret-square-o-down"></i></a>
-                                    <ul class="dropdown-menu category-change">
-                                        <li><a href="#">Featured</a></li>
-                                        <li><a href="#">Newest</a></li>
-                                        <li><a href="#">All</a></li>
+                                    <a data-toggle="dropdown" href="#"><span class="change-text">{{$order_by}}</span><i class="fa fa-caret-square-o-down"></i></a>
+                                    <ul class="dropdown-menu category-change order-by-change">
+                                        <?php
+                                        $currentQuery = Illuminate\Support\Facades\Request::query();
+                                        $currentQuery['order_by'] = 'view';
+                                        $query = http_build_query($currentQuery);
+                                        ?>
+                                        <li><a href="{{url('all-ads').'?'.$query}}">@lang('Popular')</a></li>
+                                        <?php
+                                        $currentQuery['order_by'] = 'new';
+                                        $query = http_build_query($currentQuery);
+                                        ?>
+                                        <li><a href="{{url('all-ads').'?'.$query}}">@lang('Newest')</a></li>
+                                        <?php
+                                        $currentQuery['order_by'] = 'price';
+                                        $query = http_build_query($currentQuery);
+                                        ?>
+                                        <li><a href="{{url('all-ads').'?'.$query}}">@lang('Price')</a></li>
                                     </ul>								
                                 </div><!-- category-change -->														
                             </div>							
@@ -311,5 +355,10 @@ $currentQuery = Illuminate\Support\Facades\Request::query();
     </div><!-- container -->
 </section><!-- main -->
 
-
+@push('styles')
+<script type="text/javascript">
+    var newURL = location.href.split("?")[0] + '';
+//    window.history.pushState('object', document.title, newURL);
+</script>
+@endpush
 @endsection

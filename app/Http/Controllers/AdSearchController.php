@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Cache;
 use View;
+use Session;
+use Redirect;
 
 class AdSearchController extends Controller {
 
@@ -38,6 +40,13 @@ class AdSearchController extends Controller {
     public function allAds(Request $request) {
 
 
+        View::share('condition_collapse', '');
+        View::share('price_collapse', '');
+        View::share('sellertype_collapse', '');
+        View::share('order_by', __('Newest'));
+
+
+        //Main Query
         $query = DB::table('posts')
                 ->select(
                         'posts.*', 'subcategories.subcategory_title_en', 'subcategories.subcategory_title_bn', 'categories.category_id', 'categories.category_title_en', 'categories.category_title_bn', 'users.name', 'users.city_id', 'users.user_type', 'cities.city_id', 'cities.city_title_en', 'cities.city_title_bn', 'divisions.division_id', 'divisions.division_title_en', 'divisions.division_title_bn', 'postimages.postimage_thumbnail'
@@ -48,21 +57,50 @@ class AdSearchController extends Controller {
                 ->join('cities', 'cities.city_id', '=', 'users.city_id')
                 ->join('divisions', 'divisions.division_id', '=', 'cities.division_id')
                 ->join('postimages', 'postimages.post_id', '=', 'posts.post_id')
-                ->groupBy('postimages.post_id');
+                ->where("users.account_status", 1)
+                ->groupBy('postimages.post_id')
+        ;
 
 
-        //Check subcategory, if not set then category
+        //Check subcategory, if not set then check category
         if ($request->filled('subcategory_id')) {
             $query->where('subcategories.subcategory_id', '=', $request->subcategory_id);
         } elseif ($request->filled('category_id')) {
             $query->where('categories.category_id', '=', $request->category_id);
         }
 
-        //Check division if not set then district
+        //Check division if not set then check district
         if ($request->filled('division_id')) {
             $query->where('divisions.division_id', '=', $request->division_id);
         } elseif ($request->filled('city_id')) {
             $query->where('cities.city_id', '=', $request->city_id);
+        }
+
+        //Check Item Condition
+        if ($request->filled('item_condition') && $request->item_condition != 'all') {
+            $query->where('posts.item_condition', '=', $request->item_condition);
+
+            //this keeps the accordion open
+            View::share('condition_collapse', 'in');
+        }
+
+        //Check User Type
+        if ($request->filled('user_type') && $request->user_type != 'all') {
+            $query->where('users.user_type', '=', $request->user_type);
+
+            //this keeps the accordion open
+            View::share('sellertype_collapse', 'in');
+        }
+
+        //Limit by Price range
+        if ($request->filled('price_range')) {
+            $prices = explode(',', $request->price_range);
+
+            $query->where('posts.item_price', '>', (int) $prices[0]);
+            $query->where('posts.item_price', '<', (int) $prices[1]);
+
+            //this keeps the accordion open
+            View::share('price_collapse', 'in');
         }
 
         //Search String in name
@@ -71,9 +109,27 @@ class AdSearchController extends Controller {
         }
 
 
+        //Store count of total result
+        View::share('number_of_results', $query->get()->count());
+
+
+        //Order Results
+        if ($request->order_by == 'view') {
+            $query->orderBy('views', 'desc');
+
+            //this keeps the current order dropdown text
+            View::share('order_by', __('Popular'));
+        } elseif ($request->order_by == 'price') {
+            $query->orderBy('posts.item_price', 'asc');
+
+            //this keeps the current order dropdown text
+            View::share('order_by', __('Price'));
+        } else {
+            $query->orderBy('post_id', 'desc');
+        }
+
 
         $ads = $query
-                ->orderBy('post_id', 'desc')
                 ->paginate(10)
                 ->appends(Input::except('page'));
 
@@ -84,6 +140,7 @@ class AdSearchController extends Controller {
                                     ->orderBy('category_weight', 'asc')
                                     ->get();
                 });
+
 
         //Load Component
         $this->layout['siteContent'] = view('site.pages.listads')
@@ -113,6 +170,7 @@ class AdSearchController extends Controller {
                 ->join('divisions', 'divisions.division_id', '=', 'cities.division_id')
                 ->join('postimages', 'postimages.post_id', '=', 'posts.post_id')
                 ->where('users.id', $id)
+                ->where("users.account_status", 1)
                 ->groupBy('postimages.post_id');
 
         $ads = $query
@@ -145,7 +203,18 @@ class AdSearchController extends Controller {
      */
     public function adDetails($id, $title = "") {
 
-        $adDetails = Post::find($id);
+        $adDetails = Post::findPublished($id);
+
+        if (!$adDetails) {
+            //Message for Notification Builder
+            Session::put('message', array(
+                'title' => 'Sorry',
+                'body' => 'The Content You are looking for has been removed or does not exist',
+                'type' => 'danger'
+            ));
+
+            return Redirect::to('/all-ads');
+        }
 
         $this->layout['siteContent'] = view('site.pages.addetails')
                 ->with('adDetails', $adDetails);
@@ -153,12 +222,12 @@ class AdSearchController extends Controller {
         //return view
         return view('site.master', $this->layout);
     }
-    
+
     /**
      * 
      * @param type $id
      */
-    public function ajaxView($id){
+    public function ajaxView($id) {
         $post = Post::find($id);
         $post->views = $post->views + 1;
         $post->save();

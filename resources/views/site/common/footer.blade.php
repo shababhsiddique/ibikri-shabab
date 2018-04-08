@@ -5,7 +5,7 @@
         <div class="container">
             <div class="row">
                 <!-- footer-widget -->
-                <div class="col-sm-3">
+                <div class="col-sm-4">
                     <div class="footer-widget">
                         <h3>Quik Links</h3>
                         <ul>
@@ -21,7 +21,7 @@
                 </div><!-- footer-widget -->
 
                 <!-- footer-widget -->
-                <div class="col-sm-3">
+                <div class="col-sm-4">
                     <div class="footer-widget">
                         <h3>How to sell fast</h3>
                         <ul>
@@ -36,7 +36,7 @@
                 </div><!-- footer-widget -->
 
                 <!-- footer-widget -->
-                <div class="col-sm-3">
+                <div class="col-sm-4">
                     <div class="footer-widget social-widget">
                         <h3>Follow us on</h3>
                         <ul>
@@ -48,18 +48,6 @@
                     </div>
                 </div><!-- footer-widget -->
 
-                <!-- footer-widget -->
-                <div class="col-sm-3">
-                    <div class="footer-widget news-letter">
-                        <h3>Newsletter</h3>
-                        <p>Trade is Worldest leading classifieds platform that brings!</p>
-                        <!-- form -->
-                        <form action="#">
-                            <input type="email" class="form-control" placeholder="Your email id">
-                            <button type="submit" class="btn btn-primary">Sign Up</button>
-                        </form><!-- form -->			
-                    </div>
-                </div><!-- footer-widget -->
             </div><!-- row -->
         </div><!-- container -->
     </section><!-- footer-top -->

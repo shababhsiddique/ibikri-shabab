@@ -15,6 +15,10 @@ use App\Models\Division;
 use App\Models\City;
 use App\Models\Post;
 use App\Models\Report;
+use App\User;
+
+use DB;
+
 use Cache;
 
 session_start();
@@ -128,6 +132,83 @@ class AdminController extends Controller {
         }
 
         return Redirect::to('admin/ads');
+    }
+    
+    
+    
+    /**
+     * User Management
+     */
+    
+    /**
+     * Show users in datatable
+     * @return type
+     */
+    public function usersDatatable() {
+
+        //Load Component
+        $this->layout['adminContent'] = view('admin.partials.users.datatable');
+
+        //return view
+        return view('admin.master', $this->layout);
+    }
+
+    /**
+     * datatables/usersgetdata handler
+     */
+    public function usersDatatableGetData() {
+
+        $users = User::select(['users.id', DB::raw("COUNT(posts.post_id) as post_count"),  'users.name', 'users.mobile', 'users.account_status', 'cities.city_title_en', 'users.created_at'])
+                ->join('posts','posts.user_id','=','users.id')
+                ->join('cities', 'cities.city_id', '=', 'users.city_id')
+                ->groupBy('users.id')
+                ->orderBy('users.id', "DESC");
+
+
+        return \DataTables::of($users)
+                        ->editColumn('account_status', function($row) {
+
+                            $status = 'something wrong';
+                            if ($row->account_status == 1) {
+                                $status = "<span class='label label-success'>Active</span>";
+                            } elseif ($row->account_status == 0) {
+                                $status = '<span class="label label-warning">Banned</span>';
+                            }
+                            return $status;
+                        })
+                        ->addColumn('actions', function($row) {
+                            $buttons = "";
+
+                            if ($row->account_status == 1) {
+                                $buttons .= "<button class='btn btn-xs btn-warning dtbutton' data-href='" . url('admin/users/changeStatus/ban') . "/$row->id'><i class='fa fa-thumbs-down'></i></button>";
+                            } elseif ($row->account_status == 0) {
+                                $buttons .= "<button class='btn btn-xs btn-success dtbutton' data-href='" . url('admin/users/changeStatus/unban') . "/$row->id'><i class='fa fa-thumbs-up'></i></button>";
+                            }
+
+                            return "<div class='btn-group'>$buttons</div>";
+                        })
+                        ->rawColumns(['actions', 'account_status'])
+                        ->make(true);
+    }
+
+    public function usersChangeStatus($status, $id) {
+
+        $user = User::find($id);
+
+        switch ($status) {
+            case "ban":
+                $user->account_status = 0;
+                $user->save();
+                break;
+            case "unban":
+                $user->account_status = 1;
+                $user->save();
+                break;
+            default:
+                break;
+        }
+
+        return Redirect::to('admin/users');
     }
 
     /**

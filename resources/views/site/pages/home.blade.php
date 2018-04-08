@@ -69,7 +69,7 @@
                     </ul>
                 </div>
                 @if($rowItem == 5)
-                <?php $rowItem = 0?>
+                <?php $rowItem = 0 ?>
             </div>
             @endif
             @endforeach
@@ -84,27 +84,29 @@
         <!-- trending-ads -->
         <div class="section trending-ads">
             <div class="section-title tab-manu">
-                <h4>Trending Ads</h4>
+                <h4>@lang('Trending')</h4>
                 <!-- Nav tabs -->   
                 <ul class="nav nav-tabs">
-                    <li class="active">
-                        <a data-toggle="tab" href="#home">Most Popular</a>
+                    <li  class="active">
+                        <a data-toggle="tab" href="#recent">Most Recent</a>
                     </li>
                     <li>
-                        <a data-toggle="tab" href="#menu1">Most Recent</a>
+                        <a data-toggle="tab" href="#popular">Most Viewed</a>
                     </li>
                 </ul>
             </div>
 
             <!-- Tab panes -->
             <div class="tab-content">
-                <div id="home" class="tab-pane fade in active">
+                 <div id="recent" class="tab-pane fade in active">
+
+                    @foreach($latestPosts as $anAd)
                     <div class="custom-list-item row">
                         <!-- item-image -->
                         <div class="item-image-box col-sm-3">
                             <div class="item-image">
-                                <a href="details.html"><img src="{{asset('site-assets/images/listing/1.jpg')}}" alt="Image" class="img-responsive"></a>
-                                <a href="#" class="verified" data-toggle="tooltip" data-placement="left" title="Verified"><i class="fa fa-check-square-o"></i></a>
+                                <a href='{{url("ad/$anAd->post_id/$anAd->ad_title")}}'><img src="{{asset($anAd->postimage_thumbnail)}}" alt="Image" class="img-responsive"></a>
+                                <a href="#" class="verified" data-toggle="tooltip" data-placement="left" title="Recent"><i class="fa fa-clock-o"></i></a>
                             </div><!-- item-image -->
                         </div>
 
@@ -112,35 +114,40 @@
                         <div class="item-info col-sm-9">
                             <!-- ad-info -->
                             <div class="ad-info">
-                                <h3 class="item-price">$50.00</h3>
-                                <h4 class="item-title"><a href="#">Apple TV - Everything you need to know!</a></h4>
+                                <h3 class="item-price">{{currency($anAd->item_price,'BDT')}}</h3>
+                                <h4 class="item-title"><a href='{{url("ad/$anAd->post_id/$anAd->ad_title")}}'>{{$anAd->ad_title}}</a></h4>
                                 <div class="item-cat">
-                                    <span><a href="#">Electronics & Gedgets</a></span> /
-                                    <span><a href="#">Tv & Video</a></span>
-                                </div>	
+                                    <span><a href="{{url('all-ads').'?category_id='.$anAd->category_id}}">{{$anAd->$category_title}}</a></span> /
+                                    <span><a href="{{url('all-ads').'?subcategory_id='.$anAd->subcategory_id}}">{{$anAd->$subcategory_title}}</a></span>
+                                </div>										
                             </div><!-- ad-info -->
 
                             <!-- ad-meta -->
                             <div class="ad-meta">
                                 <div class="meta-content">
-                                    <span class="dated"><a href="#">7 Jan, 16  10:10 pm </a></span>
-                                    <a href="#" class="tag"><i class="fa fa-tags"></i> Used</a>
-                                </div>									
+                                    <span class="dated"><a href="#">{{ formatDateLocalized($anAd->created_at) }} </a></span>
+                                    <a href="#" class="tag"><i class="fa fa-tags"></i> {{__($anAd->item_condition)}}</a>
+                                </div>										
                                 <!-- item-info-right -->
                                 <div class="user-option pull-right">
-                                    <a href="#" data-toggle="tooltip" data-placement="top" title="Los Angeles, USA"><i class="fa fa-map-marker"></i> </a>
-                                    <a class="online" href="#" data-toggle="tooltip" data-placement="top" title="Dealer"><i class="fa fa-suitcase"></i> </a>											
+                                    <a href="{{url('all-ads').'?city_id='.$anAd->city_id}}" data-toggle="tooltip" data-placement="top" title="{{$anAd->$city_title}}"><i class="fa fa-map-marker"></i> </a>
+                                    <a class="" href="{{url('ads-by').'/'.$anAd->user_id.'/'.$anAd->name}}" data-toggle="tooltip" data-placement="top" title="{{$usertype[$anAd->user_type]}}"><i class="fa fa-{{($anAd->user_type == 0)?'user':'suitcase'}}"></i> </a>
                                 </div><!-- item-info-right -->
                             </div><!-- ad-meta -->
                         </div><!-- item-info -->
-                    </div><!-- ad-item -->    
+                    </div><!-- custom-list-item --> 
+                    @endforeach
+                </div>
+                
+                <div id="popular" class="tab-pane fade in">
 
+                    @foreach($topViewedPosts as $anAd)
                     <div class="custom-list-item row">
                         <!-- item-image -->
                         <div class="item-image-box col-sm-3">
                             <div class="item-image">
-                                <a href="details.html"><img src="{{asset('site-assets/images/listing/1.jpg')}}" alt="Image" class="img-responsive"></a>
-                                <a href="#" class="verified" data-toggle="tooltip" data-placement="left" title="Verified"><i class="fa fa-check-square-o"></i></a>
+                                <a href='{{url("ad/$anAd->post_id/$anAd->ad_title")}}'><img src="{{asset($anAd->postimage_thumbnail)}}" alt="Image" class="img-responsive"></a>
+                                <a href="#" class="verified" data-toggle="tooltip" data-placement="left" title="Popular"><i class="fa fa-star"></i></a>
                             </div><!-- item-image -->
                         </div>
 
@@ -148,101 +155,30 @@
                         <div class="item-info col-sm-9">
                             <!-- ad-info -->
                             <div class="ad-info">
-                                <h3 class="item-price">$50.00</h3>
-                                <h4 class="item-title"><a href="#">Apple TV - Everything you need to know!</a></h4>
+                                <h3 class="item-price">{{currency($anAd->item_price,'BDT')}}</h3>
+                                <h4 class="item-title"><a href='{{url("ad/$anAd->post_id/$anAd->ad_title")}}'>{{$anAd->ad_title}}</a></h4>
                                 <div class="item-cat">
-                                    <span><a href="#">Electronics & Gedgets</a></span> /
-                                    <span><a href="#">Tv & Video</a></span>
-                                </div>	
+                                    <span><a href="{{url('all-ads').'?category_id='.$anAd->category_id}}">{{$anAd->$category_title}}</a></span> /
+                                    <span><a href="{{url('all-ads').'?subcategory_id='.$anAd->subcategory_id}}">{{$anAd->$subcategory_title}}</a></span>
+                                </div>										
                             </div><!-- ad-info -->
 
                             <!-- ad-meta -->
                             <div class="ad-meta">
                                 <div class="meta-content">
-                                    <span class="dated"><a href="#">7 Jan, 16  10:10 pm </a></span>
-                                    <a href="#" class="tag"><i class="fa fa-tags"></i> Used</a>
-                                </div>									
+                                    <span class="dated"><a href="#">{{ formatDateLocalized($anAd->created_at) }} </a></span>
+                                    <span class="visitors">@lang('Visited:') {{number($anAd->views)}} &nbsp;&nbsp;</span> 
+                                    <a href="#" class="tag"><i class="fa fa-tags"></i> {{__($anAd->item_condition)}}</a>
+                                </div>										
                                 <!-- item-info-right -->
                                 <div class="user-option pull-right">
-                                    <a href="#" data-toggle="tooltip" data-placement="top" title="Los Angeles, USA"><i class="fa fa-map-marker"></i> </a>
-                                    <a class="online" href="#" data-toggle="tooltip" data-placement="top" title="Dealer"><i class="fa fa-suitcase"></i> </a>											
+                                    <a href="{{url('all-ads').'?city_id='.$anAd->city_id}}" data-toggle="tooltip" data-placement="top" title="{{$anAd->$city_title}}"><i class="fa fa-map-marker"></i> </a>
+                                    <a class="" href="{{url('ads-by').'/'.$anAd->user_id.'/'.$anAd->name}}" data-toggle="tooltip" data-placement="top" title="{{$usertype[$anAd->user_type]}}"><i class="fa fa-{{($anAd->user_type == 0)?'user':'suitcase'}}"></i> </a>
                                 </div><!-- item-info-right -->
                             </div><!-- ad-meta -->
                         </div><!-- item-info -->
-                    </div><!-- ad-item -->    
-
-                    <div class="custom-list-item row">
-                        <!-- item-image -->
-                        <div class="item-image-box col-sm-3">
-                            <div class="item-image">
-                                <a href="details.html"><img src="{{asset('site-assets/images/listing/1.jpg')}}" alt="Image" class="img-responsive"></a>
-                                <a href="#" class="verified" data-toggle="tooltip" data-placement="left" title="Verified"><i class="fa fa-check-square-o"></i></a>
-                            </div><!-- item-image -->
-                        </div>
-
-                        <!-- rending-text -->
-                        <div class="item-info col-sm-9">
-                            <!-- ad-info -->
-                            <div class="ad-info">
-                                <h3 class="item-price">$50.00</h3>
-                                <h4 class="item-title"><a href="#">Apple TV - Everything you need to know!</a></h4>
-                                <div class="item-cat">
-                                    <span><a href="#">Electronics & Gedgets</a></span> /
-                                    <span><a href="#">Tv & Video</a></span>
-                                </div>	
-                            </div><!-- ad-info -->
-
-                            <!-- ad-meta -->
-                            <div class="ad-meta">
-                                <div class="meta-content">
-                                    <span class="dated"><a href="#">7 Jan, 16  10:10 pm </a></span>
-                                    <a href="#" class="tag"><i class="fa fa-tags"></i> Used</a>
-                                </div>									
-                                <!-- item-info-right -->
-                                <div class="user-option pull-right">
-                                    <a href="#" data-toggle="tooltip" data-placement="top" title="Los Angeles, USA"><i class="fa fa-map-marker"></i> </a>
-                                    <a class="online" href="#" data-toggle="tooltip" data-placement="top" title="Dealer"><i class="fa fa-suitcase"></i> </a>											
-                                </div><!-- item-info-right -->
-                            </div><!-- ad-meta -->
-                        </div><!-- item-info -->
-                    </div><!-- ad-item -->    
-
-                    <div class="custom-list-item row">
-                        <!-- item-image -->
-                        <div class="item-image-box col-sm-3">
-                            <div class="item-image">
-                                <a href="details.html"><img src="{{asset('site-assets/images/listing/1.jpg')}}" alt="Image" class="img-responsive"></a>
-                                <a href="#" class="verified" data-toggle="tooltip" data-placement="left" title="Verified"><i class="fa fa-check-square-o"></i></a>
-                            </div><!-- item-image -->
-                        </div>
-
-                        <!-- rending-text -->
-                        <div class="item-info col-sm-9">
-                            <!-- ad-info -->
-                            <div class="ad-info">
-                                <h3 class="item-price">$50.00</h3>
-                                <h4 class="item-title"><a href="#">Apple TV - Everything you need to know!</a></h4>
-                                <div class="item-cat">
-                                    <span><a href="#">Electronics & Gedgets</a></span> /
-                                    <span><a href="#">Tv & Video</a></span>
-                                </div>	
-                            </div><!-- ad-info -->
-
-                            <!-- ad-meta -->
-                            <div class="ad-meta">
-                                <div class="meta-content">
-                                    <span class="dated"><a href="#">7 Jan, 16  10:10 pm </a></span>
-                                    <a href="#" class="tag"><i class="fa fa-tags"></i> Used</a>
-                                </div>									
-                                <!-- item-info-right -->
-                                <div class="user-option pull-right">
-                                    <a href="#" data-toggle="tooltip" data-placement="top" title="Los Angeles, USA"><i class="fa fa-map-marker"></i> </a>
-                                    <a class="online" href="#" data-toggle="tooltip" data-placement="top" title="Dealer"><i class="fa fa-suitcase"></i> </a>											
-                                </div><!-- item-info-right -->
-                            </div><!-- ad-meta -->
-                        </div><!-- item-info -->
-                    </div><!-- ad-item -->    
-
+                    </div><!-- custom-list-item --> 
+                    @endforeach
                 </div>
                 <div id="menu1" class="tab-pane fade">
                     <h3>Menu 1</h3>

@@ -85,6 +85,13 @@ Route::post('/admin/authenticate', 'AdminLoginController@verifyUser');
 Route::get('/admin/logout', 'AdminController@logout');
 Route::get('/admin', 'AdminController@index');
 
+/* User Management */
+Route::get('/admin/users', 'AdminController@usersDatatable');
+Route::get('/admin/users/getdata', 'AdminController@usersDatatableGetData')->name('datatables/usersgetdata');
+
+Route::get('/admin/users/changeStatus/{status}/{id}', 'AdminController@usersChangeStatus');
+
+
 /* Ad Posts Management */
 Route::get('/admin/ads', 'AdminController@adsDatatable');
 Route::get('/admin/ads/getdata', 'AdminController@adsDatatableGetData')->name('datatable/getdata');

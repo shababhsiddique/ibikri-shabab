@@ -23,6 +23,14 @@ class Post extends Model
         return $this->hasOne('App\User', 'id', 'user_id');
     }
     
+    public static function findPublished($id){
+        return self::join('users','users.id','=','posts.user_id')
+                ->where("post_id",$id)
+                ->where("status",1)
+                ->where("users.account_status",1)
+                ->first();
+    }
+    
     protected static function boot() {
         parent::boot();
 

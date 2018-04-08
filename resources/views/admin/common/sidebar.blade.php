@@ -12,10 +12,18 @@
         </a>
     </li>
     
-    <li class="{{ Request::is('admin/ad/complain*') ? 'active' : '' }}">
-        <a href="{{url('admin/ad/complains')}}">
-            <i class="fa fa-warning"></i> <span>Reported Items</span>
+        
+     <li class="treeview {{ ( Request::is('admin/ad/complain*') || Request::is('admin/users*') ) ? 'active menu-open' : '' }}">
+        <a href="#">
+            <i class="fa fa-users"></i> <span>Manage Users</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
         </a>
+        <ul class="treeview-menu">            
+            <li class="{{ Request::is('admin/ad/complains') ? 'active' : '' }}"><a href="{{url('admin/ad/complains')}}"><i class="fa fa-warning"></i> Reported Items</a></li>
+            <li class="{{ Request::is('admin/users*') ? 'active' : '' }}"><a href="{{url('admin/users')}}"><i class="fa fa-users"></i> View Users</a></li>
+        </ul>
     </li>
     
 

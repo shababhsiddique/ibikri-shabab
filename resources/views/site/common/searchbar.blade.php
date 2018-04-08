@@ -51,7 +51,7 @@ $currentQuery = Illuminate\Support\Facades\Request::query();
 ?>
 
 <div class="banner-form banner-form-full">
-    {!! Form::open(['url' => 'all-ads','method' => 'get']) !!}
+    {!! Form::open(['url' => 'all-ads', 'id'=> 'search-bar-form', 'method' => 'get']) !!}
 
     <!-- Location -->
     <div class="dropdown category-dropdown">						
