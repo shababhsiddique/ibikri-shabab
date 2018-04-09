@@ -115,19 +115,33 @@ class AdSearchController extends Controller {
 
 
         //Order Results
-        if ($request->order_by == 'view') {
-            $query->orderBy('views', 'desc');
+        switch ($request->order_by) {
+            case 'view':
+                $query->orderBy('views', 'desc');
+                View::share('order_by', __('Popular'));
+                break;
+            
+            case 'price_up':
+                $query->orderBy('item_price', 'asc');
+                View::share('order_by', __('Price Ascending'));
+                break;
+            
+            case 'price_down':
+                $query->orderBy('item_price', 'desc');
+                View::share('order_by', __('Price Descending'));
+                break;            
+            
+            case 'old':
+                $query->orderBy('created_at', 'asc');
+                View::share('order_by', __('Old First'));
+                break;
 
-            //this keeps the current order dropdown text
-            View::share('order_by', __('Popular'));
-        } elseif ($request->order_by == 'price') {
-            $query->orderBy('posts.item_price', 'asc');
-
-            //this keeps the current order dropdown text
-            View::share('order_by', __('Price'));
-        } else {
-            $query->orderBy('post_id', 'desc');
+            default:
+                $query->orderBy('created_at', 'desc');
+                View::share('order_by', __('New First'));
+                break;
         }
+        
 
 
         $ads = $query

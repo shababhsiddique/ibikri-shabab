@@ -4270,3 +4270,8 @@ label.unstyled::before{
 ul.order-by-change{
     padding: 10px 0px;
 }
+
+ul.order-by-change li.nav-divider{
+    border: 1px solid #f9f9f9;
+    margin: 5px 0px;
+}

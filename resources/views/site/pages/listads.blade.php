@@ -287,17 +287,29 @@ $currentQuery = Illuminate\Support\Facades\Request::query();
                                         $currentQuery['order_by'] = 'view';
                                         $query = http_build_query($currentQuery);
                                         ?>
-                                        <li><a href="{{url('all-ads').'?'.$query}}">@lang('Popular')</a></li>
+                                        <li><a href="{{url('all-ads').'?'.$query}}">@lang('Popular First')</a></li>
+                                        <li class="nav-divider"></li>
                                         <?php
                                         $currentQuery['order_by'] = 'new';
                                         $query = http_build_query($currentQuery);
                                         ?>
-                                        <li><a href="{{url('all-ads').'?'.$query}}">@lang('Newest')</a></li>
+                                        <li><a href="{{url('all-ads').'?'.$query}}">@lang('Newest First')</a></li>
                                         <?php
-                                        $currentQuery['order_by'] = 'price';
+                                        $currentQuery['order_by'] = 'old';
                                         $query = http_build_query($currentQuery);
                                         ?>
-                                        <li><a href="{{url('all-ads').'?'.$query}}">@lang('Price')</a></li>
+                                        <li><a href="{{url('all-ads').'?'.$query}}">@lang('Oldest First')</a></li>
+                                        <li class="nav-divider"></li>
+                                        <?php
+                                        $currentQuery['order_by'] = 'price_up';
+                                        $query = http_build_query($currentQuery);
+                                        ?>
+                                        <li><a href="{{url('all-ads').'?'.$query}}">@lang('Price Ascending')</a></li>
+                                        <?php
+                                        $currentQuery['order_by'] = 'price_down';
+                                        $query = http_build_query($currentQuery);
+                                        ?>
+                                        <li><a href="{{url('all-ads').'?'.$query}}">@lang('Price Descending')</a></li>
                                     </ul>								
                                 </div><!-- category-change -->														
                             </div>							
