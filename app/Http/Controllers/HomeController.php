@@ -16,7 +16,9 @@ use App\Models\Post;
 use App\Models\Postimage;
 use App\Models\Report;
 use App\Models\Favourites;
+use App\Models\Message;
 use View;
+
 
 session_start();
 
@@ -80,6 +82,20 @@ class HomeController extends Controller {
         return view('site.master', $this->layout);
     }
 
+    public function messages(){
+        
+        //Load Component
+        $this->layout['siteContent'] = view('site.pages.dashboard.messages');
+
+        //return view
+        return view('site.master', $this->layout);
+        
+    }
+    
+//    public function threadsGet(){
+//        
+//       }
+    
     /**
      * Profile Info Edit Form
      * @return type

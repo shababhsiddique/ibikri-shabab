@@ -20,8 +20,9 @@
 
     <ul class="user-menu">        
         <li class="{{ Request::is('*/dashboard') || Request::is('*/edit-ad/*') ? 'active' : '' }}"><a href="{{url('/dashboard')}}">@lang('My Ads')</a></li>        
-        <li class="{{ Request::is('*/account') ? 'active' : '' }}"><a href="{{url('/account')}}">@lang('Account Settings')</a></li>
         <li class="{{ Request::is('*/favourites') ? 'active' : '' }}"><a href="{{url('/favourites')}}">@lang('Favourites')</a></li>
+        <li class="{{ Request::is('*/messages') ? 'active' : '' }}"><a href="{{url('/messages')}}">@lang('Messages')</a></li>        
+        <li class="{{ Request::is('*/account') ? 'active' : '' }}"><a href="{{url('/account')}}">@lang('Account Settings')</a></li>
         
 <!--        <li><a href="pending-ads.html">@lang('Pending Approval')</a></li>        -->
     </ul>

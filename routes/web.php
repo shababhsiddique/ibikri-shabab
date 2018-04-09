@@ -37,6 +37,7 @@ Route::group(
     Route::get('/dashboard', 'HomeController@dashboard');
     Route::get('/favourites', 'HomeController@userFavourites');
     Route::get('/account', 'HomeController@account');    
+    Route::get('/messages', 'HomeController@messages');    
     
     
     
@@ -79,6 +80,7 @@ Route::get('/favour/{id}', 'HomeController@favourAd');
 Route::get('/ajax/view/{id}/{tok}', 'AdSearchController@ajaxView');
 
 
+Route::get('/threads', 'HomeController@threadsGet');
 
 
 /**
