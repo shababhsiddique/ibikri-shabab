@@ -38,6 +38,7 @@ Route::group(
     Route::get('/favourites', 'HomeController@userFavourites');
     Route::get('/account', 'HomeController@account');    
     Route::get('/messages', 'HomeController@messages');    
+    Route::get('/message/{receiver}', 'HomeController@viewMessage');    
     
     
     

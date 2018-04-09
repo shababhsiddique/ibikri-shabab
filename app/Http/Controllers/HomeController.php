@@ -92,6 +92,17 @@ class HomeController extends Controller {
         
     }
     
+    public function viewMessage($receiver){
+        
+        View::share('receiver_id',$receiver);        
+
+        //Load Component
+        $this->layout['siteContent'] = view('site.pages.dashboard.writemessage');
+
+        //return view
+        return view('site.master', $this->layout);
+    }
+    
 //    public function threadsGet(){
 //        
 //       }
