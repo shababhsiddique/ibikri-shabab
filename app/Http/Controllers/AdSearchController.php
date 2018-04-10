@@ -10,6 +10,7 @@ use Cache;
 use View;
 use Session;
 use Redirect;
+use Illuminate\Support\Carbon;
 
 class AdSearchController extends Controller {
 
@@ -38,6 +39,8 @@ class AdSearchController extends Controller {
      * @return type
      */
     public function allAds(Request $request) {
+        
+        
 
 
         View::share('condition_collapse', '');
@@ -63,6 +66,7 @@ class AdSearchController extends Controller {
         ;
 
 
+
         //Check subcategory, if not set then check category
         if ($request->filled('subcategory_id')) {
             $query->where('subcategories.subcategory_id', '=', $request->subcategory_id);
@@ -76,6 +80,24 @@ class AdSearchController extends Controller {
         } elseif ($request->filled('city_id')) {
             $query->where('cities.city_id', '=', $request->city_id);
         }
+
+
+        /* Calcualte top ads */
+        //7 day ago 
+        $startDate = date('Y-m-d 00:00:00', strtotime('-7 days'));
+        //today
+        $endDate = date('Y-m-d 23:59:59', time());
+        //Calcuate top ads based on current querry
+        $queryTop = clone $query;
+        $topAds = $queryTop
+                ->join('featureds', 'featureds.post_id', '=', 'posts.post_id')
+                ->where('featureds.created_at', '>', $startDate)
+                ->where('featureds.created_at', '<', $endDate)
+                ->inRandomOrder()
+                ->limit(2)
+                ->get();
+        /* calculate top ads */
+
 
         //Check Item Condition
         if ($request->filled('item_condition') && $request->item_condition != 'all') {
@@ -120,17 +142,17 @@ class AdSearchController extends Controller {
                 $query->orderBy('views', 'desc');
                 View::share('order_by', __('Popular'));
                 break;
-            
+
             case 'price_up':
                 $query->orderBy('item_price', 'asc');
                 View::share('order_by', __('Price Ascending'));
                 break;
-            
+
             case 'price_down':
                 $query->orderBy('item_price', 'desc');
                 View::share('order_by', __('Price Descending'));
-                break;            
-            
+                break;
+
             case 'old':
                 $query->orderBy('created_at', 'asc');
                 View::share('order_by', __('Old First'));
@@ -141,7 +163,7 @@ class AdSearchController extends Controller {
                 View::share('order_by', __('New First'));
                 break;
         }
-        
+
 
 
         $ads = $query
@@ -160,6 +182,7 @@ class AdSearchController extends Controller {
         //Load Component
         $this->layout['siteContent'] = view('site.pages.listads')
                 ->with('categories', $categories)
+                ->with('topAds', $topAds)
                 ->with('ads', $ads);
 
         //return view
@@ -253,7 +276,7 @@ class AdSearchController extends Controller {
                 ->join('postimages', 'postimages.post_id', '=', 'posts.post_id')
                 ->where("users.account_status", 1)
                 ->where("posts.status", 1)
-                ->where("posts.post_id",'!=',$adDetails->post_id)
+                ->where("posts.post_id", '!=', $adDetails->post_id)
                 ->where("posts.subcategory_id", $adDetails->subcategory_id)
                 ->groupBy('postimages.post_id')
                 ->orderBy('posts.views', 'desc')
@@ -262,7 +285,7 @@ class AdSearchController extends Controller {
 
         $this->layout['siteContent'] = view('site.pages.addetails')
                 ->with('adDetails', $adDetails)
-                ->with('relatedPosts',$relatedPosts);
+                ->with('relatedPosts', $relatedPosts);
 
         //return view
         return view('site.master', $this->layout);

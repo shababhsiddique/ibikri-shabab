@@ -101,7 +101,23 @@
                                 <span class="hide-text">@lang("Click to show phone number") </span> 
                                 <span class="hide-number">{{$adDetails->user->mobile}}</span>
                             </span>
-                            <a href="#" class="btn "><i class="fa fa-envelope-square"></i>@lang("Reply by email")</a>
+                            @guest
+                            <a href="{{url('login')}}" class="btn "><i class="fa fa-envelope-square"></i>@lang("Send Message")</a>
+                            @else
+                            <a href="<?php
+                            $userId = Auth::user()->id;
+                            $posterId = $adDetails->user_id;
+
+                            $party1 = min($userId, $posterId);
+                            $party2 = max($userId, $posterId);
+
+                            $secret = md5("$party1###$party2");
+                            //$code = base64_url_encode("$userId#$posterId#$secret");
+
+                            echo url("message/$secret/$userId/$posterId")
+                            ?>" class="btn "><i class="fa fa-envelope-square"></i>@lang("Send Message")</a>
+                            @endguest
+
                         </div><!-- contact-with -->
 
                         <!-- social-links -->

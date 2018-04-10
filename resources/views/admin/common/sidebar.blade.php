@@ -13,7 +13,7 @@
     </li>
     
         
-     <li class="treeview {{ ( Request::is('admin/ad/complain*') || Request::is('admin/users*') ) ? 'active menu-open' : '' }}">
+     <li class="treeview {{ ( Request::is('admin/payment*') || Request::is('admin/ad/complain*') || Request::is('admin/users*') ) ? 'active menu-open' : '' }}">
         <a href="#">
             <i class="fa fa-users"></i> <span>Manage Users</span>
             <span class="pull-right-container">
@@ -21,8 +21,10 @@
             </span>
         </a>
         <ul class="treeview-menu">            
-            <li class="{{ Request::is('admin/ad/complains') ? 'active' : '' }}"><a href="{{url('admin/ad/complains')}}"><i class="fa fa-warning"></i> Reported Items</a></li>
             <li class="{{ Request::is('admin/users*') ? 'active' : '' }}"><a href="{{url('admin/users')}}"><i class="fa fa-users"></i> View Users</a></li>
+            <li class="{{ Request::is('admin/payment*') ? 'active' : '' }}"><a href="{{url('admin/payments')}}"><i class="fa fa-dollar"></i> View Payments</a></li>
+            <li class="{{ Request::is('admin/ad/complains') ? 'active' : '' }}"><a href="{{url('admin/ad/complains')}}"><i class="fa fa-warning"></i> Reported Items</a></li>
+            
         </ul>
     </li>
     

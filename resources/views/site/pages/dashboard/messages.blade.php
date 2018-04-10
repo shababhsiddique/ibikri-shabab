@@ -23,14 +23,14 @@
                 <div class="col-md-12">
                     <div class="section">                        
                         <div id="vue-app">
-                            <h3>Threads</h3>
-                            <button v-on:click="getThreads">get</button>
+                            <h3>Inbox</h3>                            
                             <ul class="list-group">
                                 <li class="list-group-item" v-for='(thread, index) in threads'>
-                                    <a v-bind:href="thread.link"><strong>@{{thread.name}}</strong></a>
-                                    <p>@{{thread.email}}</p>
+                                    <a v-bind:href="messageUrl(thread.thread,thread.sender_id,thread.receiver_id)"><strong>@{{thread.sender}} , @{{thread.receiver}}</strong></a>
+                                    <p>@{{thread.message}}</p>
                                 </li>
                             </ul>
+                            <!--<button v-on:click="getThreads">refresh</button>-->
                         </div>
                     </div>
                 </div>
@@ -40,6 +40,37 @@
     </div><!-- container -->
 </section><!-- myads-page -->
 @push("scripts")
-<script src="{{asset('site-assets/js/app.js')}}"></script>
+<script type="text/javascript">
+    new Vue({
+        el: '#vue-app',
+        data: {
+            name: 'Shabab',
+            threads: [
+               
+            ]
+        },
+        created: function(){
+            var self = this;
+            setInterval(self.getThreads,5000);      
+            self.getThreads();
+        },
+        methods: {
+            messageUrl: function(code, sid, rid){
+                return "<?php echo url('message')?>/"+code+"/"+sid+"/"+rid;
+            },
+            getThreads: function () {
+                var self = this;
+                $.ajax({
+                    type: "GET",
+                    url: "<?php echo url('api/threads/'. base64_url_encode($userId))?>",
+                    dataType: "json",
+                    success: function (result) {
+                        self.threads = result;
+                    }
+                });
+            }
+        }
+    });
+</script>
 @endpush
 @endsection

@@ -34,6 +34,8 @@ class CreateUsersTable extends Migration
             
             $table->rememberToken();
             $table->timestamps();
+            
+            $table->integer('user_balance')->default(0);
         });
     }
 

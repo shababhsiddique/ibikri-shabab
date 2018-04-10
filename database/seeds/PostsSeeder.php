@@ -18,8 +18,8 @@ class PostsSeeder extends Seeder {
         $faker->locale('en_GB'); 
 
         
-        $numberOfUsers = 50; //<- change this to less numbers if you want less test data
-        $numberOfAds = 3000; //<- change this to less numbers if you want less test data
+        $numberOfUsers = 5; //<- change this to less numbers if you want less test data
+        $numberOfAds = 100; //<- change this to less numbers if you want less test data
         
         
         
@@ -35,7 +35,8 @@ class PostsSeeder extends Seeder {
                 'password' => $pass,
                 'mobile' => $faker->phoneNumber,                
                 'user_type' => $faker->numberBetween(0, 1),
-                'city_id' => $faker->numberBetween(1, 64)
+                'city_id' => $faker->numberBetween(1, 64),
+                'user_balance' => "2000"
             ]);
         }
 

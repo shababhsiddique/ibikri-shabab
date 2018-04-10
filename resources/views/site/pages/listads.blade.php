@@ -4,16 +4,6 @@
 <!-- services-ad -->
 
 <?php
-/* Prep languages */
-//$usertype = [];
-//$usertype[0] = __('Individual');
-//$usertype[1] = __('Dealer');
-//
-//$category_title = __('category_title_en');
-//$subcategory_title = __('subcategory_title_en');
-//$division_title = __('division_title_en');
-//$city_title = __('city_title_en');
-
 $currentQuery = Illuminate\Support\Facades\Request::query();
 ?>
 
@@ -316,7 +306,48 @@ $currentQuery = Illuminate\Support\Facades\Request::query();
                         </div><!-- featured-top -->	
 
 
-                        <!-- custom-list-item -->
+                        <!-- list 2 top products -->
+                        @foreach($topAds as $aTopAd)                        
+                        <div class="custom-list-item row custom-featured">
+                            <!-- item-image -->
+                            <div class="item-image-box col-sm-4">
+                                <div class="item-image">
+                                    <a href='{{url("ad/$aTopAd->post_id/$aTopAd->ad_title")}}'><img src="{{asset($aTopAd->postimage_thumbnail)}}" alt="Image" class="img-responsive"></a>
+                                    <!--<i class="top-ad">Featured</i>-->
+                                    <a href="#" class="verified" data-toggle="tooltip" data-placement="left" title="Top Ad"><i class="fa fa-star"></i></a>
+                                    <a href="#" class=" top-ad-ri" data-toggle="tooltip" data-placement="left" title="Top Ad">@lang('Top Ad')</a>
+                                </div><!-- item-image -->
+                            </div>
+
+                            <!-- rending-text -->
+                            <div class="item-info col-sm-8">
+                                <!-- ad-info -->
+                                <div class="ad-info">
+                                    <h3 class="item-price">{{currency($aTopAd->item_price,'BDT')}}</h3>
+                                    <h4 class="item-title"><a href='{{url("ad/$aTopAd->post_id/$aTopAd->ad_title")}}'>{{$aTopAd->ad_title}}</a></h4>
+                                    <div class="item-cat">
+                                        <span><a href="{{url('all-ads').'?category_id='.$aTopAd->category_id}}">{{$aTopAd->$category_title}}</a></span> /
+                                        <span><a href="{{url('all-ads').'?subcategory_id='.$aTopAd->subcategory_id}}">{{$aTopAd->$subcategory_title}}</a></span>
+                                    </div>										
+                                </div><!-- ad-info -->
+
+                                <!-- ad-meta -->
+                                <div class="ad-meta">
+                                    <div class="meta-content">
+                                        <span class="dated"><a href="#">{{ formatDateLocalized($aTopAd->created_at) }} </a></span>
+                                        <a href="#" class="tag"><i class="fa fa-tags"></i> {{__($aTopAd->item_condition)}}</a>
+                                    </div>										
+                                    <!-- item-info-right -->
+                                    <div class="user-option pull-right">
+                                        <a href="{{url('all-ads').'?city_id='.$aTopAd->city_id}}" data-toggle="tooltip" data-placement="top" title="{{$aTopAd->$city_title}}"><i class="fa fa-map-marker"></i> </a>
+                                        <a class="" href="{{url('ads-by').'/'.$aTopAd->user_id.'/'.$aTopAd->name}}" data-toggle="tooltip" data-placement="top" title="{{$usertype[$aTopAd->user_type]}}"><i class="fa fa-{{($aTopAd->user_type == 0)?'user':'suitcase'}}"></i> </a>
+                                    </div><!-- item-info-right -->
+                                </div><!-- ad-meta -->
+                            </div><!-- item-info -->
+                        </div><!-- custom-list-item -->
+                        @endforeach    
+                        
+                        <!-- list all products by query -->
                         @foreach($ads as $anAd)                        
                         <div class="custom-list-item row">
                             <!-- item-image -->

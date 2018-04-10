@@ -56,6 +56,15 @@
                                     </div>										
                                     <!-- item-info-right -->
                                     <div class="user-option pull-right">
+                                        <?php
+                                        //echo $anAd->isPromoted();
+                                        ?>
+                                        @if($anAd->isPromoted())
+                                            <a class="promote-item" href="#" data-toggle="tooltip" data-placement="top" title="@lang('This ad is currently Promoted')"><i class="fa fa-star text-orange"></i></a>
+                                        @else
+                                            <a class="promote-item" href="{{url('/promote-ad/'.$anAd->post_id)}}" data-toggle="tooltip" data-placement="top" title="@lang('Make this ad for Promotion')"><i class="fa fa-star-o"></i></a>
+                                        @endif                                        
+                                        
                                         <a class="edit-item" href="{{url('/edit-ad/'.$anAd->post_id)}}" data-toggle="tooltip" data-placement="top" title="@lang('Edit this ad')"><i class="fa fa-pencil"></i></a>
                                         <a class="delete-item confirmDelete"  href="{{url('/delete-ad/'.$anAd->post_id)}}" data-toggle="tooltip" data-placement="top" title="@lang('Delete this ad')"><i class="fa fa-times"></i></a>
                                     </div><!-- item-info-right -->

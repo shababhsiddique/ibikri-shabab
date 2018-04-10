@@ -40,8 +40,7 @@ function rrmdirifold($dir) {
     }
 }
 
-
-function formatDateLocalized($string){
+function formatDateLocalized($string) {
 //    
 //    $date = "12111022";
 //    $dateTranslated = number($date);
@@ -53,17 +52,24 @@ function formatDateLocalized($string){
 //    print_r($datePieces);
 //    exit();
 //    return "";
-    
-    $date = date('d',strtotime($string));
-    $Month = date('M',strtotime($string));
-    $year = date('Y',strtotime($string));
-    
+
+    $date = date('d', strtotime($string));
+    $Month = date('M', strtotime($string));
+    $year = date('Y', strtotime($string));
+
     $date = number($date);
     $Month = __($Month);
     $year = str_replace(",", "", number($year));
-    
+
     return "$date $Month $year";
 }
 
+function base64_url_encode($input) {
+    return strtr(base64_encode($input), '+/=', '._-');
+}
+
+function base64_url_decode($input) {
+    return base64_decode(strtr($input, '._-', '+/='));
+}
 
 ?>

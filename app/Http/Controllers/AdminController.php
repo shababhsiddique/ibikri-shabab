@@ -16,6 +16,7 @@ use App\Models\City;
 use App\Models\Post;
 use App\Models\Report;
 use App\Models\Page;
+use App\Models\RechargeRequest;
 use App\User;
 use DB;
 use Cache;
@@ -29,7 +30,7 @@ class AdminController extends Controller {
 
     //Construct Common Items and Check Auth
     public function __construct() {
-        $this->middleware(CheckAdmin::class);
+//        $this->middleware(CheckAdmin::class);
 
         Cache::flush();
 
@@ -158,8 +159,7 @@ class AdminController extends Controller {
         $users = User::select(['users.id', DB::raw("COUNT(posts.post_id) as post_count"), 'users.name', 'users.mobile', 'users.account_status', 'cities.city_title_en', 'users.created_at'])
                 ->join('posts', 'posts.user_id', '=', 'users.id')
                 ->join('cities', 'cities.city_id', '=', 'users.city_id')
-                ->groupBy('users.id')
-                ->orderBy('users.id', "DESC");
+                ->groupBy('users.id');
 
 
         return \DataTables::of($users)
@@ -238,8 +238,7 @@ class AdminController extends Controller {
                 ])
                 ->join('users', 'users.id', '=', 'reports.user_id')
                 ->join('posts', 'posts.post_id', '=', 'reports.post_id')
-                ->where('report_status', '=', 0)
-                ->orderBy('reports.report_id', "DESC");
+                ->where('report_status', '=', 0);
 
 
         return \DataTables::of($reports)
@@ -279,6 +278,101 @@ class AdminController extends Controller {
         $report = Report::find($id);
         $report->report_status = 1;
         $report->save();
+
+        return Redirect::to('admin/ads');
+    }
+
+    /**
+     * Recharge
+     */
+
+    /**
+     * Show Posts in Datatable
+     * @return type
+     */
+    public function rechargeDatatable() {
+
+        //Load Component
+        $this->layout['adminContent'] = view('admin.partials.recharge.datatable');
+
+        //return view
+        return view('admin.master', $this->layout);
+    }
+
+    /**
+     * datatables/getdata handler
+     */
+    public function rechargeDatatableGetData() {
+
+        $recharges = RechargeRequest::select([
+                    'recharge_requests.recharge_request_id',
+                    'users.name',
+                    'recharge_requests.recharge_amount',
+                    'recharge_requests.bkash_code',
+                    'recharge_requests.request_status',
+                    'recharge_requests.created_at'
+                ])
+                ->join('users', 'users.id', '=', 'recharge_requests.user_id')
+                ->orderBy('recharge_requests.request_status', 'DESC');
+
+
+        return \DataTables::of($recharges)
+                        ->editColumn('request_status', function($row) {
+
+                            $status = 'something wrong';
+                            if ($row->request_status == 1) {
+                                $status = '<span class="label label-success">New</span>';
+                            } elseif ($row->request_status == 0) {
+                                $status = '<span class="label label-info">Processed</span>';
+                            }
+                            return $status;
+                        })
+                        ->addColumn('actions', function($row) {
+                            $buttons = "";
+
+                            /* View Complain */
+
+                            if ($row->request_status == 1) {
+                                $buttons .= "<button class='btn btn-xs btn-success dtbutton' data-href='" . url('admin/payment/changeStatus/received') . "/$row->recharge_request_id'><i class='fa fa-check'></i></button>";
+                            } elseif ($row->request_status == 0) {
+                                $buttons .= "<button class='btn btn-xs btn-warning dtbutton' data-href='" . url('admin/payment/changeStatus/new') . "/$row->recharge_request_id'><i class='fa fa-undo'></i></button>";
+                            }
+
+
+                            return "<div class='btn-group'>$buttons</div>";
+                        })
+                        ->rawColumns(['actions', 'request_status'])
+                        ->make(true);
+    }
+
+    /* Accept recharge, or undo */
+    public function rechargeChangeStatus($status, $id) {
+
+        switch ($status) {
+            case 'received':
+                $recharge = RechargeRequest::find($id);
+                $recharge->request_status = 0;
+                $recharge->save();
+                
+                $user = User::find($recharge->user_id);
+                $user->user_balance = $user->user_balance + $recharge->recharge_amount;
+                $user->save();
+
+                break;
+            case 'new':
+                $recharge = RechargeRequest::find($id);
+                $recharge->request_status = 1;
+                $recharge->save();
+                
+                $user = User::find($recharge->user_id);
+                $user->user_balance = $user->user_balance - $recharge->recharge_amount;
+                $user->save();
+
+                break;
+            default:
+                break;
+        }
+
 
         return Redirect::to('admin/ads');
     }
@@ -770,7 +864,7 @@ class AdminController extends Controller {
         if ($request->has('page_id')) {
             $id = $request->page_id;
             $page = Page::find($id);
-            $request->validate([                
+            $request->validate([
 //                'page_slug' => "required|string|unique:pages,page_slug,$id|max:50",
 //                'page_title_en' => "required|string|unique:pages,page_title_en,$id|max:100",
 //                'page_title_bn' => "required|string|unique:pages,page_title_bn,$id|max:100",

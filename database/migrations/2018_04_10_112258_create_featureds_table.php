@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMessagesTable extends Migration
+class CreateFeaturedsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,9 @@ class CreateMessagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('messages', function (Blueprint $table) {
-            $table->increments('message_id');
-            $table->integer('sender_id')->default(0);
-            $table->integer('receiver_id')->default(0);
-            $table->string('thread');
-            $table->text('message')->nullable();
+        Schema::create('featureds', function (Blueprint $table) {
+            $table->increments('featured_id');            
+            $table->integer("post_id");
             $table->timestamps();
         });
     }
@@ -30,6 +27,6 @@ class CreateMessagesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('messages');
+        Schema::dropIfExists('featureds');
     }
 }

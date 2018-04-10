@@ -4,9 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Favourites extends Model
+class Featured extends Model
 {
-    protected $primaryKey = 'fav_id';
+    protected $primaryKey = 'featured_id';
+    
+    protected $table = 'featureds';
     
     public function Post(){
         

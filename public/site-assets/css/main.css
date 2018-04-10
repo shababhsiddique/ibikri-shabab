@@ -4275,3 +4275,78 @@ ul.order-by-change li.nav-divider{
     border: 1px solid #f9f9f9;
     margin: 5px 0px;
 }
+
+#vue-messages li.otherGuyDid{
+    text-align: right;
+    background-color: #f2ffff;
+    border-radius: 20px;
+    margin: 10px 0px;
+    margin-left: auto;
+    padding-right: 20px;
+    border-bottom-right-radius: 0px;
+    max-width: 90%;
+}
+
+#vue-messages li.iSentIt{
+    text-align: left;
+    border-radius: 20px;
+    margin: 10px 0px;
+    margin-right: auto;
+    padding-left: 20px;
+    border-bottom-left-radius: 0px;
+    max-width: 90%;
+}
+
+#vue-messages .chat-composer{
+    /*height: 100px;*/
+}
+
+.text-orange{
+    color: orange !important;
+}
+
+.promote-item:hover .fa-star-o{
+    color: orange ;
+}
+
+.promote-item:hover .fa-star-o:before{
+    content: "\f005";
+}
+
+/*.text-orange-hover:hover{
+    color: orange ;
+}*/
+
+.balance-display{
+    color: #14a99b !important;
+    font-weight: bold;
+}
+
+p.recharge-how{
+    font-size: 1.6rem;
+    padding: 20px 40px;
+    font-weight: 400;
+}
+
+.custom-featured{
+    background-color: #fffff0;
+}
+
+.top-ad-ri{
+    position: absolute;
+    top: 15px;
+    left: -30px;
+    padding: 5px 15px;
+    color: #fff;
+    background-color: #ff740d;
+    -moz-transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+    width: 120px;
+    text-align: center;
+    border: 1px dotted #ddd;
+    text-transform: uppercase;
+    font-size: 11px;
+}

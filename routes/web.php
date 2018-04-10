@@ -10,10 +10,13 @@
   | contains the "web" middleware group. Now create something great!
   |
  */
+
+use App\Http\Middleware\CheckAdmin;
+
 Route::group(
         [
-            'prefix' => LaravelLocalization::setLocale(),
-            'middleware' => [ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ]
+    'prefix' => LaravelLocalization::setLocale(),
+    'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath']
         ], function() {
 
     /* Site */
@@ -27,31 +30,33 @@ Route::group(
 
     /* Site Ajax Location and Categories */
     Route::get('/ajax/categories', 'SiteController@ajaxCategoryModal');
-    Route::get('/ajax/locations', 'SiteController@ajaxLocationModal');    
+    Route::get('/ajax/locations', 'SiteController@ajaxLocationModal');
 
-    
+
     Auth::routes();
-    
+
     /* User */
     Route::get('/home', 'SiteController@index')->name('home');
     Route::get('/dashboard', 'HomeController@dashboard');
     Route::get('/favourites', 'HomeController@userFavourites');
-    Route::get('/account', 'HomeController@account');    
-    Route::get('/messages', 'HomeController@messages');    
-    Route::get('/message/{receiver}', 'HomeController@viewMessage');    
+    Route::get('/account', 'HomeController@account');
+    Route::get('/messages', 'HomeController@messages');
+    Route::get('/message/{code}/{user}/{poster}', 'HomeController@viewMessage');    
     
+    Route::get('/balance', 'HomeController@balance');
     
-    
+
+
+
     /* basic site pages */
-    Route::get('/help/{slug}', 'SiteController@page');    
-    
-    
-    
+    Route::get('/help/{slug}', 'SiteController@page');
+
+
+
     /* Ad management */
     Route::get('/post-ad', 'HomeController@postAd');
     Route::get('/edit-ad/{id}', 'HomeController@editAd');
     Route::get('/delete-ad/{id}', 'HomeController@deleteAd');
-    
 });
 
 /* Form Submits */
@@ -59,10 +64,13 @@ Route::group(
 Route::post('/upload', 'HomeController@postImageUpload');
 Route::post('/upload-delete', 'HomeController@postImageDeleteCache');
 
-/*Account */
+/* Account */
 Route::post('/account/update', 'HomeController@accountUpdate');
 
-/*Post Ad*/
+/* Recharge request */
+Route::post('/balance-request', 'HomeController@requestRecharge');
+
+/* Post Ad */
 Route::post('/post-ad/submit', 'HomeController@postAdSubmit');
 Route::post('/edit-ad/submit', 'HomeController@editAdSubmit');
 
@@ -72,84 +80,108 @@ Route::get('/delete-post-image/{id}', 'HomeController@postImageEditRemove');
 //Route::any('/post-ad-image', 'HomeController@postAdImageHandler');
 
 /* Report an ad */
-Route::post('/report', 'HomeController@reportAd');    
+Route::post('/report', 'HomeController@reportAd');
+
 
 /* Favourite an And */
-Route::get('/favour/{id}', 'HomeController@favourAd');    
+Route::get('/favour/{id}', 'HomeController@favourAd');
+
+/* Promote an Ad */
+Route::get('/promote-ad/{id}', 'HomeController@promoteAd');
+
+
 
 /* Update View Count */
 Route::get('/ajax/view/{id}/{tok}', 'AdSearchController@ajaxView');
 
 
-Route::get('/threads', 'HomeController@threadsGet');
+//Route::get('/threads', 'HomeController@threadsGet');
+
+
 
 
 /**
  * Admin Panel Routes
  */
-
 Route::get('/administrator', 'AdminLoginController@index');
 Route::post('/admin/authenticate', 'AdminLoginController@verifyUser');
-Route::get('/admin/logout', 'AdminController@logout');
-Route::get('/admin', 'AdminController@index');
 
-/* User Management */
-Route::get('/admin/users', 'AdminController@usersDatatable');
-Route::get('/admin/users/getdata', 'AdminController@usersDatatableGetData')->name('datatables/usersgetdata');
+Route::group(['prefix' => 'admin', 'middleware' => [CheckAdmin::class]], function() {
 
-Route::get('/admin/users/changeStatus/{status}/{id}', 'AdminController@usersChangeStatus');
+    Route::get('/logout', 'AdminController@logout');
+    Route::get('/', 'AdminController@index');
 
+    /* User Management */
+    Route::get('/users', 'AdminController@usersDatatable');
+    Route::get('/users/getdata', 'AdminController@usersDatatableGetData')->name('datatables/usersgetdata');
 
-/* Ad Posts Management */
-Route::get('/admin/ads', 'AdminController@adsDatatable');
-Route::get('/admin/ads/getdata', 'AdminController@adsDatatableGetData')->name('datatable/getdata');
+    Route::get('/users/changeStatus/{status}/{id}', 'AdminController@usersChangeStatus');
 
-Route::get('/admin/ads/changeStatus/{status}/{id}', 'AdminController@adsChangeStatus');
+    /* User recharge payments */
+    Route::get('/payments', 'AdminController@rechargeDatatable');
+    Route::get('/payments/getdata', 'AdminController@rechargeDatatableGetData')->name('datatables/rechargegetdata');
 
+    Route::get('/payment/changeStatus/{status}/{id}', 'AdminController@rechargeChangeStatus');
+    
 
-/* User Reports Management */
-Route::get('/admin/ad/complains', 'AdminController@reportsDatatable');
-Route::get('/admin/ad/complains/getdata', 'AdminController@reportsDatatableGetData')->name('datatable/getreportdata');
+    /* Ad Posts Management */
+    Route::get('/ads', 'AdminController@adsDatatable');
+    Route::get('/ads/getdata', 'AdminController@adsDatatableGetData')->name('datatable/getdata');
 
-Route::get('/admin/ad/complain/end/{id}', 'AdminController@reportsEnd');
-
-Route::get('/admin/ads/changeStatus/{status}/{id}', 'AdminController@adsChangeStatus');
-
-
-
-/* Category Management */
-Route::get('/admin/categories', 'AdminController@categoryView');
-
-Route::get('/admin/category/create', 'AdminController@categoryCreate');
-Route::get('/admin/category/edit/{category_id}', 'AdminController@categoryEdit');
-Route::post('/admin/category/save-category', 'AdminController@categorySaveCategory');
-
-Route::get('/admin/subcategory/create', 'AdminController@subcategoryCreate');
-Route::get('/admin/subcategory/edit/{subcategory_id}', 'AdminController@subcategoryEdit');
-Route::post('/admin/subcategory/save-subcategory', 'AdminController@subcategorySave');
+    Route::get('/ads/changeStatus/{status}/{id}', 'AdminController@adsChangeStatus');
 
 
-/* Location Management */
-Route::get('/admin/locations', 'AdminController@locationView');
+    /* User Reports Management */
+    Route::get('/ad/complains', 'AdminController@reportsDatatable');
+    Route::get('/ad/complains/getdata', 'AdminController@reportsDatatableGetData')->name('datatable/getreportdata');
 
-Route::get('/admin/division/create', 'AdminController@divisionCreate');
-Route::get('/admin/division/edit/{division_id}', 'AdminController@divisionEdit');
-Route::post('/admin/division/save-division', 'AdminController@divisionSave');
+    Route::get('/ad/complain/end/{id}', 'AdminController@reportsEnd');
 
-Route::get('/admin/city/create', 'AdminController@cityCreate');
-Route::get('/admin/city/edit/{city_id}', 'AdminController@cityEdit');
-Route::post('/admin/city/save-city', 'AdminController@citySave');
+    Route::get('/ads/changeStatus/{status}/{id}', 'AdminController@adsChangeStatus');
 
 
-/* Basic Content Management */
-Route::get('/admin/pages', 'AdminController@pagesView');
-Route::get('/admin/page/create', 'AdminController@pageCreate');
-Route::get('/admin/page/edit/{id}', 'AdminController@pageEdit');
-Route::post('/admin/page/save-page', 'AdminController@pageSave');
+
+    /* Category Management */
+    Route::get('/categories', 'AdminController@categoryView');
+
+    Route::get('/category/create', 'AdminController@categoryCreate');
+    Route::get('/category/edit/{category_id}', 'AdminController@categoryEdit');
+    Route::post('/category/save-category', 'AdminController@categorySaveCategory');
+
+    Route::get('/subcategory/create', 'AdminController@subcategoryCreate');
+    Route::get('/subcategory/edit/{subcategory_id}', 'AdminController@subcategoryEdit');
+    Route::post('/subcategory/save-subcategory', 'AdminController@subcategorySave');
 
 
-Route::get('/admin/sample/table', 'AdminController@table');
-Route::get('/admin/sample/form', 'AdminController@form');
+    /* Location Management */
+    Route::get('/locations', 'AdminController@locationView');
+
+    Route::get('/division/create', 'AdminController@divisionCreate');
+    Route::get('/division/edit/{division_id}', 'AdminController@divisionEdit');
+    Route::post('/division/save-division', 'AdminController@divisionSave');
+
+    Route::get('/city/create', 'AdminController@cityCreate');
+    Route::get('/city/edit/{city_id}', 'AdminController@cityEdit');
+    Route::post('/city/save-city', 'AdminController@citySave');
+
+
+    /* Basic Content Management */
+    Route::get('/pages', 'AdminController@pagesView');
+    Route::get('/page/create', 'AdminController@pageCreate');
+    Route::get('/page/edit/{id}', 'AdminController@pageEdit');
+    Route::post('/page/save-page', 'AdminController@pageSave');
+
+
+    Route::get('/sample/table', 'AdminController@table');
+    Route::get('/sample/form', 'AdminController@form');
+});
+
+/**
+ * Admin Panel Routes
+ */
+
+
+
 
 
 

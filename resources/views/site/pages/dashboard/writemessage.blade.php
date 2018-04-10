@@ -23,20 +23,22 @@
                 <div class="col-md-12">
                     <div class="section">                        
                         <div id="vue-messages">
-                            <h3>Threads</h3>
-                            <button v-on:click="getThreads">get</button>
+                            <h3>{{$user_other_name}}</h3>                            
                             <ul class="list-group">
-                                <li class="list-group-item" v-for='(thread, index) in threads'>
-                                    <a v-bind:href="thread.link"><strong>@{{thread.user_one}} to @{{thread.user_two}}</strong></a>
+                                <li v-bind:class="getMessageClass(thread.sender_id)" v-for='thread in threads'>
+                                    <a><strong>@{{thread.sender}}</strong></a>
                                     <p>@{{thread.message}}</p>
                                 </li>
-                                <li class="list-group-item">
-                                    <p>@{{newmessage}}</p>
-                                </li>
                             </ul>
-                            <form>
-                                <input type="text" ref="messageComposer">
-                                <button @click.prevent="submitNewMessage()">Send</button>
+                            <!--<button v-on:click="getMessagesInThread">refresh</button>-->
+                            <form class="margin-bottom-60">
+                                <div class="form-group">
+                                    <textarea id="messageComposerInput" class="form-control" ref="messageComposer" autofocus></textarea>
+                                </div>                                
+                                <div class="form-group">
+                                    <button class="btn btn-primary pull-right" @click.prevent="submitNewMessage()">@lang('Send')</button>
+                                </div>
+                                <!--<input class="form-control chat-composer" type="text" ref="messageComposer">-->                                
                             </form>
                         </div>
                     </div>
@@ -53,43 +55,77 @@
         data: {
             newmessage: 'none',
             threads: [
-               
+
             ]
         },
+        created: function () {
+            var self = this;
+            setInterval(self.getMessagesInThread,5000);
+            this.getMessagesInThread();
+        },
+        mounted: function () {
+            console.log("ya");
+            setInterval(function () {
+              $('#messageComposerInput').focus();
+            },1000);
+//            this.$nextTick(function () {
+//              $('#messageComposerInput').focus();
+//            });
+          },
         methods: {
-            getThreads: function() {
+            getMessagesInThread: function () {
                 var self = this;
                 $.ajax({
                     type: "GET",
-                    url: "<?php echo url('api/message/'.$receiver_id)?>",
-                    //url: "https://jsonplaceholder.typicode.com/users",
+                    url: "<?php echo url('api/thread/' . $thread) ?>",
                     dataType: "json",
-                    success: function(result) {
+                    success: function (result) {
                         self.threads = result;
                     }
                 });
+//                $('#messageComposerInput').focus();
             },
-            submitNewMessage () {
+            getMessageClass(sender_id) {
+                if (sender_id === <?php echo $user_logged ?>) {
+                    return "list-group-item iSentIt";
+                } else {
+                    return "list-group-item otherGuyDid";
+                }
+            },
+            submitNewMessage() {
+                var self = this;
+                var msgTyped = this.$refs.messageComposer.value;
                 
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo url('api/submitmessage')?>",
+                    url: "<?php echo url('api/submitmessage') ?>",
                     data: {
-                       _token : '{{csrf_token()}}',
-                       user_one: '<?php echo Auth::user()->id ?>',
-                       user_two: '{{$receiver_id}}', 
-                       message: this.$refs.messageComposer.value  
+                        _token: '{{csrf_token()}}',
+                        sender_id: '<?php echo $user_logged ?>',
+                        receiver_id: '<?php echo $user_other ?>',
+                        thread: '{{$thread}}',
+                        message: msgTyped
                     },
                     dataType: "json",
-                    success: function(result) {
-                        this.newmessage = result;
+                    success: function (result) {
+                        console.log("its gone");
+                        self.threads.push({
+                            sender_id: <?php echo $user_logged ?>,
+                            sender: "<?php echo $user_logged_name?>",
+                            message: msgTyped
+                        });
+//                        self.getMessagesInThread();
                     }
-                });
-                this.newmessage = this.$refs.messageComposer.value
+                });                
+                this.$refs.messageComposer.value = "";
+
+
             }
 
         }
     });
+
+
 </script>
 @endpush
 @endsection
