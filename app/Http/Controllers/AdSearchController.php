@@ -32,8 +32,6 @@ class AdSearchController extends Controller {
         View::share('subcategory_title', __('subcategory_title_en'));
         View::share('division_title', __('division_title_en'));
         View::share('city_title', __('city_title_en'));
-        
-        
     }
 
     /**
@@ -41,8 +39,8 @@ class AdSearchController extends Controller {
      * @return type
      */
     public function allAds(Request $request) {
-        
-        
+
+
 
 
         View::share('condition_collapse', '');
@@ -219,6 +217,23 @@ class AdSearchController extends Controller {
                 ->where("posts.status", 1)
                 ->groupBy('postimages.post_id');
 
+        /* Calcualte top ads */
+        //7 day ago 
+        $startDate = date('Y-m-d 00:00:00', strtotime('-7 days'));
+        //today
+        $endDate = date('Y-m-d 23:59:59', time());
+        //Calcuate top ads based on current querry
+        $queryTop = clone $query;
+        $topAds = $queryTop
+                ->join('featureds', 'featureds.post_id', '=', 'posts.post_id')
+                ->where('featureds.created_at', '>', $startDate)
+                ->where('featureds.created_at', '<', $endDate)
+                ->inRandomOrder()
+                ->limit(2)
+                ->get();
+        /* calculate top ads */
+
+
         //Store count of total result
         View::share('number_of_results', $query->get()->count());
 
@@ -239,6 +254,7 @@ class AdSearchController extends Controller {
         $this->layout['siteContent'] = view('site.pages.listads')
                 ->with('bigtitle', "$name")
                 ->with('categories', $categories)
+                ->with('topAds', $topAds)
                 ->with('ads', $ads);
 
         //return view

@@ -43,6 +43,8 @@ class HomeController extends Controller {
         View::share('subcategory_title', __('subcategory_title_en'));
         View::share('division_title', __('division_title_en'));
         View::share('city_title', __('city_title_en'));
+
+
     }
 
     /**
@@ -83,7 +85,6 @@ class HomeController extends Controller {
         return view('site.master', $this->layout);
     }
 
-    
     /**
      * Show balance and refil page
      * 

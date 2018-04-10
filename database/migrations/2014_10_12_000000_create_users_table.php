@@ -37,6 +37,17 @@ class CreateUsersTable extends Migration
             
             $table->integer('user_balance')->default(0);
         });
+        
+        
+        DB::table('users')->insert(
+                array(
+                    'id' => 0,
+                    'name' => 'Administrator',
+                    'email' => 'admin@ibikri.com',                    
+                    'password' => md5('root1234'),
+                    'created_at' => date('Y-m-d 01:10:11')
+                )
+        );       
     }
 
     /**

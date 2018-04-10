@@ -4356,5 +4356,5 @@ p.recharge-how{
 }
 
 #vue-messages li.msg-read p{
-    font-weight: lighter;
+    font-weight: 500;
 }

@@ -20,7 +20,7 @@ class PostsSeeder extends Seeder {
         
         $numberOfUsers = 5; //<- change this to less numbers if you want less test data
         $numberOfAds = 100; //<- change this to less numbers if you want less test data
-        
+        $numberOfPromoted = ceil($numberOfAds / 20);
         
         
         $this->command->info("Generating $numberOfUsers fake users..");
@@ -94,6 +94,17 @@ class PostsSeeder extends Seeder {
                     "postimage_thumbnail" => "images/thumb/" . $rndUser . "_" . "$filename.jpeg"
                 ]);
             }
+        }
+        
+        
+        /* Promote some random ads */
+        $this->command->info("Generating $numberOfPromoted Promoted posts..");
+        for ($pc = 0; $pc < $numberOfPromoted; $pc++) {
+
+            App\Models\Featured::create([
+                'post_id' => $faker->numberBetween(1, $numberOfAds),
+                'created_at' => $faker->dateTimeBetween("-7 days", "now")
+            ]);            
         }
 
         $this->command->info("Finished!");

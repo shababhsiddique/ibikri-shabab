@@ -32,12 +32,20 @@
         <li><a href="{{ route('login') }}">{{ __('Login') }}</a></li>
         <li><a href="{{ route('register') }}">{{ __('Register') }}</a></li>
         @else
+        <?php
+        $notif = Auth::user()->countNotification();
+        $notifBadge = "";
+        if ($notif != 0) {
+            $notifBadge = "<span class='badge badge-light'>" . number($notif) . "</span>";
+        }
+        ?>
         <li><i class="fa fa-user"></i></li>
         <li class="nav-item dropdown">
             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                {{ Auth::user()->name }} <span class="caret"></span>
+                {{ Auth::user()->name }} {!! $notifBadge !!}<span class="caret"></span>
             </a>
             <ul class="dropdown-menu language-change">
+                <li><a href="{{ url('/messages') }}"><i class="fa fa-envelope"></i>{{ __('Messages') }} {!!$notifBadge!!}</a></li>
                 <li><a href="{{ url('/dashboard') }}"><i class="fa fa-dashboard"></i>{{ __('Dashboard') }}</a></li>
                 <li><a href="{{ route('logout') }}"
                        onclick="event.preventDefault();

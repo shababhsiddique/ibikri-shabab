@@ -4,7 +4,6 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Cache;
-
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable {
@@ -36,6 +35,15 @@ class User extends Authenticatable {
 
     public function isOnline() {
         return Cache::has('user-is-online-' . $this->id);
+    }
+
+    public function countNotification() {
+        
+        $unreadNotifications = \App\Models\Message::where('receiver_id',$this->id)
+                ->where('read_status', 0)
+                ->count();
+
+        return $unreadNotifications;
     }
 
 }

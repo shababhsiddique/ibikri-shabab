@@ -25,7 +25,7 @@
                         <div id="vue-messages">
                             <h3>{{$user_other_name}}</h3>                            
                             <ul class="list-group">
-                                <li v-bind:class="getMessageClass(thread.sender_id)" v-for='thread in threads'>
+                                <li v-bind:class="getMessageClass(thread.sender_id, thread.read_status)" v-for='thread in threads'>
                                     <a><strong>@{{thread.sender}}</strong></a>
                                     <p>@{{thread.message}}</p>
                                 </li>
@@ -66,45 +66,45 @@
         mounted: function () {
             console.log("ya");
             setInterval(function () {
-              $('#messageComposerInput').focus();
-            },1000);
+                $('#messageComposerInput').focus();
+            }, 1000);
 //            this.$nextTick(function () {
 //              $('#messageComposerInput').focus();
 //            });
-          },
+        },
         methods: {
             getMessagesInThread: function () {
                 var self = this;
                 $.ajax({
                     type: "GET",
-                    url: "<?php echo url('api/thread/' . $thread) ?>",
+                    url: "<?php echo url('api/thread/' . $thread.'/'.$user_logged) ?>",
                     dataType: "json",
                     success: function (result) {
                         self.threads = result;
-                        setTimeout (self.getMessagesInThread,5000);
+                        setTimeout(self.getMessagesInThread, 5000);
                     }
                 });
 //                $('#messageComposerInput').focus();
             },
-            getMessageClass(sender_id) {
-            
+            getMessageClass(sender_id, read_status) {
+
                 var css = 'list-group-item';
                 if (sender_id === <?php echo $user_logged ?>) {
                     css = css + " iSentIt";
                 } else {
                     css = css + " otherGuyDid";
+                    if (read_status === 1) {
+                        css = css + " msg-read";
+                    } else {
+                        css = css + " msg-unread";
+                    }
                 }
-//                if (read_status === 1) {
-//                    css = css + " msg-read";
-//                } else {
-//                    css = css +  " msg-unread";
-//                }
                 return css;
             },
             submitNewMessage() {
                 var self = this;
                 var msgTyped = this.$refs.messageComposer.value;
-                
+
                 $.ajax({
                     type: "POST",
                     url: "<?php echo url('api/submitmessage') ?>",
@@ -120,12 +120,12 @@
                         console.log("its gone");
                         self.threads.push({
                             sender_id: <?php echo $user_logged ?>,
-                            sender: "<?php echo $user_logged_name?>",
+                            sender: "<?php echo $user_logged_name ?>",
                             message: msgTyped
                         });
 //                        self.getMessagesInThread();
                     }
-                });                
+                });
                 this.$refs.messageComposer.value = "";
 
 
