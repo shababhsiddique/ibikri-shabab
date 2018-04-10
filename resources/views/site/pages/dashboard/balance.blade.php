@@ -24,10 +24,10 @@
                     <div class=" section">
                         <h2>@lang('Balance')<span class="pull-right balance-display">{{currency($user->user_balance,'BDT')}}</span></h2>
 
-                        <h4 class="text-success text-center">iBikri Merchant Account Number : 019595XXXXX</h4>
+                        <h4 class="text-success text-center">iBikri @lang('Merchant Account Number : 019595XXXXX')</h4>
                         <img src='{{asset("site-assets/images/bkashprocess.jpg")}}' class="img-responsive"/>                        
                         <p class="recharge-how">
-                            Recharge your account by sending taka to 01959XXXXXX by bkash. Send the money in the above process and submit your transaction ID in the form below.
+                            @lang('Recharge your account by sending taka to 01959XXXXXX by bkash. Send the money in the above process and submit your transaction ID in the form below.')
                         </p>
 
                         {!! Form::open(['url' => 'balance-request', 'class'=> 'form-horizontal', 'method' => 'post']) !!}
@@ -65,7 +65,7 @@
                         </div>
                         {!! Form::close() !!}
 
-                        <h4>Current Promoted Ads</h4>
+                        <h4>@lang('Current Promoted Ads')</h4>
                         @foreach($featured as $anAd)
                         <!-- custom-list-item -->
                         <div class="custom-list-item row">

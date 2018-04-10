@@ -18,6 +18,7 @@ class CreateMessagesTable extends Migration
             $table->integer('sender_id')->default(0);
             $table->integer('receiver_id')->default(0);
             $table->string('thread');
+            $table->tinyInteger('read_status')->default(0);
             $table->text('message')->nullable();
             $table->timestamps();
         });

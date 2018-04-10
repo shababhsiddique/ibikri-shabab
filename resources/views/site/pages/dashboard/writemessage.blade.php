@@ -60,7 +60,7 @@
         },
         created: function () {
             var self = this;
-            setInterval(self.getMessagesInThread,5000);
+//            setTimeout (self.getMessagesInThread,5000);
             this.getMessagesInThread();
         },
         mounted: function () {
@@ -81,16 +81,25 @@
                     dataType: "json",
                     success: function (result) {
                         self.threads = result;
+                        setTimeout (self.getMessagesInThread,5000);
                     }
                 });
 //                $('#messageComposerInput').focus();
             },
             getMessageClass(sender_id) {
+            
+                var css = 'list-group-item';
                 if (sender_id === <?php echo $user_logged ?>) {
-                    return "list-group-item iSentIt";
+                    css = css + " iSentIt";
                 } else {
-                    return "list-group-item otherGuyDid";
+                    css = css + " otherGuyDid";
                 }
+//                if (read_status === 1) {
+//                    css = css + " msg-read";
+//                } else {
+//                    css = css +  " msg-unread";
+//                }
+                return css;
             },
             submitNewMessage() {
                 var self = this;

@@ -81,7 +81,13 @@
                         </p>
                         <span class="icon"><i class="fa fa-clock-o"></i><a href="#">{{formatDateLocalized($adDetails->created_at) }}</a></span>
                         <span class="icon"><i class="fa fa-map-marker"></i><a href="#">{{$adDetails->user->city->division->$division_title}} - {{$adDetails->user->city->$city_title}}</a></span>
-                        <span class="icon"><i class="fa fa-suitcase online"></i><a href="#">{{$usertype[$adDetails->user->user_type]}} <strong>(online)</strong></a></span>
+
+                        @if($adDetails->user->isOnline())
+                        <span class="icon"><i class="fa fa-suitcase online"></i><a href="#">{{$usertype[$adDetails->user->user_type]}} <strong>(@lang('online'))</strong></a></span>
+                        @else
+                        <span class="icon"><i class="fa fa-suitcase"></i><a href="#">{{$usertype[$adDetails->user->user_type]}}</a></span>
+                        @endif
+
 
                         <!-- short-info -->
                         <div class="short-info">
@@ -115,7 +121,13 @@
                             //$code = base64_url_encode("$userId#$posterId#$secret");
 
                             echo url("message/$secret/$userId/$posterId")
-                            ?>" class="btn "><i class="fa fa-envelope-square"></i>@lang("Send Message")</a>
+                            ?>" class="btn ">
+                                @if($adDetails->user->isOnline())
+                                <i class="fa fa-envelope-square"></i>@lang("Chat Now!")
+                                @else
+                                <i class="fa fa-envelope-square"></i>@lang("Send Message")
+                                @endif                                
+                            </a>
                             @endguest
 
                         </div><!-- contact-with -->

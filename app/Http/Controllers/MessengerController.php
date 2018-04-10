@@ -17,31 +17,36 @@ class MessengerController extends Controller {
     public function index($id) {
 
         $id = base64_url_decode($id);
-        
-        $threads = Message::select('messages.*','sender.name as sender','receiver.name as receiver')                
-                ->join('users as sender','sender.id','=','messages.sender_id')
-                ->join('users as receiver','receiver.id','=','messages.receiver_id')
-                ->where('sender_id',$id)
-                ->orWhere('receiver_id',$id)
+
+        $threads = Message::select('messages.*', 'sender.name as sender', 'receiver.name as receiver')
+                ->join('users as sender', 'sender.id', '=', 'messages.sender_id')
+                ->join('users as receiver', 'receiver.id', '=', 'messages.receiver_id')
+                ->where('sender_id', $id)
+                ->orWhere('receiver_id', $id)
                 ->groupBy('thread')
                 ->orderBy('message_id')
                 ->get();
-        
+
         return response()->json($threads, 206);
     }
 
     public function getMessageThread($code) {
 
-       
-        $messages = Message::select('messages.message','messages.sender_id','messages.receiver_id','sender.name as sender','receiver.name as receiver')
-                ->join('users as sender','sender.id','=','messages.sender_id')
-                ->join('users as receiver','receiver.id','=','messages.receiver_id')                
-                ->where('thread',$code)
-                ->orderBy('message_id',"asc")
+
+        $messages = Message::select('messages.message', 'messages.read_status', 'messages.sender_id', 'messages.receiver_id', 'sender.name as sender', 'receiver.name as receiver')
+                ->join('users as sender', 'sender.id', '=', 'messages.sender_id')
+                ->join('users as receiver', 'receiver.id', '=', 'messages.receiver_id')
+                ->where('thread', $code)
+                ->orderBy('message_id', "asc")
 //                ->take(10)
 //                ->reverse()
                 ->get()
-                ;
+        ;
+
+        Message::where('thread', $code)
+                ->update(array(
+                    'read_status' => 1 //mark as read
+        ));
 
 //        $messages = $messages->reverse();
 
@@ -61,7 +66,7 @@ class MessengerController extends Controller {
 
         $secret = md5("$party1###$party2");
 
-        if($secret != $request->thread){
+        if ($secret != $request->thread) {
             return response()->json(array('error'), 204);
         }
 

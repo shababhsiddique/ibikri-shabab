@@ -4350,3 +4350,11 @@ p.recharge-how{
     text-transform: uppercase;
     font-size: 11px;
 }
+
+#vue-messages li.msg-unread p{
+    font-weight: bold;
+}
+
+#vue-messages li.msg-read p{
+    font-weight: lighter;
+}

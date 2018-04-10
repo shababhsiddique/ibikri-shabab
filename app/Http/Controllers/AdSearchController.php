@@ -32,6 +32,8 @@ class AdSearchController extends Controller {
         View::share('subcategory_title', __('subcategory_title_en'));
         View::share('division_title', __('division_title_en'));
         View::share('city_title', __('city_title_en'));
+        
+        
     }
 
     /**

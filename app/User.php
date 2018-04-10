@@ -3,10 +3,12 @@
 namespace App;
 
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Cache;
+
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable
-{
+class User extends Authenticatable {
+
     use Notifiable;
 
     /**
@@ -26,10 +28,14 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
-    
+
     public function City() {
         //Each user has a city
         return $this->hasOne('App\Models\City', 'city_id', 'city_id');
+    }
+
+    public function isOnline() {
+        return Cache::has('user-is-online-' . $this->id);
     }
 
 }
