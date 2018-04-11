@@ -191,11 +191,26 @@ $currentQuery = Illuminate\Support\Facades\Request::query();
                                     </a>
                                 </div><!-- panel-heading -->
 
-                                <div id="accordion-three" class="panel-collapse collapse">
+                                <div id="accordion-three" class="panel-collapse collapse {{$price_collapse}}">
                                     <!-- panel-body -->
                                     <div class="panel-body">
                                         <div class="price-range"><!--price-range-->
                                             <div class="price">
+                                                @if (isset($_GET['price_range']) && $_GET['price_range'] != '')  
+                                                <?php
+                                                $prices = explode(",",$_GET['price_range']);
+                                                ?>
+                                                 <span>{{currency($prices[0],'BDT')}} - <strong>{{currency($prices[1],'BDT')}}</strong></span>
+                                                <input form="search-bar-form" 
+                                                       name='price_range' 
+                                                       type="text"
+                                                       data-slider-min="1000" 
+                                                       data-slider-max="100000"
+                                                       data-slider-step="1000"
+                                                       data-slider-value="[{{$_GET['price_range']}}]"
+                                                       id="price" ><br />
+                                                <button class="btn btn-success pull-right" type="submit" form="search-bar-form"><i class="fa fa-refresh"></i></button>
+                                                @else
                                                 <span>{{currency(1000,'BDT')}} - <strong>{{currency(100000,'BDT')}}</strong></span>
                                                 <input form="search-bar-form" 
                                                        name='price_range' 
@@ -206,6 +221,7 @@ $currentQuery = Illuminate\Support\Facades\Request::query();
                                                        data-slider-value="[2000,90000]"
                                                        id="price" ><br />
                                                 <button class="btn btn-success pull-right" type="submit" form="search-bar-form"><i class="fa fa-refresh"></i></button>
+                                                @endif                                                
                                             </div>
                                         </div><!--/price-range-->
                                     </div><!-- panel-body -->
@@ -346,7 +362,7 @@ $currentQuery = Illuminate\Support\Facades\Request::query();
                             </div><!-- item-info -->
                         </div><!-- custom-list-item -->
                         @endforeach    
-                        
+
                         <!-- list all products by query -->
                         @foreach($ads as $anAd)                        
                         <div class="custom-list-item row">
