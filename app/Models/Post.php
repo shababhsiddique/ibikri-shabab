@@ -75,6 +75,20 @@ class Post extends Model {
             return false;
         }
     }
+    
+   
+    public static function countPostsByMonth($startDate, $endDate) {
+
+        //$startDate = date('Y-m-d 00:00:00', time());
+        //$endDate = date('Y-m-d 23:59:59', time());
+
+        $count = DB::table('posts')
+                ->where('posts.created_at', '>', $startDate)
+                ->where('posts.created_at', '<', $endDate)
+                ->get()->count();
+
+        return $count;
+    }
 
     protected static function boot() {
         parent::boot();

@@ -203,8 +203,8 @@
                                     </div>                                    
                                 </div>
                             </div> 
-                            
-                             <div class="row form-group model-name">
+
+                            <div class="row form-group model-name">
                                 <label class="col-sm-3 label-title">@lang('Delivery')</label>
                                 <div class="col-sm-9">
                                     <?php
@@ -227,7 +227,7 @@
                                     @endif
                                 </div>
                             </div>
-                            
+
                             <div class="row form-group model-name">
                                 <label class="col-sm-3 label-title">@lang('Model')<span class="required">*</span></label>
                                 <div class="col-sm-9">                                    
@@ -306,7 +306,7 @@
                         </div><!-- section -->
                         {!! Form::close() !!}
 
-                        <div style="display: none">
+                        <div class="dropzone-filedrop-area">
                             {!! Form::open(['url' => 'upload','id'=>'dropzoneinst', 'class'=>'dropzone', 'method' => 'post', 'enctype'=>'multipart/form-data']) !!}                                    
                             <div class="fallback">
                                 <input name="file" type="file" multiple />
@@ -398,6 +398,7 @@
                                                 makeNotification("warning", "Max files reached", "You are not allowed to upload more than 4 images");
 //                                                this.removeFile(file);
                                             });
+                                            $(".dropzone-filedrop-area .dropzone").height($("#uploaded-image-holder").height())
                                         },
                                         success: function (file, response) {
                                             var obj = JSON.parse(response);
@@ -413,6 +414,7 @@
 //                                            window.onbeforeunload = function () {
 //                                                return "Are you sure you wish to leave the page?";
 //                                            };
+                                            $(".dropzone-filedrop-area .dropzone").height($("#uploaded-image-holder").height())
 
                                         },
                                         error: function (file, response) {
@@ -476,7 +478,7 @@ if (old('imagenames')) {
     }
 }
 ?>
-
+                                    $(".dropzone-filedrop-area .dropzone").height($("#uploaded-image-holder").height())
 
                                 });
                                 Array.prototype.remove = function () {

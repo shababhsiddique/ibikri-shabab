@@ -14,6 +14,7 @@
                     <thead>
                         <tr>
                             <th>#</th>
+                            <th>Report</th>
                             <th>User Name</th>
                             <th>Post Title</th>
                             <th>Reason</th>
@@ -40,6 +41,7 @@
             ajax: '{{ route("datatable/getreportdata") }}',
             columns: [
                 {data: 'report_id', name: 'reports.report_id'},
+                {data: 'report_status', name: 'reports.report_status'},
                 {data: 'name', name: 'users.name'},
                 {data: 'ad_title', name: 'posts.ad_title'},
                 {data: 'reason', name: 'reports.reason'},

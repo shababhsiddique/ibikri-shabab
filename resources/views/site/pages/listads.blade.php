@@ -335,7 +335,7 @@ $currentQuery = Illuminate\Support\Facades\Request::query();
                                 <div class="ad-meta">
                                     <div class="meta-content">
                                         <span class="dated"><a href="#">{{ formatDateLocalized($aTopAd->created_at) }} </a></span>
-                                        <a href="#" class="tag"><i class="fa fa-tags"></i> {{__($aTopAd->item_condition)}}</a>
+                                        <a href="{{url('all-ads').'?item_condition='.$aTopAd->item_condition}}" class="tag"><i class="fa fa-tags"></i> {{__($aTopAd->item_condition)}}</a>
                                     </div>										
                                     <!-- item-info-right -->
                                     <div class="user-option pull-right">
@@ -374,7 +374,7 @@ $currentQuery = Illuminate\Support\Facades\Request::query();
                                 <div class="ad-meta">
                                     <div class="meta-content">
                                         <span class="dated"><a href="#">{{ formatDateLocalized($anAd->created_at) }} </a></span>
-                                        <a href="#" class="tag"><i class="fa fa-tags"></i> {{__($anAd->item_condition)}}</a>
+                                        <a href="{{url('all-ads').'?item_condition='.$anAd->item_condition}}" class="tag"><i class="fa fa-tags"></i> {{__($anAd->item_condition)}}</a>
                                     </div>										
                                     <!-- item-info-right -->
                                     <div class="user-option pull-right">

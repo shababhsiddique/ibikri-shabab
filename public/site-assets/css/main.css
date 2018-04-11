@@ -4358,3 +4358,19 @@ p.recharge-how{
 #vue-messages li.msg-read p{
     font-weight: 500;
 }
+
+.dropzone-filedrop-area{
+    position: absolute;
+    top: 415px;
+    height: 200px;
+    width: 100%;
+}
+
+.dropzone-filedrop-area .dropzone{
+    border: none;
+    background-color: transparent;
+}
+
+.dropzone-filedrop-area .dz-message{
+    display: none;
+}

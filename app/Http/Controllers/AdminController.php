@@ -90,12 +90,12 @@ class AdminController extends Controller {
                             $buttons = "";
 
                             if ($row->status == 1) {
-                                $buttons .= "<button class='btn btn-xs btn-warning dtbutton' data-href='" . url('admin/ads/changeStatus/unpublish') . "/$row->post_id'><i class='fa fa-thumbs-down'></i></button>";
+                                $buttons .= "<button title='Unpublish This Post'  class='btn btn-xs btn-warning dtbutton' data-href='" . url('admin/ads/changeStatus/unpublish') . "/$row->post_id'><i class='fa fa-thumbs-down'></i></button>";
                             } elseif ($row->status == 0) {
-                                $buttons .= "<button class='btn btn-xs btn-success dtbutton' data-href='" . url('admin/ads/changeStatus/publish') . "/$row->post_id'><i class='fa fa-thumbs-up'></i></button>";
+                                $buttons .= "<button title='Publish This Post' class='btn btn-xs btn-success dtbutton' data-href='" . url('admin/ads/changeStatus/publish') . "/$row->post_id'><i class='fa fa-thumbs-up'></i></button>";
                             }
 
-                            $buttons .= "<button class='btn btn-xs btn-danger dtbutton' data-href='" . url('admin/ads/changeStatus/delete') . "/$row->post_id'><i class='fa fa-times'></i></button>";
+                            $buttons .= "<button title='Delete This Post' class='btn btn-xs btn-danger dtbutton' data-href='" . url('admin/ads/changeStatus/delete') . "/$row->post_id'><i class='fa fa-times'></i></button>";
 
                             return "<div class='btn-group'>$buttons</div>";
                         })
@@ -177,9 +177,9 @@ class AdminController extends Controller {
                             $buttons = "";
 
                             if ($row->account_status == 1) {
-                                $buttons .= "<button class='btn btn-xs btn-warning dtbutton' data-href='" . url('admin/users/changeStatus/ban') . "/$row->id'><i class='fa fa-thumbs-down'></i></button>";
+                                $buttons .= "<button title='Ban This user and unpublish all post' class='btn btn-xs btn-warning dtbutton' data-href='" . url('admin/users/changeStatus/ban') . "/$row->id'><i class='fa fa-thumbs-down'></i></button>";
                             } elseif ($row->account_status == 0) {
-                                $buttons .= "<button class='btn btn-xs btn-success dtbutton' data-href='" . url('admin/users/changeStatus/unban') . "/$row->id'><i class='fa fa-thumbs-up'></i></button>";
+                                $buttons .= "<button title='Un Ban This user' class='btn btn-xs btn-success dtbutton' data-href='" . url('admin/users/changeStatus/unban') . "/$row->id'><i class='fa fa-thumbs-up'></i></button>";
                             }
 
                             return "<div class='btn-group'>$buttons</div>";
@@ -233,12 +233,15 @@ class AdminController extends Controller {
                     'posts.status',
                     'posts.post_id',
                     'reports.reason',
+                    'reports.report_status',
                     'reports.message',
                     'reports.created_at'
                 ])
                 ->join('users', 'users.id', '=', 'reports.user_id')
                 ->join('posts', 'posts.post_id', '=', 'reports.post_id')
-                ->where('report_status', '=', 0);
+                ->orderBy("report_status",'asc')
+//                ->where('report_status', '=', 0)
+                ;
 
 
         return \DataTables::of($reports)
@@ -252,24 +255,34 @@ class AdminController extends Controller {
                             }
                             return $status;
                         })
+                        ->editColumn('report_status', function($row) {
+
+                            $status = 'something wrong';
+                            if ($row->report_status == 1) {
+                                $status = '<span class="label label-success">Reviewed</span>';
+                            } elseif ($row->report_status == 0) {
+                                $status = '<span class="label label-warning">New</span>';
+                            }
+                            return $status;
+                        })
                         ->addColumn('actions', function($row) {
                             $buttons = "";
 
                             /* View Complain */
-                            $buttons .= "<button id='external' class='btn btn-xs btn-primary dtbutton' data-href='" . url('ad') . "/$row->report_id/report'><i class='fa fa-eye'></i></button>";
+                            $buttons .= "<button  title='View Original Post' id='external' class='btn btn-xs btn-primary dtbutton' data-href='" . url('ad') . "/$row->report_id/report'><i class='fa fa-eye'></i></button>";
 
                             if ($row->status == 1) {
-                                $buttons .= "<button class='btn btn-xs btn-warning dtbutton' data-href='" . url('admin/ads/changeStatus/unpublish') . "/$row->post_id'><i class='fa fa-thumbs-down'></i></button>";
+                                $buttons .= "<button title='Unpublish This Post' class='btn btn-xs btn-warning dtbutton' data-href='" . url('admin/ads/changeStatus/unpublish') . "/$row->post_id'><i class='fa fa-thumbs-down'></i></button>";
                             } elseif ($row->status == 0) {
-                                $buttons .= "<button class='btn btn-xs btn-success dtbutton' data-href='" . url('admin/ads/changeStatus/publish') . "/$row->post_id'><i class='fa fa-thumbs-up'></i></button>";
+                                $buttons .= "<button title='Re Publish This Post' class='btn btn-xs btn-success dtbutton' data-href='" . url('admin/ads/changeStatus/publish') . "/$row->post_id'><i class='fa fa-thumbs-up'></i></button>";
                             }
 
                             /* End Report */
-                            $buttons .= "<button class='btn btn-xs btn-danger dtbutton confirmalert' data-href='" . url('admin/ad/complain/end') . "/$row->report_id'><i class='fa fa-times'></i></button>";
+                            $buttons .= "<button title='Mark this complain as read' class='btn btn-xs btn-danger dtbutton confirmalert' data-href='" . url('admin/ad/complain/end') . "/$row->report_id'><i class='fa fa-times'></i></button>";
 
                             return "<div class='btn-group'>$buttons</div>";
                         })
-                        ->rawColumns(['actions', 'status'])
+                        ->rawColumns(['actions', 'status','report_status'])
                         ->make(true);
     }
 
@@ -333,9 +346,9 @@ class AdminController extends Controller {
                             /* View Complain */
 
                             if ($row->request_status == 1) {
-                                $buttons .= "<button class='btn btn-xs btn-success dtbutton' data-href='" . url('admin/payment/changeStatus/received') . "/$row->recharge_request_id'><i class='fa fa-check'></i></button>";
+                                $buttons .= "<button title='Mark as Received' class='btn btn-xs btn-success dtbutton' data-href='" . url('admin/payment/changeStatus/received') . "/$row->recharge_request_id'><i class='fa fa-check'></i></button>";
                             } elseif ($row->request_status == 0) {
-                                $buttons .= "<button class='btn btn-xs btn-warning dtbutton' data-href='" . url('admin/payment/changeStatus/new') . "/$row->recharge_request_id'><i class='fa fa-undo'></i></button>";
+                                $buttons .= "<button title='Mark as Not Received/new' class='btn btn-xs btn-warning dtbutton' data-href='" . url('admin/payment/changeStatus/new') . "/$row->recharge_request_id'><i class='fa fa-undo'></i></button>";
                             }
 
 

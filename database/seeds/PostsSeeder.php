@@ -18,8 +18,8 @@ class PostsSeeder extends Seeder {
         $faker->locale('en_GB'); 
 
         
-        $numberOfUsers = 5; //<- change this to less numbers if you want less test data
-        $numberOfAds = 100; //<- change this to less numbers if you want less test data
+        $numberOfUsers = 100; //<- change this to less numbers if you want less test data
+        $numberOfAds = 5000; //<- change this to less numbers if you want less test data
         $numberOfPromoted = ceil($numberOfAds / 20);
         
         
@@ -27,11 +27,11 @@ class PostsSeeder extends Seeder {
         /* Fake Users */
         DB::table('Users')->delete();
         $pass = Hash::make('123456'); //for all fake user pass is 123456
-        for ($nc = 0; $nc < $numberOfUsers; $nc++) {
+        for ($nc = 1; $nc <= $numberOfUsers; $nc++) {
 
             App\User::create([
                 'name' => $faker->name,
-                'email' => $faker->email,
+                'email' => $nc.$faker->email,
                 'password' => $pass,
                 'mobile' => $faker->phoneNumber,                
                 'user_type' => $faker->numberBetween(0, 1),
@@ -67,7 +67,7 @@ class PostsSeeder extends Seeder {
                 'views' => mt_rand(0, 1000),
                 'short_description' => $faker->elaborateProduct,
                 'long_description' => $faker->elaborateProduct."<br/><br/>".$faker->realText(1000, true)."<br/><br/><br/>".$faker->realText(1000, true),
-                'created_at' => $faker->dateTimeBetween('-30 days','now')
+                'created_at' => $faker->dateTimeBetween('-5 months','now')
             ])->post_id;
 
             /* Fake Ad Images */

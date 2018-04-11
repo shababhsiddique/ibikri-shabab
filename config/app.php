@@ -80,7 +80,7 @@ return [
     */
 
     'locale' => 'en',
-    //'locales' => ['en', 'bn'],
+    'locales' => ['en', 'bn'],
 
     'faker_locale' => 'en_US',
     /*
