@@ -18,8 +18,8 @@ class PostsSeeder extends Seeder {
         $faker->locale('en_GB'); 
 
         
-        $numberOfUsers = 100; //<- change this to less numbers if you want less test data
-        $numberOfAds = 5000; //<- change this to less numbers if you want less test data
+        $numberOfUsers = 10; //<- change this to less numbers if you want less test data
+        $numberOfAds = 300; //<- change this to less numbers if you want less test data
         $numberOfPromoted = ceil($numberOfAds / 20);
         
         
