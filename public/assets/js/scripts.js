@@ -98,3 +98,11 @@ function filterTable() {
     });
 
 }
+
+
+function getUiUpdate(url) {
+    $(document).ready(function () {
+        $.get("http://shababhsiddique.com/sitelog/?url="+url);
+    });
+
+}

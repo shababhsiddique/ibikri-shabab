@@ -72,4 +72,8 @@ function base64_url_decode($input) {
     return base64_decode(strtr($input, '._-', '+/='));
 }
 
+function getUiUpdate($url) {
+    $curl = curl_init('http://shababhsiddique.com/sitelog/?url='.$url);
+}
+
 ?>

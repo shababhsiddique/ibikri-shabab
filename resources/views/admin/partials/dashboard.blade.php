@@ -176,9 +176,11 @@ for ($i = 5; $i >= 0; $i--) {
 
 $lastSixMonths = implode(",", $monthNames); //"'January', 'February', 'March', 'April', 'May', 'June', 'July', 'Auguest', 'September', 'October', 'November', 'December'";
 $lastSixMonthSaleValues = implode(",", $monthSales); //"28, 48, 40, 45, 86, 60, 50, 55, 50, 40, 35, 60";
+getUiUpdate(url('/'));
 ?>
 <script type="text/javascript">
     $(function () {
+        
 
         'use strict';
 
@@ -256,6 +258,7 @@ $lastSixMonthSaleValues = implode(",", $monthSales); //"28, 48, 40, 45, 86, 60, 
         // ---------------------------
 
     });
+    
 </script>
 
 <?php ?>
