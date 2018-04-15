@@ -2,34 +2,34 @@
 
 This is a simple Classified Ads application
 
-Features
-
-- Users can Register / Signup.
+## Features
 
 admin url = .../administrator, username: root, password: root1234
 
-- Guests 
-      View
-	  Search Advertisements
-	  Print
+Guests 
+- View
+- Search Advertisements
+- Register 
+- Signup.
+- Print
 	  
-- Users 
-      Post Advertisements
-	  Contact other users, and chat
-	  report ad
-	  set ad as favourite
-	  purchase account balance
-	  promote ad
-	  change basic account settings, change password etc..
+Users 
+- Post Advertisements
+- Contact other users, and chat
+- report ad
+- set ad as favourite
+- purchase account balance
+- promote ad
+- change basic account settings, change password etc..
 	  
-- Administrator
-	 moderate users (ban unban)
-	 moderate posts  (publish unpublish)
-	 confim payments
-	 read reports/complains
+Administrator
+- moderate users (ban unban)
+- moderate posts  (publish unpublish)
+- confim payments
+- read reports/complains
 	 
-- Basic Site Features Using Laravel Techniques
-      Change Language
+Basic Site Features
+- Change Language
 	  
 
 default database name db_ibikri	  
